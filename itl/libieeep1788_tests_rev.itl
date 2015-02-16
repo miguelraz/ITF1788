@@ -175,7 +175,7 @@ testcase minimal_pownRev_test {
     pownRev [-0.0,0X1.A87587109655P+66] 8 = [-0x1.444cccccccccep+8,0x1.444cccccccccep+8];
     pownRev [0X1.CD2B297D889BDP-54,0X1.B253D9F33CE4DP+9] 8 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1];
     pownRev [0X1.26F1FCDD502A3P-13,0X1.53ABD7BFC4FC6P+7] 8 = [-0x1.e666666666667p+0,0x1.e666666666667p+0];
-/*
+
     pownRev [empty] 3 = [empty];
     pownRev [entire] 3 = [entire];
     pownRev [0.0,0.0] 3 = [0.0,0.0];
@@ -207,7 +207,7 @@ testcase minimal_pownRev_test {
     pownRev [-0X1.4F109959E6D7FP+58,0X1.312DP+9] 7 = [-0x1.444cccccccccep+8,0x1.4p+1];
     pownRev [0X1.6849B86A12B9BP-47,0X1.74D0373C76313P+8] 7 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1];
     pownRev [-0X1.658C775099757P+6,-0X1.BEE30301BF47AP-12] 7 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2];
-*/
+
     pownRev [empty] -2 = [empty];
     pownRev [0.0,infinity] -2 = [entire];
     pownRev [-0.0,infinity] -2 = [entire];
@@ -248,14 +248,13 @@ testcase minimal_pownRev_test {
     pownRev [-infinity,-0.0] -1 = [-infinity,0.0];
     pownRev [0X1.B77C278DBBE13P-2,0X1.9P+6] -1 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1];
     pownRev [-0X1.83E0F83E0F83EP+1,-0X1.0D79435E50D79P-1] -1 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2];
-}
-/*
+
     pownRev [empty] -3 = [empty];
     pownRev [entire] -3 = [entire];
     pownRev [0.0,0.0] -3 = [empty];
     pownRev [-0.0,-0.0] -3 = [empty];
-    pownRev [0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12] -3 = [0x1.a333333333331p+3,0x1.a333333333335p+3];
-    pownRev [-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39] -3 = [-0x1.d1b251eb851eep+12,-0x1.d1b251eb851eap+12];
+    pownRev [0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12] -3 = [0x1.a333333333332p+3,0x1.a333333333334p+3];
+    pownRev [-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39] -3 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12];
     pownRev [0X0P+0,0X0.0000000000001P-1022] -3 = [0x1p+358,infinity];
     pownRev [-0X0.0000000000001P-1022,-0X0P+0] -3 = [-infinity,-0x1p+358];
     pownRev [0.0,infinity] -3 = [0.0,infinity];
@@ -269,8 +268,8 @@ testcase minimal_pownRev_test {
     pownRev [entire] -7 = [entire];
     pownRev [0.0,0.0] -7 = [empty];
     pownRev [-0.0,-0.0] -7 = [empty];
-    pownRev [0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26] -7 = [0x1.a333333333332p+3,0x1.a333333333335p+3];
-    pownRev [-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91] -7 = [-0x1.d1b251eb851eep+12,-0x1.d1b251eb851ebp+12];
+    pownRev [0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26] -7 = [0x1.a333333333332p+3,0x1.a333333333334p+3];
+    pownRev [-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91] -7 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12];
     pownRev [0X0P+0,0X0.0000000000001P-1022] -7 = [0x1.588cea3f093bcp+153,infinity];
     pownRev [-0X0.0000000000001P-1022,-0X0P+0] -7 = [-infinity,-0x1.588cea3f093bcp+153];
     pownRev [0.0,infinity] -7 = [0.0,infinity];
@@ -279,7 +278,7 @@ testcase minimal_pownRev_test {
     pownRev [-infinity,-0.0] -7 = [-infinity,0.0];
     pownRev [0X1.5F934D64162A9P-9,0X1.6BCC41E9P+46] -7 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1];
     pownRev [-0X1.254CDD3711DDBP+11,-0X1.6E95C4A761E19P-7] -7 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2];
-*/
+}
 
 testcase minimal_pownRevBin_test {
     pownRevBin [empty] [1.0,1.0] 0 = [empty];
@@ -377,7 +376,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [-0.0,0X1.A87587109655P+66]_def 8 = [-0x1.444cccccccccep+8,0x1.444cccccccccep+8]_trv;
     pownRev [0X1.CD2B297D889BDP-54,0X1.B253D9F33CE4DP+9]_com 8 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [0X1.26F1FCDD502A3P-13,0X1.53ABD7BFC4FC6P+7]_dac 8 = [-0x1.e666666666667p+0,0x1.e666666666667p+0]_trv;
-/*
+
     pownRev [empty] 3 = [empty];
     pownRev [entire]_def 3 = [entire]_trv;
     pownRev [0.0,0.0]_dac 3 = [0.0,0.0]_trv;
@@ -409,7 +408,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [-0X1.4F109959E6D7FP+58,0X1.312DP+9]_dac 7 = [-0x1.444cccccccccep+8,0x1.4p+1]_trv;
     pownRev [0X1.6849B86A12B9BP-47,0X1.74D0373C76313P+8]_com 7 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.658C775099757P+6,-0X1.BEE30301BF47AP-12]_def 7 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
-*/
+
     pownRev [empty] -2 = [empty];
     pownRev [0.0,infinity]_dac -2 = [entire]_trv;
     pownRev [-0.0,infinity]_dac -2 = [entire]_trv;
@@ -450,14 +449,13 @@ testcase minimal_pownRev_dec_test {
     pownRev [-infinity,-0.0]_def -1 = [-infinity,0.0]_trv;
     pownRev [0X1.B77C278DBBE13P-2,0X1.9P+6]_com -1 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.83E0F83E0F83EP+1,-0X1.0D79435E50D79P-1]_com -1 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
-}
-/*
+    
     pownRev [empty] -3 = [empty];
     pownRev [entire]_def -3 = [entire]_trv;
     pownRev [0.0,0.0]_def -3 = [empty];
     pownRev [-0.0,-0.0]_dac -3 = [empty];
-    pownRev [0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12]_com -3 = [0x1.a333333333331p+3,0x1.a333333333335p+3]_trv;
-    pownRev [-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39]_def -3 = [-0x1.d1b251eb851eep+12,-0x1.d1b251eb851eap+12]_trv;
+    pownRev [0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12]_com -3 = [0x1.a333333333332p+3,0x1.a333333333334p+3]_trv;
+    pownRev [-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39]_def -3 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_dac -3 = [0x1p+358,infinity]_trv;
     pownRev [-0X0.0000000000001P-1022,-0X0P+0]_def -3 = [-infinity,-0x1p+358]_trv;
     pownRev [0.0,infinity]_dac -3 = [0.0,infinity]_trv;
@@ -471,8 +469,8 @@ testcase minimal_pownRev_dec_test {
     pownRev [entire]_def -7 = [entire]_trv;
     pownRev [0.0,0.0]_com -7 = [empty];
     pownRev [-0.0,-0.0]_def -7 = [empty];
-    pownRev [0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26]_dac -7 = [0x1.a333333333332p+3,0x1.a333333333335p+3]_trv;
-    pownRev [-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91]_dac -7 = [-0x1.d1b251eb851eep+12,-0x1.d1b251eb851ebp+12]_trv;
+    pownRev [0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26]_dac -7 = [0x1.a333333333332p+3,0x1.a333333333334p+3]_trv;
+    pownRev [-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91]_dac -7 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_def -7 = [0x1.588cea3f093bcp+153,infinity]_trv;
     pownRev [-0X0.0000000000001P-1022,-0X0P+0]_def -7 = [-infinity,-0x1.588cea3f093bcp+153]_trv;
     pownRev [0.0,infinity]_dac -7 = [0.0,infinity]_trv;
@@ -481,7 +479,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [-infinity,-0.0]_def -7 = [-infinity,0.0]_trv;
     pownRev [0X1.5F934D64162A9P-9,0X1.6BCC41E9P+46]_com -7 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.254CDD3711DDBP+11,-0X1.6E95C4A761E19P-7]_com -7 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
-*/
+}
 
 testcase minimal_pownRev_dec_bin_test {
     pownRevBin [empty] [1.0,1.0]_def 0 = [empty];
