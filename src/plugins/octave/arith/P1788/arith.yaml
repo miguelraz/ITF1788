@@ -32,6 +32,7 @@ preamble: |
 nai_interval_double: infsupdec ("ill")
 empty_interval_double: infsup ()
 entire_interval_double: infsup (-inf, inf)
+decorated_empty_interval_double: infsupdec (empty, $DEC)
 decorated_entire_interval_double: infsupdec (entire, $DEC)
 inf_sup_interval_double: infsup ($ARG1, $ARG2)
 decorated_inf_sup_interval_double: infsupdec ($ARG1, $ARG2, $DEC)
