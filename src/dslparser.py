@@ -405,7 +405,6 @@ def p_literal(t):
 
 def p_interval_1(t):
     '''intervalLiteral : notAnInterval
-                       | emptyInterval
                        | bareInterval'''
     t[0] = t[1]
 
@@ -418,10 +417,11 @@ def p_interval_2(t):
 
 def p_bareInterval(t):
     '''bareInterval : infSupInterval
-                    | entireInterval'''
+                    | entireInterval
+                    | emptyInterval'''
     t[0] = t[1]
 
-def p_infSupInterval_2(t):
+def p_infSupInterval(t):
     '''infSupInterval : "[" numberLiteral "," numberLiteral "]"'''
     t[0] = InfSupIntervalNode(t[2], t[4])
 
@@ -591,6 +591,7 @@ def parse(testFilePath):
     Arguments:
     testFilePath -- path to the file as a string
     '''
+    print(testFilePath)
     global yacc
     contents = open(testFilePath).read().strip()
     ast = yacc.parse(contents)

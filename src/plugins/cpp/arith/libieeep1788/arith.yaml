@@ -54,6 +54,10 @@ entire_interval_double: I<double>::entire()
 entire_interval_float: I<float>::entire()
 entire_interval_long_double: I<long double>::entire()
 
+decorated_empty_interval_double: DI<double>::empty($DEC)
+decorated_empty_interval_float: DI<float>::empty($DEC)
+decorated_empty_interval_long_double: DI<long double>::empty($DEC)
+
 decorated_entire_interval_double: DI<double>::entire($DEC)
 decorated_entire_interval_float: DI<float>::entire($DEC)
 decorated_entire_interval_long_double: DI<long double>::entire($DEC)
