@@ -50,8 +50,8 @@ testcase minimal_sqrRevBin_test {
 }
 
 testcase minimal_sqrRev_dec_test {
-    sqrRev [empty] = [empty];
-    sqrRev [-10.0,-1.0]_com = [empty];
+    sqrRev [empty]_trv = [empty]_trv;
+    sqrRev [-10.0,-1.0]_com = [empty]_trv;
     sqrRev [0.0,infinity]_dac = [entire]_trv;
     sqrRev [0.0,1.0]_def = [-1.0,1.0]_trv;
     sqrRev [-0.5,1.0]_dac = [-1.0,1.0]_trv;
@@ -65,8 +65,8 @@ testcase minimal_sqrRev_dec_test {
 }
 
 testcase minimal_sqrRev_dec_bin_test {
-    sqrRevBin [empty] [-5.0,1.0]_def = [empty];
-    sqrRevBin [-10.0,-1.0]_com [-5.0,1.0]_dac = [empty];
+    sqrRevBin [empty]_trv [-5.0,1.0]_def = [empty]_trv;
+    sqrRevBin [-10.0,-1.0]_com [-5.0,1.0]_dac = [empty]_trv;
     sqrRevBin [0.0,infinity]_def [-5.0,1.0]_dac = [-5.0,1.0]_trv;
     sqrRevBin [0.0,1.0]_dac [-0.1,1.0]_def = [-0.1,1.0]_trv;
     sqrRevBin [-0.5,1.0]_def [-0.1,1.0]_dac = [-0.1,1.0]_trv;
@@ -103,8 +103,8 @@ testcase minimal_absRevBin_test {
 }
 
 testcase minimal_absRev_dec_test {
-    absRev [empty] = [empty];
-    absRev [-1.1,-0.4]_dac = [empty];
+    absRev [empty]_trv = [empty]_trv;
+    absRev [-1.1,-0.4]_dac = [empty]_trv;
     absRev [0.0,infinity]_dac = [entire]_trv;
     absRev [1.1,2.1]_com = [-2.1,2.1]_trv;
     absRev [-1.1,2.0]_def = [-2.0,2.0]_trv;
@@ -115,8 +115,8 @@ testcase minimal_absRev_dec_test {
 }
 
 testcase minimal_absRev_dec_bin_test {
-    absRevBin [empty] [-1.1,5.0]_com = [empty];
-    absRevBin [-1.1,-0.4]_dac [-1.1,5.0]_dac = [empty];
+    absRevBin [empty]_trv [-1.1,5.0]_com = [empty]_trv;
+    absRevBin [-1.1,-0.4]_dac [-1.1,5.0]_dac = [empty]_trv;
     absRevBin [0.0,infinity]_def [-1.1,5.0]_def = [-1.1,5.0]_trv;
     absRevBin [1.1,2.1]_dac [-1.0,5.0]_def = [1.1,2.1]_trv;
     absRevBin [-1.1,2.0]_com [-1.1,5.0]_def = [-1.1,2.0]_trv;
@@ -327,14 +327,14 @@ testcase minimal_pownRevBin_test {
 }
 
 testcase minimal_pownRev_dec_test {
-    pownRev [empty] 0 = [empty];
+    pownRev [empty]_trv 0 = [empty]_trv;
     pownRev [1.0,1.0]_com 0 = [entire]_trv;
     pownRev [-1.0,5.0]_dac 0 = [entire]_trv;
-    pownRev [-1.0,0.0]_def 0 = [empty];
-    pownRev [-1.0,-0.0]_dac 0 = [empty];
-    pownRev [1.1,10.0]_com 0 = [empty];
+    pownRev [-1.0,0.0]_def 0 = [empty]_trv;
+    pownRev [-1.0,-0.0]_dac 0 = [empty]_trv;
+    pownRev [1.1,10.0]_com 0 = [empty]_trv;
 
-    pownRev [empty] 1 = [empty];
+    pownRev [empty]_trv 1 = [empty]_trv;
     pownRev [entire]_def 1 = [entire]_trv;
     pownRev [0.0,0.0]_com 1 = [0.0,0.0]_trv;
     pownRev [-0.0,-0.0]_dac 1 = [0.0,0.0]_trv;
@@ -350,7 +350,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [0.01,2.33]_com 1 = [0.01,2.33]_trv;
     pownRev [-1.9,-0.33]_def 1 = [-1.9,-0.33]_trv;
 
-    pownRev [empty] 2 = [empty];
+    pownRev [empty]_trv 2 = [empty]_trv;
     pownRev [0.0,infinity]_dac 2 = [entire]_trv;
     pownRev [-0.0,infinity]_def 2 = [entire]_trv;
     pownRev [0.0,0.0]_com 2 = [0.0,0.0]_trv;
@@ -363,7 +363,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.A36E2EB1C432CP-14,0X1.5B7318FC50482P+2]_com 2 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [0X1.BE0DED288CE7P-4,0X1.CE147AE147AE1P+1]_def 2 = [-0x1.e666666666667p+0,0x1.e666666666667p+0]_trv;
 
-    pownRev [empty] 8 = [empty];
+    pownRev [empty]_trv 8 = [empty]_trv;
     pownRev [entire]_def 8 = [entire]_trv;
     pownRev [0.0,infinity]_dac 8 = [entire]_trv;
     pownRev [-0.0,infinity]_dac 8 = [entire]_trv;
@@ -377,7 +377,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.CD2B297D889BDP-54,0X1.B253D9F33CE4DP+9]_com 8 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [0X1.26F1FCDD502A3P-13,0X1.53ABD7BFC4FC6P+7]_dac 8 = [-0x1.e666666666667p+0,0x1.e666666666667p+0]_trv;
 
-    pownRev [empty] 3 = [empty];
+    pownRev [empty]_trv 3 = [empty]_trv;
     pownRev [entire]_def 3 = [entire]_trv;
     pownRev [0.0,0.0]_dac 3 = [0.0,0.0]_trv;
     pownRev [-0.0,-0.0]_def 3 = [0.0,0.0]_trv;
@@ -393,7 +393,7 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.0C6F7A0B5ED8DP-20,0X1.94C75E6362A6P+3]_dac 3 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.B6F9DB22D0E55P+2,-0X1.266559F6EC5B1P-5]_def 3 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
 
-    pownRev [empty] 7 = [empty];
+    pownRev [empty]_trv 7 = [empty]_trv;
     pownRev [entire]_def 7 = [entire]_trv;
     pownRev [0.0,0.0]_com 7 = [0.0,0.0]_trv;
     pownRev [-0.0,-0.0]_dac 7 = [0.0,0.0]_trv;
@@ -409,13 +409,13 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.6849B86A12B9BP-47,0X1.74D0373C76313P+8]_com 7 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.658C775099757P+6,-0X1.BEE30301BF47AP-12]_def 7 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
 
-    pownRev [empty] -2 = [empty];
+    pownRev [empty]_trv -2 = [empty]_trv;
     pownRev [0.0,infinity]_dac -2 = [entire]_trv;
     pownRev [-0.0,infinity]_dac -2 = [entire]_trv;
-    pownRev [0.0,0.0]_def -2 = [empty];
-    pownRev [-0.0,-0.0]_com -2 = [empty];
-    pownRev [-10.0,0.0]_dac -2 = [empty];
-    pownRev [-10.0,-0.0]_def -2 = [empty];
+    pownRev [0.0,0.0]_def -2 = [empty]_trv;
+    pownRev [-0.0,-0.0]_com -2 = [empty]_trv;
+    pownRev [-10.0,0.0]_dac -2 = [empty]_trv;
+    pownRev [-10.0,-0.0]_def -2 = [empty]_trv;
     pownRev [0X1.7DE3A077D1568P-8,0X1.7DE3A077D1569P-8]_dac -2 = [-0x1.a333333333334p+3,0x1.a333333333334p+3]_trv;
     pownRev [0X1.3570290CD6E14P-26,0X1.3570290CD6E15P-26]_def -2 = [-0x1.d1b251eb851edp+12,0x1.d1b251eb851edp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_com -2 = [entire]_trv;
@@ -423,11 +423,11 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.793D85EF38E47P-3,0X1.388P+13]_def -2 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [0X1.1BA81104F6C8P-2,0X1.25D8FA1F801E1P+3]_com -2 = [-0x1.e666666666667p+0,0x1.e666666666667p+0]_trv;
 
-    pownRev [empty] -8 = [empty];
+    pownRev [empty]_trv -8 = [empty]_trv;
     pownRev [0.0,infinity]_def -8 = [entire]_trv;
     pownRev [-0.0,infinity]_dac -8 = [entire]_trv;
-    pownRev [0.0,0.0]_def -8 = [empty];
-    pownRev [-0.0,-0.0]_dac -8 = [empty];
+    pownRev [0.0,0.0]_def -8 = [empty]_trv;
+    pownRev [-0.0,-0.0]_dac -8 = [empty]_trv;
     pownRev [0X1.3CEF39247CA6DP-30,0X1.3CEF39247CA6EP-30]_com -8 = [-0x1.a333333333334p+3,0x1.a333333333334p+3]_trv;
     pownRev [0X1.113D9EF0A99ACP-103,0X1.113D9EF0A99ADP-103]_def -8 = [-0x1.d1b251eb851edp+12,0x1.d1b251eb851edp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_dac -8 = [entire]_trv;
@@ -435,10 +435,10 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.2DC80DB11AB7CP-10,0X1.1C37937E08P+53]_com -8 = [-0x1.2a3d70a3d70a5p+1,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [0X1.81E104E61630DP-8,0X1.BC64F21560E34P+12]_def -8 = [-0x1.e666666666667p+0,0x1.e666666666667p+0]_trv;
 
-    pownRev [empty] -1 = [empty];
+    pownRev [empty]_trv -1 = [empty]_trv;
     pownRev [entire]_def -1 = [entire]_trv;
-    pownRev [0.0,0.0]_dac -1 = [empty];
-    pownRev [-0.0,-0.0]_dac -1 = [empty];
+    pownRev [0.0,0.0]_dac -1 = [empty]_trv;
+    pownRev [-0.0,-0.0]_dac -1 = [empty]_trv;
     pownRev [0X1.38ABF82EE6986P-4,0X1.38ABF82EE6987P-4]_def -1 = [0x1.a333333333332p+3,0x1.a333333333335p+3]_trv;
     pownRev [-0X1.197422C9048BFP-13,-0X1.197422C9048BEP-13]_dac -1 = [-0x1.d1b251eb851eep+12,-0x1.d1b251eb851ebp+12]_trv;
     pownRev [0X0.4P-1022,0X0.4000000000001P-1022]_dac -1 = [0x1.ffffffffffff8p+1023,infinity]_trv;
@@ -450,10 +450,10 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.B77C278DBBE13P-2,0X1.9P+6]_com -1 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.83E0F83E0F83EP+1,-0X1.0D79435E50D79P-1]_com -1 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
     
-    pownRev [empty] -3 = [empty];
+    pownRev [empty]_trv -3 = [empty]_trv;
     pownRev [entire]_def -3 = [entire]_trv;
-    pownRev [0.0,0.0]_def -3 = [empty];
-    pownRev [-0.0,-0.0]_dac -3 = [empty];
+    pownRev [0.0,0.0]_def -3 = [empty]_trv;
+    pownRev [-0.0,-0.0]_dac -3 = [empty]_trv;
     pownRev [0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12]_com -3 = [0x1.a333333333332p+3,0x1.a333333333334p+3]_trv;
     pownRev [-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39]_def -3 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_dac -3 = [0x1p+358,infinity]_trv;
@@ -465,10 +465,10 @@ testcase minimal_pownRev_dec_test {
     pownRev [0X1.43CFBA61AACABP-4,0X1.E848P+19]_com -3 = [0x1.47ae147ae147ap-7,0x1.2a3d70a3d70a5p+1]_trv;
     pownRev [-0X1.BD393CE9E8E7CP+4,-0X1.2A95F6F7C066CP-3]_def -3 = [-0x1.e666666666667p+0,-0x1.51eb851eb851ep-2]_trv;
 
-    pownRev [empty] -7 = [empty];
+    pownRev [empty]_trv -7 = [empty]_trv;
     pownRev [entire]_def -7 = [entire]_trv;
-    pownRev [0.0,0.0]_com -7 = [empty];
-    pownRev [-0.0,-0.0]_def -7 = [empty];
+    pownRev [0.0,0.0]_com -7 = [empty]_trv;
+    pownRev [-0.0,-0.0]_def -7 = [empty]_trv;
     pownRev [0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26]_dac -7 = [0x1.a333333333332p+3,0x1.a333333333334p+3]_trv;
     pownRev [-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91]_dac -7 = [-0x1.d1b251eb851edp+12,-0x1.d1b251eb851ebp+12]_trv;
     pownRev [0X0P+0,0X0.0000000000001P-1022]_def -7 = [0x1.588cea3f093bcp+153,infinity]_trv;
@@ -482,47 +482,47 @@ testcase minimal_pownRev_dec_test {
 }
 
 testcase minimal_pownRev_dec_bin_test {
-    pownRevBin [empty] [1.0,1.0]_def 0 = [empty];
+    pownRevBin [empty]_trv [1.0,1.0]_def 0 = [empty]_trv;
     pownRevBin [1.0,1.0]_dac [1.0,1.0]_dac 0 = [1.0,1.0]_trv;
     pownRevBin [-1.0,5.0]_def [-51.0,12.0]_dac 0 = [-51.0,12.0]_trv;
-    pownRevBin [-1.0,0.0]_com [5.0,10.0]_dac 0 = [empty];
-    pownRevBin [-1.0,-0.0]_dac [-1.0,1.0]_def 0 = [empty];
-    pownRevBin [1.1,10.0]_def [1.0,41.0]_dac 0 = [empty];
+    pownRevBin [-1.0,0.0]_com [5.0,10.0]_dac 0 = [empty]_trv;
+    pownRevBin [-1.0,-0.0]_dac [-1.0,1.0]_def 0 = [empty]_trv;
+    pownRevBin [1.1,10.0]_def [1.0,41.0]_dac 0 = [empty]_trv;
 
-    pownRevBin [empty] [0.0,100.1]_dac 1 = [empty];
+    pownRevBin [empty]_trv [0.0,100.1]_dac 1 = [empty]_trv;
     pownRevBin [entire]_def [-5.1,10.0]_def 1 = [-5.1,10.0]_trv;
     pownRevBin [0.0,0.0]_com [-10.0,5.1]_dac 1 = [0.0,0.0]_trv;
-    pownRevBin [-0.0,-0.0]_def [1.0,5.0]_dac 1 = [empty];
+    pownRevBin [-0.0,-0.0]_def [1.0,5.0]_dac 1 = [empty]_trv;
 
-    pownRevBin [empty] [5.0,17.1]_def 2 = [empty];
+    pownRevBin [empty]_trv [5.0,17.1]_def 2 = [empty]_trv;
     pownRevBin [0.0,infinity]_dac [5.6,27.544]_dac 2 = [5.6,27.544]_trv;
-    pownRevBin [0.0,0.0]_def [1.0,2.0]_def 2 = [empty];
+    pownRevBin [0.0,0.0]_def [1.0,2.0]_def 2 = [empty]_trv;
     pownRevBin [0X1.A36E2EB1C432CP-14,0X1.5B7318FC50482P+2]_com [1.0,infinity]_def 2 = [1.0,0x1.2a3d70a3d70a5p+1]_trv;
     pownRevBin [0X1.BE0DED288CE7P-4,0X1.CE147AE147AE1P+1]_dac [-infinity,-1.0]_def 2 = [-0x1.e666666666667p+0,-1.0]_trv;
 
-    pownRevBin [empty] [-23.0,-1.0]_dac 3 = [empty];
+    pownRevBin [empty]_trv [-23.0,-1.0]_dac 3 = [empty]_trv;
     pownRevBin [entire]_def [-23.0,-1.0]_com 3 = [-23.0,-1.0]_trv;
-    pownRevBin [0.0,0.0]_def [1.0,2.0]_dac 3 = [empty];
+    pownRevBin [0.0,0.0]_def [1.0,2.0]_dac 3 = [empty]_trv;
     pownRevBin [0X1.0C6F7A0B5ED8DP-20,0X1.94C75E6362A6P+3]_com [1.0,infinity]_dac 3 = [1.0,0x1.2a3d70a3d70a5p+1]_trv;
     pownRevBin [-0X1.B6F9DB22D0E55P+2,-0X1.266559F6EC5B1P-5]_com [-infinity,-1.0]_dac 3 = [-0x1.e666666666667p+0,-1.0]_trv;
 
-    pownRevBin [empty] [-3.0,17.3]_def -2 = [empty];
+    pownRevBin [empty]_trv [-3.0,17.3]_def -2 = [empty]_trv;
     pownRevBin [0.0,infinity]_dac [-5.1,-0.1]_dac -2 = [-5.1,-0.1]_trv;
-    pownRevBin [0.0,0.0]_def [27.2,55.1]_dac -2 = [empty];
-    pownRevBin [0X1.3F0C482C977C9P-17,infinity]_def [-infinity,-0x1.FFFFFFFFFFFFFp1023]_dac -2 = [empty];
+    pownRevBin [0.0,0.0]_def [27.2,55.1]_dac -2 = [empty]_trv;
+    pownRevBin [0X1.3F0C482C977C9P-17,infinity]_def [-infinity,-0x1.FFFFFFFFFFFFFp1023]_dac -2 = [empty]_trv;
     pownRevBin [0X1.793D85EF38E47P-3,0X1.388P+13]_com [1.0,infinity]_dac -2 = [1.0,0x1.2a3d70a3d70a5p+1]_trv;
     pownRevBin [0X1.1BA81104F6C8P-2,0X1.25D8FA1F801E1P+3]_com [-infinity,-1.0]_dac -2 = [-0x1.e666666666667p+0,-1.0]_trv;
 
-    pownRevBin [empty] [-5.1,55.5]_def -1 = [empty];
+    pownRevBin [empty]_trv [-5.1,55.5]_def -1 = [empty]_trv;
     pownRevBin [entire]_def [-5.1,55.5]_dac -1 = [-5.1,55.5]_trv;
-    pownRevBin [0.0,0.0]_dac [-5.1,55.5]_def -1 = [empty];
+    pownRevBin [0.0,0.0]_dac [-5.1,55.5]_def -1 = [empty]_trv;
     pownRevBin [-infinity,-0.0]_dac [-1.0,1.0]_com -1 = [-1.0,0.0]_trv;
-    pownRevBin [0X1.B77C278DBBE13P-2,0X1.9P+6]_def [-1.0,0.0]_dac -1 = [empty];
+    pownRevBin [0X1.B77C278DBBE13P-2,0X1.9P+6]_def [-1.0,0.0]_dac -1 = [empty]_trv;
 
-    pownRevBin [empty] [-5.1,55.5]_dac -3 = [empty];
+    pownRevBin [empty]_trv [-5.1,55.5]_dac -3 = [empty]_trv;
     pownRevBin [entire]_def [-5.1,55.5]_def -3 = [-5.1,55.5]_trv;
-    pownRevBin [0.0,0.0]_def [-5.1,55.5]_def -3 = [empty];
-    pownRevBin [-infinity,0.0]_dac [5.1,55.5]_com -3 = [empty];
+    pownRevBin [0.0,0.0]_def [-5.1,55.5]_def -3 = [empty]_trv;
+    pownRevBin [-infinity,0.0]_dac [5.1,55.5]_com -3 = [empty]_trv;
     pownRevBin [-infinity,-0.0]_dac [-32.0,1.1]_def -3 = [-32.0,0.0]_trv;
 }
 
@@ -568,10 +568,10 @@ testcase minimal_sinRevBin_test {
 }
 
 testcase minimal_sinRev_dec_test {
-    sinRev [empty] = [empty];
+    sinRev [empty]_trv = [empty]_trv;
 
-    sinRev [-2.0,-1.1]_com = [empty];
-    sinRev [1.1, 2.0]_dac = [empty];
+    sinRev [-2.0,-1.1]_com = [empty]_trv;
+    sinRev [1.1, 2.0]_dac = [empty]_trv;
 
     sinRev [-1.0,1.0]_com = [entire]_trv;
     sinRev [0.0,0.0]_dac = [entire]_trv;
@@ -579,15 +579,15 @@ testcase minimal_sinRev_dec_test {
 }
 
 testcase minimal_sinRev_dec_bin_test {
-    sinRevBin [empty] [-1.2,12.1]_com = [empty];
+    sinRevBin [empty]_trv [-1.2,12.1]_com = [empty]_trv;
 
-    sinRevBin [-2.0,-1.1]_def [-5.0, 5.0]_def = [empty];
-    sinRevBin [1.1, 2.0]_dac [-5.0, 5.0]_com = [empty];
+    sinRevBin [-2.0,-1.1]_def [-5.0, 5.0]_def = [empty]_trv;
+    sinRevBin [1.1, 2.0]_dac [-5.0, 5.0]_com = [empty]_trv;
 
     sinRevBin [-1.0,1.0]_com [-1.2,12.1]_def = [-1.2,12.1]_trv;
 
     sinRevBin [0.0,0.0]_dac [-1.0,1.0]_def = [0.0,0.0]_trv;
-    sinRevBin [-0.0,-0.0]_def [2.0,2.5]_trv = [empty];
+    sinRevBin [-0.0,-0.0]_def [2.0,2.5]_trv = [empty]_trv;
     sinRevBin [-0.0,-0.0]_def [3.0,3.5]_dac = [0x1.921fb54442d18p+1,0x1.921fb54442d19p+1]_trv;
     sinRevBin [0X1.FFFFFFFFFFFFFP-1,0X1P+0]_dac [1.57,1.58]_dac = [0x1.921fb50442d18p+0,0x1.921fb58442d1ap+0]_trv;
     sinRevBin [0.0,0X1P+0]_com [-0.1,1.58]_dac = [0.0,1.58]_trv;
@@ -650,10 +650,10 @@ testcase minimal_cosRevBin_test {
 }
 
 testcase minimal_cosRev_dec_test {
-    cosRev [empty] = [empty];
+    cosRev [empty]_trv = [empty]_trv;
 
-    cosRev [-2.0,-1.1]_def = [empty];
-    cosRev [1.1, 2.0]_dac = [empty];
+    cosRev [-2.0,-1.1]_def = [empty]_trv;
+    cosRev [1.1, 2.0]_dac = [empty]_trv;
 
     cosRev [-1.0,1.0]_com = [entire]_trv;
     cosRev [0.0,0.0]_def = [entire]_trv;
@@ -661,10 +661,10 @@ testcase minimal_cosRev_dec_test {
 }
 
 testcase minimal_cosRev_dec_bin_test {
-    cosRevBin [empty] [-1.2,12.1]_def = [empty];
+    cosRevBin [empty]_trv [-1.2,12.1]_def = [empty]_trv;
 
-    cosRevBin [-2.0,-1.1]_dac [-5.0, 5.0]_com = [empty];
-    cosRevBin [1.1, 2.0]_dac [-5.0, 5.0]_com = [empty];
+    cosRevBin [-2.0,-1.1]_dac [-5.0, 5.0]_com = [empty]_trv;
+    cosRevBin [1.1, 2.0]_dac [-5.0, 5.0]_com = [empty]_trv;
 
     cosRevBin [-1.0,1.0]_dac [-1.2,12.1]_def = [-1.2,12.1]_trv;
 
@@ -716,7 +716,7 @@ testcase minimal_tanRevBin_test {
 }
 
 testcase minimal_tanRev_dec_test {
-    tanRev [empty] = [empty];
+    tanRev [empty]_trv = [empty]_trv;
 
     tanRev [-1.0,1.0]_com = [entire]_trv;
     tanRev [-156.0,-12.0]_dac = [entire]_trv;
@@ -725,7 +725,7 @@ testcase minimal_tanRev_dec_test {
 }
 
 testcase minimal_tanRev_dec_bin_test {
-    tanRevBin [empty] [-1.5708,1.5708]_def = [empty];
+    tanRevBin [empty]_trv [-1.5708,1.5708]_def = [empty]_trv;
     tanRevBin [entire]_def [-1.5708,1.5708]_dac = [-1.5708,1.5708]_trv;
     tanRevBin [0.0,0.0]_com [-1.5708,1.5708]_def = [0.0,0.0]_trv;
 
@@ -760,7 +760,7 @@ testcase minimal_coshRevBin_test {
 }
 
 testcase minimal_coshRev_dec_test {
-    coshRev [empty] = [empty];
+    coshRev [empty]_trv = [empty]_trv;
 
     coshRev [1.0,infinity]_dac = [entire]_trv;
     coshRev [0.0,infinity]_dac = [entire]_trv;
@@ -770,11 +770,11 @@ testcase minimal_coshRev_dec_test {
 }
 
 testcase minimal_coshRev_dec_bin_test {
-    coshRevBin [empty] [0.0,infinity]_dac = [empty];
+    coshRevBin [empty]_trv [0.0,infinity]_dac = [empty]_trv;
 
     coshRevBin [1.0,infinity]_def [0.0,infinity]_dac = [0.0,infinity]_trv;
     coshRevBin [0.0,infinity]_def [1.0,2.0]_com = [1.0,2.0]_trv;
-    coshRevBin [1.0,1.0]_dac [1.0,infinity]_def = [empty];
+    coshRevBin [1.0,1.0]_dac [1.0,infinity]_def = [empty]_trv;
 
     coshRevBin [0X1.8B07551D9F55P+0,0X1.89BCA168970C6P+432]_com [-infinity,0.0]_dac = [-0X1.2C903022DD7ABP+8,-0x1.fffffffffffffp-1]_trv;
 }
@@ -988,9 +988,9 @@ testcase minimal_mulRev_dec_test {
 }
 
 testcase minimal_mulRev_dec_ten_test {
-    mulRevTen [-2.0, -0.1]_dac [-2.1, -0.4]_dac [-2.1, -0.4]_dac  = [empty];
+    mulRevTen [-2.0, -0.1]_dac [-2.1, -0.4]_dac [-2.1, -0.4]_dac  = [empty]_trv;
     mulRevTen [-2.0, 1.1]_def [-2.1, -0.4]_com [-2.1, -0.4]_com  = [-2.1, -0.4]_trv;
     mulRevTen [0.01, 1.1]_com [-2.1, 0.0]_dac [-2.1, 0.0]_dac  = [-2.1,0.0]_trv;
-    mulRevTen [-infinity, -0.1]_dac [0.0, 0.12]_com [0.0, 0.12]_com = [0.0, 0.0];
+    mulRevTen [-infinity, -0.1]_dac [0.0, 0.12]_com [0.0, 0.12]_com = [0.0, 0.0]_trv;
     mulRevTen [-2.0, 1.1]_def [0.04, infinity]_dac [0.04, infinity]_dac  = [0.04, infinity]_trv;
 }

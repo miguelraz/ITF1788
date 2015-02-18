@@ -54,8 +54,8 @@ testcase minimal_isCommonInterval_dec_test {
     isCommonInterval [-0x1.FFFFFFFFFFFFFp1023, 0x1.FFFFFFFFFFFFFp1023]_trv = true;
 
     isCommonInterval [entire]_dac = false;
-    isCommonInterval [empty] = false;
-    isCommonInterval [empty] = false;
+    isCommonInterval [empty]_trv = false;
+    isCommonInterval [empty]_trv = false;
     isCommonInterval [-infinity, 0.0]_trv = false;
     isCommonInterval [0.0, infinity]_def = false;
 }
@@ -89,8 +89,8 @@ testcase minimal_isSingleton_dec_test {
     isSingleton [-0.0, 0.0]_def = true;
     isSingleton [0.0, -0.0]_dac = true;
 
-    isSingleton [empty] = false;
-    isSingleton [empty] = false;
+    isSingleton [empty]_trv = false;
+    isSingleton [empty]_trv = false;
     isSingleton [entire]_def = false;
     isSingleton [-1.0, 0.0]_dac = false;
     isSingleton [-1.0, -0.5]_com = false;
@@ -157,14 +157,14 @@ testcase minimal_isMember_dec_test {
     isMember 111110.0 [-0.0,-0.0]_trv = false;
     isMember 4.9 [5.0, 12.4]_def = false;
     isMember -6.3 [5.0, 12.4]_dac = false;
-    isMember 0.0 [empty] = false;
-    isMember 0.0 [empty] = false;
-    isMember -4535.3 [empty] = false;
-    isMember -4535.3 [empty] = false;
-    isMember -infinity [empty] = false;
-    isMember -infinity [empty] = false;
-    isMember infinity [empty] = false;
-    isMember infinity [empty] = false;
+    isMember 0.0 [empty]_trv = false;
+    isMember 0.0 [empty]_trv = false;
+    isMember -4535.3 [empty]_trv = false;
+    isMember -4535.3 [empty]_trv = false;
+    isMember -infinity [empty]_trv = false;
+    isMember -infinity [empty]_trv = false;
+    isMember infinity [empty]_trv = false;
+    isMember infinity [empty]_trv = false;
     isMember -infinity [entire]_trv = false;
     isMember infinity [entire]_def = false;
 }
