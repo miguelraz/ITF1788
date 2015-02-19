@@ -62,11 +62,11 @@ test_seq: |
 # assert (X == Y) may fail when comparing decorated intervals with bare intervals, see #42735
 # assert (eq (X, Y)) fails if X and Y are strings of different length
 assert_equals: |
-    %! assert (isequal (...
+    %! assert (all (eq (...
     %!    $ARG1, ...
-    %!    $ARG2))
+    %!    $ARG2)))
 assert_equals_warning: |
-    %! if (not (isequal ($ARG1, $ARG2)))
+    %! if (not (all (eq ($ARG1, $ARG2))))
     %!     warning (["expected: ", to_string($ARG1), " actual value: ", to_string($ARG2)]);
     %! endif
 assert_true: "%! assert ($ARG1)"

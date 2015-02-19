@@ -209,4 +209,4 @@ op_mulRevToPair*: |
     nthargout(2, 2, @mulrev, $ARG1, $ARG2)
 
 op_decorationPart*: (decorationpart ($ARG1) {1})
-op_setDec*: setDec ($ARG1, $ARG2)
+op_setDec*: setdec ($ARG1, $ARG2)
