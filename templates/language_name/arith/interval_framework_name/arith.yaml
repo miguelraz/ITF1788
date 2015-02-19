@@ -277,4 +277,5 @@ op_mulRevToPair*:
 
 
 op_decorationPart*:
+op_setDec*:
 

@@ -399,7 +399,8 @@ def p_literal(t):
                | numberLiteral
                | stringLiteral
                | booleanLiteral
-               | overlapLiteral'''
+               | overlapLiteral
+               | decorationLiteral'''
     t[0] = t[1]
 
 
