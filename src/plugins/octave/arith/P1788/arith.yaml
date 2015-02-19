@@ -50,9 +50,6 @@ decorator_dac: '"dac"'
 decorator_ill: '"ill"'
 decorator_trv: '"trv"'
 
-# decoration getter
-decorator_get_operation: (decorationpart ($ARG1) {1})
-
 # comparison operators for decorations
 decorator_less_equals: decval ($ARG1) <= decval ($ARG2)
 decorator_greater_equals: decval ($ARG1) >= decval ($ARG2)
@@ -210,3 +207,5 @@ op_mulRevToPair*: |
     nthargout(1, 2, @mulrev, $ARG1, $ARG2)
     *** next output
     nthargout(2, 2, @mulrev, $ARG1, $ARG2)
+
+op_decorationPart*: (decorationpart ($ARG1) {1})

@@ -780,7 +780,7 @@ class ASTVisitor(object):
         """
         outputList = []
         for n in node.literals:
-            isDecorated = isinstance(n, InfSupIntervalNode) and bool(n.decoration)
+            isDecorated = hasattr(n, 'decoration') and bool(n.decoration)
             outputList += [(n.accept(self), isDecorated)]
         return outputList
 
@@ -793,7 +793,7 @@ class ASTVisitor(object):
         """
         outputList = []
         for n in node.literals:
-            isDecorated = isinstance(n, InfSupIntervalNode) and bool(n.decoration)
+            isDecorated = hasattr(n, 'decoration') and bool(n.decoration)
             outputList += [(n.accept(self), isDecorated)]
         return outputList
 
@@ -906,7 +906,9 @@ class ASTVisitor(object):
                                                       xxs[i][j])
                     assertList += [assertContent + delim]
                     if isDecorated:
-                        decGetter = self.out.arith_decorator_get_operation
+                        decGetter = getattr(self.out,
+                               self.findMatchingOp('arith_op_decorationPart',
+                                                   'arith_op_decorationPart'))
                         outpDec = self.replaceToken(decGetter, 'ARG1', outp)
                         inpDec = self.replaceToken(decGetter, 'ARG1', xxs[i][j])
                         assertContent = self.replaceToken(self.out.test_assert_equals, 'ARG2', outpDec)
@@ -932,7 +934,9 @@ class ASTVisitor(object):
                                                       'ARG1', subsetContent)
                     assertList += [assertContent + delim]
                     if isDecorated:
-                        decGetter = self.out.arith_decorator_get_operation
+                        decGetter = getattr(self.out,
+                               self.findMatchingOp('arith_op_decorationPart',
+                                                   'arith_op_decorationPart'))
                         outpDec = self.replaceToken(decGetter, 'ARG1', outp)
                         inpDec = self.replaceToken(decGetter, 'ARG1', xxs[i][j])
                         assertContent = self.replaceToken(self.out.test_assert_equals, 'ARG2', outpDec)
@@ -995,17 +999,19 @@ class ASTVisitor(object):
                 for j in range(0, len(xxs[i])):
                     tOutpDec = tightestOutputList[i][1]
                     aOutpDec = accurateOutputList[i][1]
-
-
+                    
                     if tOutpDec != aOutpDec:
                         raise IOError("either both or none of the outputs can be decorated")
 
-                    if tOutpDec == True:
-                        decLowerBound = self.replaceToken(self.out.arith_decorator_get_operation,
+                    if tOutpDec:
+                        decGetter = getattr(self.out,
+                               self.findMatchingOp('arith_op_decorationPart',
+                                                   'arith_op_decorationPart'))
+                        decLowerBound = self.replaceToken(decGetter,
                                                           'ARG1', tightestOutputList[i][0])
-                        decUpperBound = self.replaceToken(self.out.arith_decorator_get_operation,
+                        decUpperBound = self.replaceToken(decGetter,
                                                           'ARG1', accurateOutputList[i][0])
-                        decInput = self.replaceToken(self.out.arith_decorator_get_operation,
+                        decInput = self.replaceToken(decGetter,
                                                      'ARG1', xxs[i][j])
                         lbCheck = self.replaceToken(self.out.arith_decorator_less_equals,
                                                     'ARG1', decLowerBound)
