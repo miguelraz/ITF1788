@@ -29,7 +29,7 @@ imports: |
 preamble: |
 
 # intervals
-nai_interval_double: infsupdec ("ill")
+nai_interval_double: infsupdec ("[nai]")
 empty_interval_double: infsup ()
 entire_interval_double: infsup (-inf, inf)
 decorated_empty_interval_double: infsupdec (empty, $DEC)
@@ -83,6 +83,8 @@ op_convexHull*: or ($ARG1, $ARG2)
 # Constructors
 op_numsToInterval*: infsup ($ARG1, $ARG2)
 op_textToInterval*: infsupdec ($ARG1)
+op_setDec*: infsupdec ($ARG1, $ARG2)
+op_newDec*: infsupdec ($ARG1)
 
 # Basic operations
 op_pos*: |
@@ -209,4 +211,3 @@ op_mulRevToPair*: |
     nthargout(2, 2, @mulrev, $ARG1, $ARG2)
 
 op_decorationPart*: decorationpart ($ARG1) {1}
-op_setDec*: setdec ($ARG1, $ARG2)

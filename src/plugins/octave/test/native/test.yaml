@@ -42,14 +42,8 @@ imports: |
     %!endfunction
 testfile_seq: |
     $COMMENTS
-    %!shared
-    %!  ## Disable warnings when creating NaIs
-    %!  warning ("off", "interval:NaI")
     $TESTLIB_IMPORTS
     $TESTCASES
-    %!shared
-    %!  ## Re-Enable warnings when creating NaIs
-    %!  warning ("on", "interval:NaI")
 testcase_seq: |
     $COMMENTS
     %!test "$TC_NAME";

@@ -172,6 +172,8 @@ op_convexHull*:
 # Constructors
 op_numsToInterval*:
 op_textToInterval*:
+op_setDec*:
+op_newDec*:
 
 # Basic operations
 op_neg*:
@@ -277,5 +279,4 @@ op_mulRevToPair*:
 
 
 op_decorationPart*:
-op_setDec*:
 

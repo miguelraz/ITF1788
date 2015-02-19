@@ -112,6 +112,8 @@ op_convexHull*: hull($ARG1, $ARG2)
 # Constructors
 op_numsToInterval*:
 op_textToInterval*:
+op_setDec*: set_dec($ARG1, $ARG2)
+op_newDec*:
 
 # Basic operations
 op_pos*: |
@@ -232,4 +234,4 @@ op_mulRevToPair*: |
 
 op_overlap*: overlap($ARG1, $ARG2)
 op_decorationPart*: decoration(${ARG1})
-op_setDec*: set_dec($ARG1, $ARG2)
+
