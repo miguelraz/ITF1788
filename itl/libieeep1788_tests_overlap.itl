@@ -83,9 +83,9 @@ testcase minimal_overlap_test {
 }
 
 testcase minimal_overlap_dec_test {
-    overlap [empty] [empty] = bothEmpty;
-    overlap [empty] [1.0,2.0]_com = firstEmpty;
-    overlap [1.0,2.0]_def [empty] = secondEmpty;
+    overlap [empty]_trv [empty]_trv = bothEmpty;
+    overlap [empty]_trv [1.0,2.0]_com = firstEmpty;
+    overlap [1.0,2.0]_def [empty]_trv = secondEmpty;
 
     overlap [2.0,2.0]_def [3.0,4.0]_def = before;
     overlap [1.0,2.0]_dac [3.0,4.0]_com = before;

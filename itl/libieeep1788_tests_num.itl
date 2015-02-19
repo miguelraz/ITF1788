@@ -37,7 +37,7 @@ testcase minimal_inf_test {
 }
 
 testcase minimal_inf_dec_test {
-    inf [empty] = +infinity;
+    inf [empty]_trv = +infinity;
     inf [-infinity,+infinity]_def = -infinity;
     inf [1.0,2.0]_com = 1.0;
     inf [-3.0,-2.0]_trv = -3.0;
@@ -71,7 +71,7 @@ testcase minimal_sup_test {
 }
 
 testcase minimal_sup_dec_test {
-    sup [empty] = -infinity;
+    sup [empty]_trv = -infinity;
     sup [-infinity,+infinity]_def = +infinity;
     sup [1.0,2.0]_com = 2.0;
     sup [-3.0,-2.0]_trv = -2.0;
