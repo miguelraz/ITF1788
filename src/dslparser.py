@@ -399,7 +399,8 @@ def p_literal(t):
                | numberLiteral
                | stringLiteral
                | booleanLiteral
-               | overlapLiteral'''
+               | overlapLiteral
+               | decorationLiteral'''
     t[0] = t[1]
 
 
@@ -591,7 +592,6 @@ def parse(testFilePath):
     Arguments:
     testFilePath -- path to the file as a string
     '''
-    print(testFilePath)
     global yacc
     contents = open(testFilePath).read().strip()
     ast = yacc.parse(contents)

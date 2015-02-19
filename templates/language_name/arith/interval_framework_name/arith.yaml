@@ -122,12 +122,6 @@ decorator_ill:
 decorator_trv:
 
 #
-# An operation which returns the decoration of a decorated interval.
-# Example: decoration(${ARG1})
-#
-decorator_get_operation:
-
-#
 # The comparison operators <= and >= for two decorations.
 # Example: (${ARG1} <= ${ARG2})
 #          (${ARG1} >= ${ARG2})
@@ -281,6 +275,7 @@ op_atan2Rev2*:
 # Two output division
 op_mulRevToPair*:
 
-# Extended interval comparison
-op_overlap*:
+
+op_decorationPart*:
+op_setDec*:
 
