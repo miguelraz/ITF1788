@@ -36,6 +36,7 @@ boolean_false: "false"
 double_type: "double"
 float_type : "float"
 long_double_type: "double"
+not_a_number: "NaN"
 
 # comments
 line_comment_token: "%! ## "
@@ -51,3 +52,9 @@ imports: |
 spaces_indent: 4
 indent_testcases: false
 indent_tests: false 
+
+#infinity
+infinity_plus_double: inf
+infinity_plus_float: inf ('float')
+infinity_minus_double: -inf
+infinity_minus_float: -inf ('float')

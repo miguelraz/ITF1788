@@ -36,6 +36,7 @@ boolean_false: "false"
 double_type: "double"
 float_type : "float"
 long_double_type: "double"
+not_a_number: "NAN"
 
 # comments
 line_comment_token: //
@@ -53,3 +54,9 @@ imports: |
 spaces_indent: 8
 indent_testcases: false
 indent_tests: true
+
+#infinity
+infinity_plus_double: std::numeric_limits<double>::infinity()
+infinity_plus_float: ((float) std::numeric_limits<double>::infinity())
+infinity_minus_double: (-std::numeric_limits<double>::infinity())
+infinity_minus_float: (-(float) std::numeric_limits<double>::infinity())

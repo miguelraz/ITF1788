@@ -65,16 +65,6 @@ entire_interval_float:
 entire_interval_long_double:
 
 #
-# Positive and negative infinity literals for different data types
-#
-infinity_plus_double:
-infinity_plus_float:
-infinity_plus_long_double:
-infinity_minus_double:
-infinity_minus_float:
-infinity_minus_long_double:
-
-#
 # Decorated empty interval for different data types.
 # Use the token ${DEC} where the translation of the decoration shall be
 # inserted.
@@ -275,7 +265,5 @@ op_atan2Rev2*:
 # Two output division
 op_mulRevToPair*:
 
-
 op_decorationPart*:
 op_setDec*:
-

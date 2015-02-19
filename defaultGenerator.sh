@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+WORKING_DIR=$(pwd)
 ITF1788_HOME="$( cd "$( dirname "$0" )" && pwd )"
 cd "${ITF1788_HOME}/src"
 
@@ -8,3 +9,5 @@ if [ ! $@ ]; then
 else
     python3 main.py $@
 fi
+
+cd $WORKING_DIR

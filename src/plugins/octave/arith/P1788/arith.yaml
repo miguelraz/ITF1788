@@ -37,12 +37,6 @@ decorated_entire_interval_double: infsupdec (entire, $DEC)
 inf_sup_interval_double: infsup ($ARG1, $ARG2)
 decorated_inf_sup_interval_double: infsupdec ($ARG1, $ARG2, $DEC)
 
-#infinity
-infinity_plus_double: inf
-infinity_plus_float: inf ('float')
-infinity_minus_double: -inf
-infinity_minus_float: -inf ('float')
-
 # interval decorators
 decorator_com: '"com"'
 decorator_def: '"def"'

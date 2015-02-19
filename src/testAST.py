@@ -99,6 +99,11 @@ class IdentifierNode(Node):
         """
         self.val = val
 
+class NaNNode(Node):
+    '''A Node which represents the NaN value'''
+    def __init__(self):
+        pass
+
 
 class OverlapLiteralNode(Node):
 
@@ -270,7 +275,7 @@ class NotAnIntervalNode(Node):
 class EmptyIntervalNode(Node):
 
     """A Node which represents an Empty-Interval in the AST."""
-    
+
     def __init__(self):
         """Initializes an EmptyIntervalNode."""
         self.decoration = None
@@ -335,7 +340,7 @@ class InfSupIntervalNode(Node):
 
     def __init__(self, inf, sup):
         """
-        Initialize an InfSupIntervalNode. 
+        Initialize an InfSupIntervalNode.
 
         Arguments:
         inf -- the lower border of the interval
@@ -598,6 +603,15 @@ class ASTVisitor(object):
         """
         return node.val
 
+    def visitNaNNode(self, node):
+        """
+        Return the translated value of NaN.
+
+        Arguments:
+        node -- a NaNNode object
+        """
+        return self.out.lang_not_a_number
+
     def visitOverlapLiteralNode(self, node):
         """
         Return the translation of an OverlapLiteralNode.
@@ -627,7 +641,7 @@ class ASTVisitor(object):
     def visitStringLiteralNode(self, node):
         """
         Return the value of a string enclosed by the language's string tokens.
-        
+
         Invokes the callback method cb_string.
 
         Arguments:
@@ -669,8 +683,8 @@ class ASTVisitor(object):
         node -- an InfinityLiteralNode object
         """
         if node.sign == '+':
-            return getattr(self.out, 'arith_infinity_plus_' + node.dataType)
-        return getattr(self.out, 'arith_infinity_minus_' + node.dataType)
+            return getattr(self.out, 'lang_infinity_plus_' + node.dataType)
+        return getattr(self.out, 'lang_infinity_minus_' + node.dataType)
 
     def visitDecorationLiteralNode(self, node):
         """
@@ -696,7 +710,7 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         return getattr(self.out, 'arith_nai_interval_' + innerDataType)
 
     def visitEmptyIntervalNode(self, node):
@@ -706,7 +720,7 @@ class ASTVisitor(object):
         If the node is decorated, replace the 'DEC' template of the
         output specification's arith_decorated_empty_interval
         attribute's value and return the result.
-        Else, return the value of the output specification's 
+        Else, return the value of the output specification's
         arith_empty_interval value.
 
         Arguments:
@@ -714,7 +728,7 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         if node.decoration:
             tmpl = getattr(self.out, 'arith_decorated_empty_interval_' + innerDataType)
             return self.replaceToken(tmpl, 'DEC', node.decoration.accept(self))
@@ -736,7 +750,7 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         if node.decoration:
             tmpl = getattr(self.out,
                            'arith_decorated_entire_interval_' + innerDataType)
@@ -746,7 +760,7 @@ class ASTVisitor(object):
     def visitInfSupIntervalNode(self, node):
         """
         Return the translation of an InfSupIntervalNode.
-        
+
         If the interval is decorated, we use the decorated_inf_sup_interval_TYPE
         key, else inf_sup_interval_TYPE, where TYPE is either float, double or
         long_double.
@@ -899,7 +913,7 @@ class ASTVisitor(object):
             for i in range(0, len(outputList)):
                 outp = outputList[i][0]
                 isDecorated = outputList[i][1]
-                for j in range(0, len(xxs[i])):                    
+                for j in range(0, len(xxs[i])):
                     assertContent = self.replaceToken(self.out.test_assert_equals,
                                           'ARG2', outp)
                     assertContent = self.replaceToken(assertContent, 'ARG1',
@@ -999,7 +1013,7 @@ class ASTVisitor(object):
                 for j in range(0, len(xxs[i])):
                     tOutpDec = tightestOutputList[i][1]
                     aOutpDec = accurateOutputList[i][1]
-                    
+
                     if tOutpDec != aOutpDec:
                         raise IOError("either both or none of the outputs can be decorated")
 
@@ -1101,7 +1115,7 @@ class ASTVisitor(object):
         tmp = self.replaceToken(tmp, 'ARITHLIB_IMPORTS',
                                 (arithlibImportComment + '\n' +
                                     self.out.arith_imports).strip() + '\n')
-                                    
+
         tmp = self.replaceToken(tmp, 'PREAMBLE',
                                 (preambleComment + '\n' +
                                     self.out.arith_preamble).strip() + '\n')
