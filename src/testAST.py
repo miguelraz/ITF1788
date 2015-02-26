@@ -901,7 +901,13 @@ class ASTVisitor(object):
         if node.accurateOutputs:
             accLst = node.accurateOutputs.accept(self)
 
-        # only tightest outputs present -- generate assertEquals statements
+        # Translation of "op A B = C" where "op" is an arbitrary
+        # operation and A, B, C are intervals
+        # Result will be:
+        #
+        # assert_eq (op(A, B), C)
+        # if decorated:
+        #  assert_eq (dec(op(A,B)), dec(C))
         if node.accurateOutputs is None:
             for sec in range(0, len(tghtLst)):
                 outp = tghtLst[sec].accept(self)
@@ -919,7 +925,13 @@ class ASTVisitor(object):
                         tst = self.replTok(tst, 'ARG1', inpDec)
                         tstLst += [tst + delim]
 
-        # only accurate outputs present -- generate assertTrue statements
+        # Translation of "op A B <= D" where "op" is an arbitrary
+        # operation and A, B, D are intervals
+        # Result will be:
+        #
+        # assert_true op(A, B) is subset of D
+        # if decorated:
+        #  assert_eq (dec(op(A,B)), dec(D))
         elif node.tightestOutputs is None:
 
             for sec in range(0, len(accLst)):
@@ -946,7 +958,8 @@ class ASTVisitor(object):
         # assert_warn op(A, B) = C
         # assert_true C is subset of op(A,B)
         # assert_true op(A,B) is subset of D
-        # assert_true dec(C) <= dec(op(A,B)) and dec(D) >= dec(op(A,B))
+        # if decorated:
+        #  assert_true dec(C) <= dec(op(A,B)) and dec(D) >= dec(op(A,B))
         else:
             # equals warning check
             for sec in range(0, len(tghtLst)):
