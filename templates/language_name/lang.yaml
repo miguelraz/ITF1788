@@ -51,7 +51,9 @@ boolean_false:
 double_type:
 float_type :
 long_double_type:
-not_a_number:
+not_a_number_double:
+not_a_number_float:
+not_a_number_long_double:
 
 #
 # The prefix which initiates a single line comment.

@@ -104,6 +104,22 @@ class NaNNode(Node):
     def __init__(self):
         pass
 
+    def setType(self, t):
+        """
+        Set the datatype of the node.
+
+        Arguments:
+        t -- the type of the node as a string.
+        """
+        self.dataType = t
+
+    def getType(self):
+        """
+        Return the type of the node, if it was previously set,
+        or None otherwise.
+        """
+        return self.dataType
+
 
 class OverlapLiteralNode(Node):
 
@@ -610,7 +626,7 @@ class ASTVisitor(object):
         Arguments:
         node -- a NaNNode object
         """
-        return self.out.lang_not_a_number
+        return getattr(self.out, 'lang_not_a_number_' + node.dataType)
 
     def visitOverlapLiteralNode(self, node):
         """

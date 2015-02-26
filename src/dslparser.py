@@ -173,7 +173,7 @@ nai = r"nai" + floatingSuffix + r"?"
 empty = r"empty" + floatingSuffix + r"?"
 entire = r"entire" + floatingSuffix + r"?"
 
-NaN = r"NaN"
+NaN = r"NaN" + floatingSuffix + r"?"
 
 
 #
@@ -437,9 +437,9 @@ def p_emptyInterval(t):
     '''emptyInterval : "[" EMPTY "]"'''
     t[0] = EmptyIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -448,9 +448,9 @@ def p_entireInterval(t):
     '''entireInterval : "[" ENTIRE "]"'''
     t[0] = EntireIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -460,9 +460,9 @@ def p_notAnInterval(t):
     '''notAnInterval : "[" NAI "]"'''
     t[0] = NotAnIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -490,9 +490,9 @@ def p_infinityLiteral(t):
     else:
         t[0] = InfinityLiteralNode('+')
     suffix = t[1][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('float')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('long_double')
     else:
         t[0].setType('double')
@@ -504,9 +504,9 @@ def p_floatingPointNumberLiteral(t):
 
     suffix = t[1][-1]
 
-    if suffix == 'F':
+    if suffix in 'fF':
         dataType = 'float'
-    elif suffix == 'L':
+    elif suffix in 'lL':
         dataType = 'long_double'
     else:
         dataType = 'double'
@@ -590,7 +590,19 @@ def p_identifier(t):
 
 def p_nan(t):
     '''nanNode : NAN'''
-    t[0] = NaNNode()
+    tmp = NaNNode()
+
+    suffix = t[1][-1]
+
+    if suffix in 'fF':
+        dataType = 'float'
+    elif suffix in 'lL':
+        dataType = 'long_double'
+    else:
+        dataType = 'double'
+
+    tmp.setType(dataType)
+    t[0] = tmp
 
 
 yacc.yacc(debug=0, write_tables=0)
