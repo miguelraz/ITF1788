@@ -859,10 +859,10 @@ class ASTVisitor(object):
 
         inputTypes = ','.join(n.getType() for n in node.inputs.literals)
 
-        opKey = self.findMatchingOp('arith_op_' + node.opName.accept(self),
-                                     'arith_op_' + node.opName.accept(self) +
-                                               '<<' + outputTypes + '>>' +
-                                               '<' + inputTypes + '>')
+        opKey = self.findOp('arith_op_' + node.opName.accept(self),
+                            'arith_op_' + node.opName.accept(self) +
+                            '<<' + outputTypes + '>>' +
+                            '<' + inputTypes + '>')
         if not opKey:
             return ""
 
@@ -885,8 +885,10 @@ class ASTVisitor(object):
         # Process outputs
         tstLst = []
         delim = self.out.lang_line_end_token
-        decPrt = getattr(self.out,self.findMatchingOp('arith_op_decorationPart', 'arith_op_decorationPart'))
-        subset = getattr(self.out, self.findMatchingOp('arith_op_subset', 'arith_op_subset'))
+        decPrt = getattr(self.out,self.findOp('arith_op_decorationPart',
+                                               'arith_op_decorationPart'))
+        subset = getattr(self.out, self.findOp('arith_op_subset',
+                                                'arith_op_subset'))
         assertEq = self.out.test_assert_equals
         assertTrue = self.out.test_assert_true
         assertWarn = self.out.test_assert_equals_warning
@@ -1202,7 +1204,7 @@ class ASTVisitor(object):
         """
         return val
 
-    def findMatchingOp(self, opPrefix, opName):
+    def findOp(self, opPrefix, opName):
         """
         Return the closest match for a function.
 
