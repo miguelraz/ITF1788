@@ -126,3 +126,8 @@ infinity_plus_long_double:
 infinity_minus_double:
 infinity_minus_float:
 infinity_minus_long_double:
+
+#
+# Check if $ARG1 is NaN
+#
+op_isNaN:

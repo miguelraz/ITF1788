@@ -911,6 +911,7 @@ class ASTVisitor(object):
         lessEq = self.out.arith_decorator_less_equals
         greaterEq = self.out.arith_decorator_greater_equals
         andConj = self.out.lang_logical_and
+        isNaNFnc = self.out.lang_op_isNaN
 
         if node.tightestOutputs:
             tghtLst = node.tightestOutputs.accept(self)
@@ -927,19 +928,28 @@ class ASTVisitor(object):
         if node.accurateOutputs is None:
             for sec in range(0, len(tghtLst)):
                 outp = tghtLst[sec].accept(self)
-
-                for line in range(0, len(opVals[sec])):
-                    tst = self.replTok(assertEq, 'ARG2', outp)
-                    tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                    tstLst += [tst + delim]
-
-                    if hasattr(tghtLst[sec], 'decoration') and tghtLst[sec].decoration is not None:
-                        dec = tghtLst[sec].decoration.accept(self)
-                        outpDec = self.replTok(decPrt, 'ARG1', outp)
-                        inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
-                        tst = self.replTok(assertEq, 'ARG2', outpDec)
-                        tst = self.replTok(tst, 'ARG1', inpDec)
+                
+                # translation with isNaN function
+                if type(tghtLst[sec]) is NaNNode:
+                    for line in range(0, len(opVals[sec])):
+                        tst = self.replTok(assertTrue, 'ARG1', isNaNFnc)
+                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
                         tstLst += [tst + delim]
+                    
+                else:    
+                    # translation with assertEquals
+                    for line in range(0, len(opVals[sec])):
+                        tst = self.replTok(assertEq, 'ARG2', outp)
+                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
+                        tstLst += [tst + delim]
+
+                        if hasattr(tghtLst[sec], 'decoration') and tghtLst[sec].decoration is not None:
+                            dec = tghtLst[sec].decoration.accept(self)
+                            outpDec = self.replTok(decPrt, 'ARG1', outp)
+                            inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
+                            tst = self.replTok(assertEq, 'ARG2', outpDec)
+                            tst = self.replTok(tst, 'ARG1', inpDec)
+                            tstLst += [tst + delim]
 
         # Translation of "op A B <= D" where "op" is an arbitrary
         # operation and A, B, D are intervals
@@ -951,6 +961,9 @@ class ASTVisitor(object):
         elif node.tightestOutputs is None:
 
             for sec in range(0, len(accLst)):
+                # NaN literals not allowed as outputs
+                if type(accLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported as accurate outputs')
                 outp = accLst[sec].accept(self)
 
                 for line in range(0, len(opVals[sec])):
@@ -977,8 +990,12 @@ class ASTVisitor(object):
         # if decorated:
         #  assert_true dec(C) <= dec(op(A,B)) and dec(D) >= dec(op(A,B))
         else:
+            
             # equals warning check
             for sec in range(0, len(tghtLst)):
+                # NaN literals not allowed as outputs
+                if type(tghtLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported in combination with accurate outputs')
                 outp = tghtLst[sec].accept(self)
                 for line in range(0, len(opVals[sec])):
                     tst = self.replTok(assertWarn, 'ARG2', outp)
@@ -996,6 +1013,9 @@ class ASTVisitor(object):
 
             # second subset check
             for sec in range(0, len(accLst)):
+                # NaN literals not allowed as outputs
+                if type(accLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported as accurate outputs')
                 outp = accLst[sec].accept(self)
                 for line in range(0, len(opVals[sec])):
                     tst = self.replTok(subset, 'ARG1', opVals[sec][line])
@@ -1019,8 +1039,6 @@ class ASTVisitor(object):
                 aOutpDec = accLst[sec].decoration.accept(self)
                 for line in range(0, len(opVals[sec])):
                     if tOutpDec != aOutpDec:
-                        print(tOutpDec)
-                        print(aOutpDec)
                         raise IOError("either both or none of the outputs can be decorated")
 
                     if tOutpDec:

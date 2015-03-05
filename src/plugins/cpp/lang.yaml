@@ -62,3 +62,6 @@ infinity_plus_double: std::numeric_limits<double>::infinity()
 infinity_plus_float: ((float) std::numeric_limits<double>::infinity())
 infinity_minus_double: (-std::numeric_limits<double>::infinity())
 infinity_minus_float: (-(float) std::numeric_limits<double>::infinity())
+
+# for a float, f != f ist true if and only if f is NaN
+op_isNaN: ($ARG1) != ($ARG1)

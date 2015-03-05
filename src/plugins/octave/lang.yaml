@@ -59,3 +59,5 @@ infinity_plus_double: inf
 infinity_plus_float: inf ('float')
 infinity_minus_double: -inf
 infinity_minus_float: -inf ('float')
+
+op_isNaN: isnan ($ARG1)
