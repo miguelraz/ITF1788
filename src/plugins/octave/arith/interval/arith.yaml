@@ -4,7 +4,7 @@
 #   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
 #
 #
-#   Copyright 2014
+#   Copyright 2014-2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
 #   Maximilian Kiesner (maximilian.kiesner@stud-mail.uni-wuerzburg.de)
@@ -24,6 +24,9 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+
+# This is the arithmetic definition for the GNU Octave interval package
+# http://octave.sourceforge.net/interval/
 
 imports: |
 preamble: |
@@ -205,3 +208,4 @@ op_mulRevToPair*: |
     nthargout(2, 2, @mulrev, $ARG1, $ARG2)
 
 op_decorationPart*: decorationpart ($ARG1) {1}
+
