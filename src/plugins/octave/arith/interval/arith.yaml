@@ -29,6 +29,9 @@
 # http://octave.sourceforge.net/interval/
 
 imports: |
+    %!function n = decval (dec)
+    %! n = find (strcmp (dec, {"ill", "trv", "def", "dac", "com"}));
+    %!endfunction
 preamble: |
 
 # intervals
