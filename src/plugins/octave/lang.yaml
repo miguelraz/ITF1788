@@ -32,10 +32,12 @@ extension: .tst
 boolean_true: "true"
 boolean_false: "false"
 
-#type translation:
+# type translation:
 double_type: "double"
 float_type : "float"
 long_double_type: "double"
+not_a_number_double: "NaN"
+not_a_number_float: "NaN ('float')"
 
 # comments
 line_comment_token: "%! ## "
@@ -47,7 +49,15 @@ block_comment_end: "##"
 line_end_token: ""
 logical_and: $ARG1 & $ARG2
 imports: |
-#indentation
+# indentation
 spaces_indent: 4
 indent_testcases: false
 indent_tests: false 
+
+# infinity
+infinity_plus_double: inf
+infinity_plus_float: inf ('float')
+infinity_minus_double: -inf
+infinity_minus_float: -inf ('float')
+
+op_isNaN: isnan ($ARG1)

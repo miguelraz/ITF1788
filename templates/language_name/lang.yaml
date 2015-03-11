@@ -46,11 +46,14 @@ boolean_false:
 
 #
 # Translation of different data types.
-# Example: "double", "float" and "long double"
+# Example: "double", "float", "long double" and "NAN"
 #
 double_type:
 float_type :
 long_double_type:
+not_a_number_double:
+not_a_number_float:
+not_a_number_long_double:
 
 #
 # The prefix which initiates a single line comment.
@@ -112,3 +115,19 @@ imports:
 spaces_indent:
 indent_testcases:
 indent_tests:
+
+
+#
+# Positive and negative infinity literals for different data types
+#
+infinity_plus_double:
+infinity_plus_float:
+infinity_plus_long_double:
+infinity_minus_double:
+infinity_minus_float:
+infinity_minus_long_double:
+
+#
+# Check if $ARG1 is NaN
+#
+op_isNaN:

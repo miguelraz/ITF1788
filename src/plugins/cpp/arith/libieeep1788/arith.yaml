@@ -32,14 +32,7 @@ preamble: |
 
     template<typename T>
     using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
-
-    const double INF = std::numeric_limits<double>::infinity();
     
-#infinity
-infinity_plus_double: INF
-infinity_plus_float: ((float) INF)
-infinity_minus_double: (-INF)
-infinity_minus_float: (-(float) INF)
 
 # intervals
 nai_interval_double: DI<double>::nai()

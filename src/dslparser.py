@@ -83,6 +83,7 @@ tokens = [
     "STRING",
     "INF",
     "NAI",
+    "NAN",
     "EMPTY",
     "ENTIRE",
     "ID",
@@ -122,8 +123,8 @@ integerSuffix = r"(" + unsignedSuffix + longSuffix + r"?|" + \
     longLongSuffix + unsignedSuffix + r"?|" + \
     longSuffix + unsignedSuffix + r"?)"
 
-integerConstant = (sign + r"?(" + hexadecimalConstant + integerSuffix + r"?|" + 
-    r"0" + integerSuffix + r"?|" + # octalConstant + integerSuffix + r"?|" + 
+integerConstant = (sign + r"?(" + hexadecimalConstant + integerSuffix + r"?|" +
+    r"0" + integerSuffix + r"?|" + # octalConstant + integerSuffix + r"?|" +
     decimalConstant + integerSuffix + r"?)" )
 
 
@@ -172,6 +173,8 @@ nai = r"nai" + floatingSuffix + r"?"
 empty = r"empty" + floatingSuffix + r"?"
 entire = r"entire" + floatingSuffix + r"?"
 
+NaN = r"NaN" + floatingSuffix + r"?"
+
 
 #
 # Map the regexes to the tokens
@@ -199,6 +202,10 @@ def t_INF(t):
     """Return the parsed infinity value."""
     return t
 
+@TOKEN(NaN)
+def t_NAN(t):
+    return t
+
 @TOKEN(nai)
 def t_NAI(t):
     return t
@@ -210,7 +217,6 @@ def t_EMPTY(t):
 @TOKEN(entire)
 def t_ENTIRE(t):
     return t
-
 
 @TOKEN(ident)
 def t_ID(t):
@@ -264,7 +270,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-# parse the input
+# tokenize the input
 lexer = lex.lex()
 
 #
@@ -400,7 +406,8 @@ def p_literal(t):
                | stringLiteral
                | booleanLiteral
                | overlapLiteral
-               | decorationLiteral'''
+               | decorationLiteral
+               | nanNode'''
     t[0] = t[1]
 
 
@@ -430,9 +437,9 @@ def p_emptyInterval(t):
     '''emptyInterval : "[" EMPTY "]"'''
     t[0] = EmptyIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -441,9 +448,9 @@ def p_entireInterval(t):
     '''entireInterval : "[" ENTIRE "]"'''
     t[0] = EntireIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -453,9 +460,9 @@ def p_notAnInterval(t):
     '''notAnInterval : "[" NAI "]"'''
     t[0] = NotAnIntervalNode()
     suffix = t[2][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('interval<float>')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('interval<long_double>')
     else:
         t[0].setType('interval<double>')
@@ -483,9 +490,9 @@ def p_infinityLiteral(t):
     else:
         t[0] = InfinityLiteralNode('+')
     suffix = t[1][-1]
-    if suffix == 'F':
+    if suffix in 'fF':
         t[0].setType('float')
-    elif suffix == 'L':
+    elif suffix in 'lL':
         t[0].setType('long_double')
     else:
         t[0].setType('double')
@@ -497,9 +504,9 @@ def p_floatingPointNumberLiteral(t):
 
     suffix = t[1][-1]
 
-    if suffix == 'F':
+    if suffix in 'fF':
         dataType = 'float'
-    elif suffix == 'L':
+    elif suffix in 'lL':
         dataType = 'long_double'
     else:
         dataType = 'double'
@@ -580,6 +587,22 @@ def p_comment_2(t):
 def p_identifier(t):
     '''identifier : ID'''
     t[0] = IdentifierNode(t[1])
+
+def p_nan(t):
+    '''nanNode : NAN'''
+    tmp = NaNNode()
+
+    suffix = t[1][-1]
+
+    if suffix in 'fF':
+        dataType = 'float'
+    elif suffix in 'lL':
+        dataType = 'long_double'
+    else:
+        dataType = 'double'
+
+    tmp.setType(dataType)
+    t[0] = tmp
 
 
 yacc.yacc(debug=0, write_tables=0)

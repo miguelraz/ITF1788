@@ -99,6 +99,27 @@ class IdentifierNode(Node):
         """
         self.val = val
 
+class NaNNode(Node):
+    '''A Node which represents the NaN value'''
+    def __init__(self):
+        pass
+
+    def setType(self, t):
+        """
+        Set the datatype of the node.
+
+        Arguments:
+        t -- the type of the node as a string.
+        """
+        self.dataType = t
+
+    def getType(self):
+        """
+        Return the type of the node, if it was previously set,
+        or None otherwise.
+        """
+        return self.dataType
+
 
 class OverlapLiteralNode(Node):
 
@@ -270,7 +291,7 @@ class NotAnIntervalNode(Node):
 class EmptyIntervalNode(Node):
 
     """A Node which represents an Empty-Interval in the AST."""
-    
+
     def __init__(self):
         """Initializes an EmptyIntervalNode."""
         self.decoration = None
@@ -335,7 +356,7 @@ class InfSupIntervalNode(Node):
 
     def __init__(self, inf, sup):
         """
-        Initialize an InfSupIntervalNode. 
+        Initialize an InfSupIntervalNode.
 
         Arguments:
         inf -- the lower border of the interval
@@ -598,6 +619,15 @@ class ASTVisitor(object):
         """
         return node.val
 
+    def visitNaNNode(self, node):
+        """
+        Return the translated value of NaN.
+
+        Arguments:
+        node -- a NaNNode object
+        """
+        return getattr(self.out, 'lang_not_a_number_' + node.dataType)
+
     def visitOverlapLiteralNode(self, node):
         """
         Return the translation of an OverlapLiteralNode.
@@ -627,7 +657,7 @@ class ASTVisitor(object):
     def visitStringLiteralNode(self, node):
         """
         Return the value of a string enclosed by the language's string tokens.
-        
+
         Invokes the callback method cb_string.
 
         Arguments:
@@ -669,8 +699,8 @@ class ASTVisitor(object):
         node -- an InfinityLiteralNode object
         """
         if node.sign == '+':
-            return getattr(self.out, 'arith_infinity_plus_' + node.dataType)
-        return getattr(self.out, 'arith_infinity_minus_' + node.dataType)
+            return getattr(self.out, 'lang_infinity_plus_' + node.dataType)
+        return getattr(self.out, 'lang_infinity_minus_' + node.dataType)
 
     def visitDecorationLiteralNode(self, node):
         """
@@ -696,7 +726,7 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         return getattr(self.out, 'arith_nai_interval_' + innerDataType)
 
     def visitEmptyIntervalNode(self, node):
@@ -706,7 +736,7 @@ class ASTVisitor(object):
         If the node is decorated, replace the 'DEC' template of the
         output specification's arith_decorated_empty_interval
         attribute's value and return the result.
-        Else, return the value of the output specification's 
+        Else, return the value of the output specification's
         arith_empty_interval value.
 
         Arguments:
@@ -714,10 +744,10 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         if node.decoration:
             tmpl = getattr(self.out, 'arith_decorated_empty_interval_' + innerDataType)
-            return self.replaceToken(tmpl, 'DEC', node.decoration.accept(self))
+            return self.replTok(tmpl, 'DEC', node.decoration.accept(self))
 
         return getattr(self.out, 'arith_empty_interval_' + innerDataType)
 
@@ -736,17 +766,17 @@ class ASTVisitor(object):
         """
         # remove 'interval<' at the beginning and '>' at the end
         innerDataType = node.getType()[9:][:-1]
-        
+
         if node.decoration:
             tmpl = getattr(self.out,
                            'arith_decorated_entire_interval_' + innerDataType)
-            return self.replaceToken(tmpl, 'DEC', node.decoration.accept(self))
+            return self.replTok(tmpl, 'DEC', node.decoration.accept(self))
         return getattr(self.out, 'arith_entire_interval_' + innerDataType)
 
     def visitInfSupIntervalNode(self, node):
         """
         Return the translation of an InfSupIntervalNode.
-        
+
         If the interval is decorated, we use the decorated_inf_sup_interval_TYPE
         key, else inf_sup_interval_TYPE, where TYPE is either float, double or
         long_double.
@@ -762,14 +792,14 @@ class ASTVisitor(object):
             dec = node.decoration.accept(self)
             tmp = getattr(self.out, 'arith_decorated_inf_sup_interval_' +
                           arg_type)
-            tmp = self.replaceToken(tmp, 'ARG1', inf)
-            tmp = self.replaceToken(tmp, 'ARG2', sup)
-            return self.replaceToken(tmp, 'DEC', dec)
+            tmp = self.replTok(tmp, 'ARG1', inf)
+            tmp = self.replTok(tmp, 'ARG2', sup)
+            return self.replTok(tmp, 'DEC', dec)
 
         else:
             tmp = getattr(self.out, 'arith_inf_sup_interval_' + arg_type)
-            tmp = self.replaceToken(tmp, 'ARG1', inf)
-            return self.replaceToken(tmp, 'ARG2', sup)
+            tmp = self.replTok(tmp, 'ARG1', inf)
+            return self.replTok(tmp, 'ARG2', sup)
 
     def visitAccurateOutputsNode(self, node):
         """
@@ -778,11 +808,7 @@ class ASTVisitor(object):
         Arguments:
         node -- an AccurateOutputsNode object
         """
-        outputList = []
-        for n in node.literals:
-            isDecorated = hasattr(n, 'decoration') and bool(n.decoration)
-            outputList += [(n.accept(self), isDecorated)]
-        return outputList
+        return node.literals
 
     def visitTightestOutputsNode(self, node):
         """
@@ -791,11 +817,7 @@ class ASTVisitor(object):
         Arguments:
         node -- an TightestOutputsNode object
         """
-        outputList = []
-        for n in node.literals:
-            isDecorated = hasattr(n, 'decoration') and bool(n.decoration)
-            outputList += [(n.accept(self), isDecorated)]
-        return outputList
+        return node.literals
 
     def visitInputsNode(self, node):
         """
@@ -832,17 +854,8 @@ class ASTVisitor(object):
 
         """
 
-        # concatenate all comments
-        commentText = '\n'.join([c.accept(self) for c in node.comments])
+        # Get the value of the operation from the arith.yaml file
 
-        # build a list of inputs
-        inputList = node.inputs.accept(self)
-
-        # concatenate input and output types to identify matching operations
-        inputTypes = ','.join(n.getType() for n in node.inputs.literals)
-
-        accurateTypes = None
-        tightestTypes = None
         if node.accurateOutputs:
             accurateTypes = ','.join(n.getType()
                                      for n in node.accurateOutputs.literals)
@@ -851,191 +864,207 @@ class ASTVisitor(object):
             tightestTypes = ','.join(n.getType()
                                      for n in node.tightestOutputs.literals)
 
-        if accurateTypes and tightestTypes:
+        if node.accurateOutputs and node.tightestOutputs:
             if accurateTypes != tightestTypes:
                 raise IOError('''types of accurate and tightest outputs may not
                                differ''')
-        outputTypes = accurateTypes if accurateTypes else tightestTypes
-
-        # the constant part of an operation name, e.g. 'arith_op_add'
-        opPrefix = 'arith_op_' + node.opName.accept(self)
-
-        # the full operation name, i.e. opPrefix followed by the types of
-        # the parameters enclosed by angle brackets
-        opName = opPrefix + '<<' + outputTypes + '>>' + '<' + inputTypes + '>'
-
-        # if there is no exact match for the operation, try to find
-        # a matching function which uses wildcards
-        if not hasattr(self.out, opName):
-            opName = self.findMatchingOp(opPrefix, opName)
-            # if still no matching operation was found, return an empty line
-            # which will later on be ommitted in the generated file
-            if not opName:
-                return ""
-
-        # get the translated value of the operation
-        opText = getattr(self.out, opName)
-
-        # replace input tokens with actual values
-        for i in range(0, len(inputList)):
-            opText = self.replaceToken(opText, 'ARG' + str(i + 1), inputList[i])
-
-        # group the operation text by the output
-        xxs = opText.split('\n*** next output\n')
-
-        xxs = [list(filter(lambda s: s != "", el.split('\n')))
-               for el in xxs]
-
-        assertList = []
-
-        #
-        # Process outputs
-        #
-
-        # only tightest outputs present -- generate assertEquals statements
-        if node.accurateOutputs is None:
-            outputList = node.tightestOutputs.accept(self)
-            delim = self.out.lang_line_end_token
-            for i in range(0, len(outputList)):
-                outp = outputList[i][0]
-                isDecorated = outputList[i][1]
-                for j in range(0, len(xxs[i])):                    
-                    assertContent = self.replaceToken(self.out.test_assert_equals,
-                                          'ARG2', outp)
-                    assertContent = self.replaceToken(assertContent, 'ARG1',
-                                                      xxs[i][j])
-                    assertList += [assertContent + delim]
-                    if isDecorated:
-                        decGetter = getattr(self.out,
-                               self.findMatchingOp('arith_op_decorationPart',
-                                                   'arith_op_decorationPart'))
-                        outpDec = self.replaceToken(decGetter, 'ARG1', outp)
-                        inpDec = self.replaceToken(decGetter, 'ARG1', xxs[i][j])
-                        assertContent = self.replaceToken(self.out.test_assert_equals, 'ARG2', outpDec)
-                        assertContent = self.replaceToken(assertContent, 'ARG1', inpDec)
-                        assertList += [assertContent + delim]
-
-        # only accurate outputs present -- generate assertTrue statements
-        elif node.tightestOutputs is None:
-            outputList = node.accurateOutputs.accept(self)
-            delim = self.out.lang_line_end_token
-            subsetOp = getattr(self.out,
-                               self.findMatchingOp('arith_op_subset',
-                                                   'arith_op_subset'))
-            for i in range(0, len(outputList)):
-                outp = outputList[i][0]
-                isDecorated = outputList[i][1]
-                for j in range(0, len(xxs[i])):
-                    subsetContent = self.replaceToken(subsetOp, 'ARG1',
-                                                      xxs[i][j])
-                    subsetContent = self.replaceToken(subsetContent, 'ARG2',
-                                                      outp)
-                    assertContent = self.replaceToken(self.out.test_assert_true,
-                                                      'ARG1', subsetContent)
-                    assertList += [assertContent + delim]
-                    if isDecorated:
-                        decGetter = getattr(self.out,
-                               self.findMatchingOp('arith_op_decorationPart',
-                                                   'arith_op_decorationPart'))
-                        outpDec = self.replaceToken(decGetter, 'ARG1', outp)
-                        inpDec = self.replaceToken(decGetter, 'ARG1', xxs[i][j])
-                        assertContent = self.replaceToken(self.out.test_assert_equals, 'ARG2', outpDec)
-                        assertContent = self.replaceToken(assertContent, 'ARG1', inpDec)
-                        assertList += [assertContent + delim]
-        #
-        # TODO: Revise this comment
-        # both present. add([1, 2], [3, 4]) = [4, 6] <= [0, 7] will be
-        # translated to
-        # assertTrue([4, 6].isSubset(add([1,2], [3, 4])))
-        # assertTrue(add([1,2], [3, 4]).isSubset([0, 7]))
-        # assertEqualsWarning(add([1,2], [3,4]), [0,7])
-        #
+        if node.accurateOutputs:
+            outputTypes = accurateTypes
         else:
-            tightestOutputList = node.tightestOutputs.accept(self)
-            accurateOutputList = node.accurateOutputs.accept(self)
-            delim = self.out.lang_line_end_token
+            outputTypes = tightestTypes
 
+        inputTypes = ','.join(n.getType() for n in node.inputs.literals)
+
+        opKey = self.findOp('arith_op_' + node.opName.accept(self),
+                            'arith_op_' + node.opName.accept(self) +
+                            '<<' + outputTypes + '>>' +
+                            '<' + inputTypes + '>')
+        if not opKey:
+            return ""
+
+        opVal = getattr(self.out, opKey)
+
+        # Replace the ARG placeholders
+        inputList = node.inputs.accept(self)
+        for i in range(0, len(inputList)):
+            opVal = self.replTok(opVal,
+                                      'ARG' + str(i + 1), inputList[i])
+
+        # Build a list of lists for the value -- the first level
+        # identifies the sections separated by '*** next output' and the
+        # second level the multiple lines of every section
+        opVals = opVal.split('\n*** next output\n')
+
+        opVals = [list(filter(lambda s: s != "", el.split('\n')))
+               for el in opVals]
+
+        # Process outputs
+        tstLst = []
+        delim = self.out.lang_line_end_token
+        decPrt = getattr(self.out,self.findOp('arith_op_decorationPart',
+                                               'arith_op_decorationPart'))
+        subset = getattr(self.out, self.findOp('arith_op_subset',
+                                                'arith_op_subset'))
+        assertEq = self.out.test_assert_equals
+        assertTrue = self.out.test_assert_true
+        assertWarn = self.out.test_assert_equals_warning
+        lessEq = self.out.arith_decorator_less_equals
+        greaterEq = self.out.arith_decorator_greater_equals
+        andConj = self.out.lang_logical_and
+        isNaNFnc = self.out.lang_op_isNaN
+
+        if node.tightestOutputs:
+            tghtLst = node.tightestOutputs.accept(self)
+        if node.accurateOutputs:
+            accLst = node.accurateOutputs.accept(self)
+
+        # Translation of "op A B = C" where "op" is an arbitrary
+        # operation and A, B, C are intervals
+        # Result will be:
+        #
+        # assert_eq (op(A, B), C)
+        # if decorated:
+        #  assert_eq (dec(op(A,B)), dec(C))
+        if node.accurateOutputs is None:
+            for sec in range(0, len(tghtLst)):
+                outp = tghtLst[sec].accept(self)
+                
+                # translation with isNaN function
+                if type(tghtLst[sec]) is NaNNode:
+                    for line in range(0, len(opVals[sec])):
+                        tst = self.replTok(assertTrue, 'ARG1', isNaNFnc)
+                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
+                        tstLst += [tst + delim]
+                    
+                else:    
+                    # translation with assertEquals
+                    for line in range(0, len(opVals[sec])):
+                        tst = self.replTok(assertEq, 'ARG2', outp)
+                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
+                        tstLst += [tst + delim]
+
+                        if hasattr(tghtLst[sec], 'decoration') and tghtLst[sec].decoration is not None:
+                            dec = tghtLst[sec].decoration.accept(self)
+                            outpDec = self.replTok(decPrt, 'ARG1', outp)
+                            inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
+                            tst = self.replTok(assertEq, 'ARG2', outpDec)
+                            tst = self.replTok(tst, 'ARG1', inpDec)
+                            tstLst += [tst + delim]
+
+        # Translation of "op A B <= D" where "op" is an arbitrary
+        # operation and A, B, D are intervals
+        # Result will be:
+        #
+        # assert_true op(A, B) is subset of D
+        # if decorated:
+        #  assert_eq (dec(op(A,B)), dec(D))
+        elif node.tightestOutputs is None:
+
+            for sec in range(0, len(accLst)):
+                # NaN literals not allowed as outputs
+                if type(accLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported as accurate outputs')
+                outp = accLst[sec].accept(self)
+
+                for line in range(0, len(opVals[sec])):
+                    tst = self.replTok(subset, 'ARG1', opVals[sec][line])
+                    tst = self.replTok(tst, 'ARG2', outp)
+                    tst = self.replTok(assertTrue, 'ARG1', tst)
+                    tstLst += [tst + delim]
+
+                    if hasattr(accLst[sec], 'decoration') and accLst[sec].decoration is not None:
+                        dec = accLst[sec].decoration.accept(self)
+                        outpDec = self.replTok(decPrt, 'ARG1', outp)
+                        inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
+                        tst = self.replTok(assertEq, 'ARG2', outpDec)
+                        tst = self.replTok(tst, 'ARG1', inpDec)
+                        tstLst += [tst + delim]
+
+        # Translation of "op A B = C <= D", where "op" is an arbitrary
+        # operation and A, B, C, D are intervals
+        # Result will be:
+        #
+        # assert_warn op(A, B) = C
+        # assert_true C is subset of op(A,B)
+        # assert_true op(A,B) is subset of D
+        # if decorated:
+        #  assert_true dec(C) <= dec(op(A,B)) and dec(D) >= dec(op(A,B))
+        else:
+            
             # equals warning check
-            for i in range(0, len(tightestOutputList)):
-                outp = tightestOutputList[i][0]
-                for j in range(0, len(xxs[i])):
-                    assertContent = self.replaceToken(
-                                        self.out.test_assert_equals_warning,
-                                        'ARG2', outp)
-                    assertContent = self.replaceToken(assertContent, 'ARG1',
-                                                      xxs[i][j])
-                    assertList += [assertContent + delim]
-
-            subsetOp = getattr(self.out,
-                                   self.findMatchingOp('arith_op_subset',
-                                                       'arith_op_subset'))
+            for sec in range(0, len(tghtLst)):
+                # NaN literals not allowed as outputs
+                if type(tghtLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported in combination with accurate outputs')
+                outp = tghtLst[sec].accept(self)
+                for line in range(0, len(opVals[sec])):
+                    tst = self.replTok(assertWarn, 'ARG2', outp)
+                    tst = self.replTok(tst, 'ARG1', opVals[sec][line])
+                    tstLst += [tst + delim]
 
             # first subset check
-            for i in range(0, len(tightestOutputList)):
-                outp = tightestOutputList[i][0]
-                for j in range(0, len(xxs[i])):
-                    subsetContent = self.replaceToken(subsetOp, 'ARG2',
-                                                      xxs[i][j])
-                    subsetContent = self.replaceToken(subsetContent, 'ARG1',
-                                                      outp)
-                    assertContent = self.replaceToken(self.out.test_assert_true,
-                                                      'ARG1', subsetContent)
-                    assertList += [assertContent + delim]
+            for sec in range(0, len(tghtLst)):
+                outp = tghtLst[sec].accept(self)
+                for line in range(0, len(opVals[sec])):
+                    tst = self.replTok(subset, 'ARG2', opVals[sec][line])
+                    tst = self.replTok(tst, 'ARG1', outp)
+                    tst = self.replTok(assertTrue, 'ARG1', tst)
+                    tstLst += [tst + delim]
 
             # second subset check
-            for i in range(0, len(accurateOutputList)):
-                outp = accurateOutputList[i][0]
-                for j in range(0, len(xxs[i])):
-                    subsetContent = self.replaceToken(subsetOp, 'ARG1',
-                                                      xxs[i][j])
-                    subsetContent = self.replaceToken(subsetContent, 'ARG2',
-                                                      outp)
-                    assertContent = self.replaceToken(self.out.test_assert_true,
-                                                      'ARG1', subsetContent)
-                    assertList += [assertContent + delim]
+            for sec in range(0, len(accLst)):
+                # NaN literals not allowed as outputs
+                if type(accLst[sec]) is NaNNode:
+                    raise IOError('NaN literals not supported as accurate outputs')
+                outp = accLst[sec].accept(self)
+                for line in range(0, len(opVals[sec])):
+                    tst = self.replTok(subset, 'ARG1', opVals[sec][line])
+                    tst = self.replTok(tst, 'ARG2', outp)
+                    tst = self.replTok(assertTrue, 'ARG1', tst)
+                    tstLst += [tst + delim]
 
             # check decorations
-            for i in range(0, len(tightestOutputList)):
-                for j in range(0, len(xxs[i])):
-                    tOutpDec = tightestOutputList[i][1]
-                    aOutpDec = accurateOutputList[i][1]
-                    
+            for sec in range(0, len(tghtLst)):
+                valid = (hasattr(tghtLst[sec], 'decoration') and
+                         hasattr(accLst[sec], 'decoration') and
+                         tghtLst[sec].decoration is not None and
+                         accLst[sec].decoration is not None)
+                if not valid:
+                        continue
+
+
+                tOutp = tghtLst[sec].accept(self)
+                aOutp = accLst[sec].accept(self)
+                tOutpDec = tghtLst[sec].decoration.accept(self)
+                aOutpDec = accLst[sec].decoration.accept(self)
+                for line in range(0, len(opVals[sec])):
                     if tOutpDec != aOutpDec:
                         raise IOError("either both or none of the outputs can be decorated")
 
                     if tOutpDec:
-                        decGetter = getattr(self.out,
-                               self.findMatchingOp('arith_op_decorationPart',
-                                                   'arith_op_decorationPart'))
-                        decLowerBound = self.replaceToken(decGetter,
-                                                          'ARG1', tightestOutputList[i][0])
-                        decUpperBound = self.replaceToken(decGetter,
-                                                          'ARG1', accurateOutputList[i][0])
-                        decInput = self.replaceToken(decGetter,
-                                                     'ARG1', xxs[i][j])
-                        lbCheck = self.replaceToken(self.out.arith_decorator_less_equals,
-                                                    'ARG1', decLowerBound)
-                        lbCheck = self.replaceToken(lbCheck, 'ARG2', decInput)
-                        ubCheck = self.replaceToken(self.out.arith_decorator_greater_equals,
-                                                    'ARG1', decUpperBound)
-                        ubCheck = self.replaceToken(ubCheck, 'ARG2', decInput)
-                        decCheck = self.replaceToken(self.out.lang_logical_and,
-                                                     'ARG1', lbCheck)
-                        decCheck = self.replaceToken(decCheck, 'ARG2', ubCheck)
-                        decAssert = self.replaceToken(self.out.test_assert_true,
-                                                      'ARG1', decCheck)
-                        assertList += [decAssert + delim]
+                        decLB = self.replTok(decPrt, 'ARG1', tOutp)
+                        decUB = self.replTok(decPrt, 'ARG1', aOutp)
+                        decInp = self.replTok(decPrt, 'ARG1', opVals[sec][line])
 
-        assertTexts = '\n'.join(assertList)
+                        tstLB = self.replTok(lessEq, 'ARG1', decLB)
+                        tstLB = self.replTok(tstLB, 'ARG2', decInp)
+                        tstUB = self.replTok(greaterEq, 'ARG1', decUB)
+                        tstUB = self.replTok(tstUB, 'ARG2', decInp)
+                        tstBoth = self.replTok(andConj, 'ARG1', tstLB)
+                        tstBoth = self.replTok(tstBoth, 'ARG2', tstUB)
+                        tstBoth = self.replTok(assertTrue, 'ARG1', tstBoth)
+                        tstLst += [tstBoth + delim]
 
-        text = self.replaceToken(self.out.test_test_seq.strip(), 'COMMENTS',
-                                 commentText)
-        # delete new line if no comment present
-        text = text.strip()
-        text = self.replaceToken(text, 'ASSERTS', assertTexts)
-        text += '\n'
 
-        return text
+        # Format text
+
+        tstTxts = '\n'.join(tstLst)
+        commentTxt = '\n'.join([c.accept(self) for c in node.comments])
+        txt = self.replTok(self.out.test_test_seq.strip(), 'COMMENTS',
+                                 commentTxt).strip()
+        txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
+
+        return txt
 
     def visitTestcaseNode(self, node):
         """
@@ -1050,9 +1079,9 @@ class ASTVisitor(object):
         """
 
         tmp = self.out.test_testcase_seq
-        tmp = self.replaceTokenList(tmp, 'COMMENTS', [n.accept(self) for
+        tmp = self.replTokList(tmp, 'COMMENTS', [n.accept(self) for
                                                       n in node.comments])
-        tmp = self.replaceToken(tmp, 'TC_NAME', node.name)
+        tmp = self.replTok(tmp, 'TC_NAME', node.name)
         if self.out.lang_indent_tests:
             rplList = [self.indent(n.accept(self).strip(),
                                    self.out.lang_spaces_indent) for n in
@@ -1062,7 +1091,7 @@ class ASTVisitor(object):
 
         rplList = list(filter(lambda x: not x.isspace(), rplList))
 
-        tmp = self.replaceTokenList(tmp, 'TESTS', rplList)
+        tmp = self.replTokList(tmp, 'TESTS', rplList)
         return tmp
 
     def visitDSLNode(self, node):
@@ -1078,7 +1107,7 @@ class ASTVisitor(object):
         """
         tmp = self.out.test_testfile_seq
 
-        tmp = self.replaceTokenList(tmp, 'COMMENTS', [n.accept(self) for
+        tmp = self.replTokList(tmp, 'COMMENTS', [n.accept(self) for
                                                       n in node.comments])
 
         # imports
@@ -1090,23 +1119,23 @@ class ASTVisitor(object):
             "Arithmetic library imports"
         preambleComment = self.out.lang_line_comment_token + "Preamble"
 
-        tmp = self.replaceToken(tmp, 'LANGUAGE_IMPORTS',
+        tmp = self.replTok(tmp, 'LANGUAGE_IMPORTS',
                                 (languageImportComment + '\n' +
                                     self.out.lang_imports).strip() + '\n')
 
-        tmp = self.replaceToken(tmp, 'TESTLIB_IMPORTS',
+        tmp = self.replTok(tmp, 'TESTLIB_IMPORTS',
                                 (testlibImportComment + '\n' +
                                     self.out.test_imports).strip() + '\n')
 
-        tmp = self.replaceToken(tmp, 'ARITHLIB_IMPORTS',
+        tmp = self.replTok(tmp, 'ARITHLIB_IMPORTS',
                                 (arithlibImportComment + '\n' +
                                     self.out.arith_imports).strip() + '\n')
-                                    
-        tmp = self.replaceToken(tmp, 'PREAMBLE',
+
+        tmp = self.replTok(tmp, 'PREAMBLE',
                                 (preambleComment + '\n' +
                                     self.out.arith_preamble).strip() + '\n')
 
-        tmp = self.replaceToken(tmp, 'NAME',
+        tmp = self.replTok(tmp, 'NAME',
                                 node.fileName.split('.')[0].title())
         if self.out.lang_indent_testcases:
             rplList = [self.indent(n.accept(self), self.out.lang_spaces_indent)
@@ -1118,11 +1147,11 @@ class ASTVisitor(object):
         #                        "Testcases"
         # rplList.insert(0, testcasesComment)
 
-        tmp = self.replaceTokenList(tmp, 'TESTCASES', rplList, delim="\n\n")
+        tmp = self.replTokList(tmp, 'TESTCASES', rplList, delim="\n\n")
 
         return (tmp, self.warnings)
 
-    def replaceToken(self, text, token, replacement):
+    def replTok(self, text, token, replacement):
         """
         Replace a token in a template string.
 
@@ -1142,9 +1171,9 @@ class ASTVisitor(object):
             tmp = tmp.safe_substitute({token: replacement.accept(self)})
         return tmp
 
-    def replaceTokenList(self, text, token, repl_list, delim='\n'):
+    def replTokList(self, text, token, repl_list, delim='\n'):
         """
-        Replace a token, similar to the replaceToken method but with a list
+        Replace a token, similar to the replTok method but with a list
         of replacements.
 
         Arguments:
@@ -1154,7 +1183,7 @@ class ASTVisitor(object):
         delim -- a delimiting string which concatenates the values of repl_list
         """
         if len(repl_list) == 0:
-            return self.replaceToken(text, token, '')
+            return self.replTok(text, token, '')
 
         tmp = text
         for i in range(0, len(repl_list) - 1):
@@ -1162,8 +1191,8 @@ class ASTVisitor(object):
                 sub = repl_list[i] + delim + '$' + token
             else:
                 sub = repl_list[i].accept(self) + delim + '$' + token
-            tmp = self.replaceToken(tmp, token, sub)
-        tmp = self.replaceToken(tmp, token, repl_list[-1])
+            tmp = self.replTok(tmp, token, sub)
+        tmp = self.replTok(tmp, token, repl_list[-1])
         return str(tmp)
 
     def containsToken(self, text, token):
@@ -1222,7 +1251,7 @@ class ASTVisitor(object):
         """
         return val
 
-    def findMatchingOp(self, opPrefix, opName):
+    def findOp(self, opPrefix, opName):
         """
         Return the closest match for a function.
 

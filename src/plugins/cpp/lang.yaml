@@ -32,10 +32,12 @@ extension: .cpp
 boolean_true: "true"
 boolean_false: "false"
 
-#type translation:
+# type translation:
 double_type: "double"
 float_type : "float"
 long_double_type: "double"
+not_a_number_double: "NAN"
+not_a_number_float: "((float) NAN)"
 
 # comments
 line_comment_token: //
@@ -49,7 +51,17 @@ logical_and: $ARG1 && $ARG2
 imports: |
     #include<cmath>
     #include<string>
-#indentation
+
+# indentation
 spaces_indent: 8
 indent_testcases: false
 indent_tests: true
+
+# infinity
+infinity_plus_double: std::numeric_limits<double>::infinity()
+infinity_plus_float: ((float) std::numeric_limits<double>::infinity())
+infinity_minus_double: (-std::numeric_limits<double>::infinity())
+infinity_minus_float: (-(float) std::numeric_limits<double>::infinity())
+
+# for a float, f != f ist true if and only if f is NaN
+op_isNaN: ($ARG1) != ($ARG1)
