@@ -31,6 +31,8 @@ imports: |
     %!        s = num2str (x);
     %!    elseif (isa (x, 'infsup'))
     %!        s = intervaltotext (x);
+    %!    elseif (isa (x, 'intval'))
+    %!        s = disp_ (x);
     %!    else
     %!        # x probably is a char.
     %!        s = x;
@@ -53,8 +55,9 @@ test_seq: |
     $ASSERTS    
 
 # assert (X, Y) does not work with custom types
-# assert (X == Y) may fail when comparing decorated intervals with bare intervals, see #42735
+# assert (X == Y) may fail when comparing decorated intervals with bare intervals, see bug #42735
 # assert (eq (X, Y)) fails if X and Y are strings of different length
+# assert (isequal (X, Y)) fails for interval matrices, see bug #44334
 assert_equals: |
     %! assert (all (eq (...
     %!    $ARG1, ...
@@ -64,3 +67,4 @@ assert_equals_warning: |
     %!     warning (["expected: ", to_string($ARG1), " actual value: ", to_string($ARG2)]);
     %! endif
 assert_true: "%! assert ($ARG1)"
+
