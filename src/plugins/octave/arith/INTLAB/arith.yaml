@@ -111,8 +111,7 @@ op_isCommonInterval*: isfinite ($ARG1)
 op_isMember*: in ($ARG1, $ARG2)
 
 # Decorated intervals are not supported
-# FIXME Suppress output of decorated tests
-op_decorationPart*: '"$ARG1"'
+#op_decorationPart*: '"$ARG1"'
 decorator_less_equals: |
     # $ARG1 $ARG2
 decorator_greater_equals: |

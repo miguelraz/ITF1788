@@ -901,8 +901,17 @@ class ASTVisitor(object):
         # Process outputs
         tstLst = []
         delim = self.out.lang_line_end_token
-        decPrt = getattr(self.out,self.findOp('arith_op_decorationPart',
-                                               'arith_op_decorationPart'))
+        opKey = self.findOp('arith_op_decorationPart',
+                            'arith_op_decorationPart')
+        if opKey:
+            decPrt = getattr(self.out, opKey)
+        else:
+            # Decorations not supported by the arithmetic, disable all
+            # testcases with decorated intervals.
+            for i in range(0, len(node.inputs.literals)):
+                if hasattr(node.inputs.literals[i], 'decoration') and node.inputs.literals[i].decoration is not None:
+                    return ""
+            decPrt = None
         subset = getattr(self.out, self.findOp('arith_op_subset',
                                                 'arith_op_subset'))
         assertEq = self.out.test_assert_equals
