@@ -4,7 +4,7 @@
 #   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
 #
 #
-#   Copyright 2014
+#   Copyright 2014-2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
 #   Maximilian Kiesner (maximilian.kiesner@stud-mail.uni-wuerzburg.de)
@@ -41,16 +41,17 @@ imports: |
 testfile_seq: |
     $COMMENTS
     $TESTLIB_IMPORTS
-    $ARITHLIB_IMPORTS  
+    $ARITHLIB_IMPORTS
     $PREAMBLE
     $TESTCASES
 testcase_seq: |
+    ## $TC_NAME
     $COMMENTS
-    %!test "$TC_NAME";
     $TESTS
 test_seq: |
     $COMMENTS
-    $ASSERTS    
+    %!test;
+    $ASSERTS
 
 # assert (X, Y) does not work with custom types
 # assert (X == Y) may fail when comparing decorated intervals with bare intervals, see bug #42735
@@ -65,4 +66,3 @@ assert_equals_warning: |
     %!     warning (["expected: ", to_string($ARG1), " actual value: ", to_string($ARG2)]);
     %! endif
 assert_true: "%! assert ($ARG1)"
-

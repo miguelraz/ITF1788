@@ -40,7 +40,7 @@ not_a_number_double: "nan"
 not_a_number_float: "nan ('float')"
 
 # comments
-line_comment_token: "%! ## "
+line_comment_token: "%!#"
 block_comment_start: "##"
 block_comment_intermediate: "## "
 block_comment_end: "##"
@@ -61,4 +61,3 @@ infinity_minus_double: -inf
 infinity_minus_float: -inf ('float')
 
 op_isNaN: isnan ($ARG1)
-
