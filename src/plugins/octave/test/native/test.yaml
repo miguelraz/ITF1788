@@ -50,7 +50,7 @@ testcase_seq: |
     $TESTS
 test_seq: |
     $COMMENTS
-    %!test;
+    %!test
     $ASSERTS
 
 # assert (X, Y) does not work with custom types
