@@ -387,6 +387,34 @@ class InfSupIntervalNode(Node):
         return 'interval<' + self.inf.getType() + '>'
 
 
+class ArrayLiteralNode(Node):
+    """
+    Initialize an ArrayLiteralNode.
+    
+    Arguments:
+    values -- A list of the array values. If None, an empty
+              ArrayLiteralNode is created.
+    """
+    def __init__(self, values=None):
+        self.vals = values
+    
+    """
+    Return the type of the array.
+    """    
+    def getType(self):
+        if not self.vals:
+            return 'array<double>'
+        return 'array<' + self.vals[0].getType() + '>'
+    
+    """
+    Return the type of the literals.
+    """
+    def getLiteralType(self):
+        if not self.vals:
+            return 'double'
+        return self.vals[0].getType()
+
+
 class AccurateOutputsNode(Node):
 
     """A Node which represents the accurate output in the AST."""
@@ -800,6 +828,20 @@ class ASTVisitor(object):
             tmp = getattr(self.out, 'arith_inf_sup_interval_' + arg_type)
             tmp = self.replTok(tmp, 'ARG1', inf)
             return self.replTok(tmp, 'ARG2', sup)
+            
+    def visitArrayLiteralNode(self, node):
+        if not node.vals:
+            return getattr(self.out, 'lang_array_empty')
+            
+        arg_type = node.vals[0].getType()
+        tmp = getattr(self.out, 'lang_array_' + arg_type)
+        
+        arr_sep = getattr(self.out, 'lang_array_arg_separator')
+        concat_vals = arr_sep.join([str(v.accept(self)) for v in node.vals])
+        tmp = self.replTok(tmp, 'ARGS', concat_vals)
+        
+        return tmp
+        
 
     def visitAccurateOutputsNode(self, node):
         """
@@ -881,14 +923,23 @@ class ASTVisitor(object):
                             '<' + inputTypes + '>')
         if not opKey:
             return ""
+            
+        # Special handling if array literals are present
+        varInfo, arrayDefSeq = self.handleArrayValues(node)
 
         opVal = getattr(self.out, opKey)
 
         # Replace the ARG placeholders
         inputList = node.inputs.accept(self)
         for i in range(0, len(inputList)):
-            opVal = self.replTok(opVal,
-                                      'ARG' + str(i + 1), inputList[i])
+            if node.inputs.literals[i] not in varInfo:
+                opVal = self.replTok(opVal, 'ARG' + str(i + 1),
+                                     inputList[i])
+            else:
+                opVal = self.replTok(opVal, 'ARG' + str(i + 1),
+                                     varInfo[node.inputs.literals[i]][0])
+                opVal = self.replTok(opVal, 'ARG' + str(i + 1) + '_LEN',
+                                     varInfo[node.inputs.literals[i]][1])
 
         # Build a list of lists for the value -- the first level
         # identifies the sections separated by '*** next output' and the
@@ -917,7 +968,7 @@ class ASTVisitor(object):
             tghtLst = node.tightestOutputs.accept(self)
         if node.accurateOutputs:
             accLst = node.accurateOutputs.accept(self)
-
+            
         # Translation of "op A B = C" where "op" is an arbitrary
         # operation and A, B, C are intervals
         # Result will be:
@@ -927,7 +978,20 @@ class ASTVisitor(object):
         #  assert_eq (dec(op(A,B)), dec(C))
         if node.accurateOutputs is None:
             for sec in range(0, len(tghtLst)):
-                outp = tghtLst[sec].accept(self)
+                # true if any input or output literal is an array
+                containsArr = bool(arrayDefSeq.strip())
+                if containsArr:
+                    # enclose the array definitions and the test in a
+                    # block to avoid name collisions
+                    tstLst += [getattr(self.out, 'lang_block_start')]
+                    tstLst += [arrayDefSeq]
+                    
+                if tghtLst[sec] in varInfo:
+                    # use the previously assigned variable name instead
+                    # of the literal value
+                    outp = varInfo[tghtLst[sec]][0]
+                else:
+                    outp = tghtLst[sec].accept(self)
                 
                 # translation with isNaN function
                 if type(tghtLst[sec]) is NaNNode:
@@ -950,6 +1014,9 @@ class ASTVisitor(object):
                             tst = self.replTok(assertEq, 'ARG2', outpDec)
                             tst = self.replTok(tst, 'ARG1', inpDec)
                             tstLst += [tst + delim]
+                if containsArr:
+                    # close block
+                    tstLst += [getattr(self.out, 'lang_block_end')]
 
         # Translation of "op A B <= D" where "op" is an arbitrary
         # operation and A, B, D are intervals
@@ -1065,6 +1132,78 @@ class ASTVisitor(object):
         txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
 
         return txt
+        
+    def handleArrayValues(self, node):
+        """
+        Check if there are any arrays involved in the current test,
+        and if so prepares the array definitions and a mapping of the
+        definitions to variable names.
+        
+        Returns a dictionary which maps a input or output literal to a
+        tuple t, where t[0] is the name of the variable the literal is
+        stored in and t[1] is the length of the array.
+        """
+        
+        # check if anything to do
+        containsArr = False
+        for i in node.inputs.literals:
+            if type(i) is ArrayLiteralNode:
+                containsArr = True
+                break
+        
+        if not containsArr and node.tightestOutputs:
+            for i in node.tightestOutputs.literals:
+                if type(i) is ArrayLiteralNode:
+                    containsArr = True
+                    break
+        
+        if node.accurateOutputs:
+            for i in node.accurateOutputs.literals:
+                if type(i) is ArrayLiteralNode:
+                    raise IOError("""Arrays not permitted for accurate
+                                     outputs""")
+ 
+        if not containsArr:
+            return dict(), ''
+            
+        # Now  at least one array is present                     
+        varInfo = dict()
+        defLst = []
+        inputNameGen = VarNameGenerator(prefix='input_')
+        outputNameGen = VarNameGenerator(prefix='output_')
+        for i in node.inputs.literals:                
+            if type(i) is ArrayLiteralNode:
+                litType = i.getLiteralType()
+                name = inputNameGen.next()
+                val = i.accept(self)
+                length = len(i.vals) if i.vals else 0
+                
+                tmp = getattr(self.out, 'lang_array_def')
+                tmp = self.replTok(tmp, 'TYPE', litType)
+                tmp = self.replTok(tmp, 'NAME', name)
+                tmp = self.replTok(tmp, 'VAL', val)
+                
+                defLst += [tmp]
+                varInfo[i] = (name, length)
+                
+        for i in node.tightestOutputs.literals:
+            if type(i) is ArrayLiteralNode:
+                litType = i.getLiteralType()
+                name = outputNameGen.next()
+                val = i.accept(self) 
+                length = len(i.vals) if i.vals else 0
+
+                tmp = getattr(self.out, 'lang_array_def')
+                tmp = self.replTok(tmp, 'TYPE', litType)
+                tmp = self.replTok(tmp, 'NAME', name)
+                tmp = self.replTok(tmp, 'VAL', val)
+                
+                defLst += [tmp]
+                varInfo[i] = (name, length)
+                
+        arrayDefSeq = '\n'.join(defLst)
+        
+        return varInfo, arrayDefSeq
 
     def visitTestcaseNode(self, node):
         """
@@ -1275,3 +1414,16 @@ class ASTVisitor(object):
         self.warnings.add('WARNING: no matching operation found for operation '+
                           opName + ', language ' + self.out.lang_name)
         return None
+        
+
+class VarNameGenerator(object):
+    def __init__(self, prefix='', varname='var', start=0):
+        self.pref = prefix
+        self.count = start
+        self.varname = varname
+            
+    def next(self):
+        self.count += 1
+        return self.pref + self.varname + str(self.count)
+        
+        

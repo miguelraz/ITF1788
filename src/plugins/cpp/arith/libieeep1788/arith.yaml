@@ -226,3 +226,5 @@ op_mulRevToPair*: |
 op_overlap*: overlap($ARG1, $ARG2)
 op_decorationPart*: decoration(${ARG1})
 op_setDec*: set_dec($ARG1, $ARG2)
+
+op_dot*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, $ARG2 + $ARG2_LEN, 1)

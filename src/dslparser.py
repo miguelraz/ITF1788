@@ -266,7 +266,7 @@ def t_newline(t):
 # error handling for an unknown token
 def t_error(t):
     """Skip invalid tokens and print an error message."""
-    print("Illegal character '%s' in line %d" % (t.value[0], t.lexer.lineno))
+    print("Lexer Error: Illegal character '%s' in line %d" % (t.value[0], t.lexer.lineno))
     t.lexer.skip(1)
 
 
@@ -278,7 +278,7 @@ lexer = lex.lex()
 #
 
 def p_error(t):
-    print("Illegal character '%s' in line %d" % (t.value[0], t.lexer.lineno))
+    print("Parser Error: Illegal character '%s' in line %d" % (t.value[0], t.lexer.lineno))
     raise IOError("Syntax error")
 
 def p_dsl_1(t):
@@ -407,7 +407,8 @@ def p_literal(t):
                | booleanLiteral
                | overlapLiteral
                | decorationLiteral
-               | nanNode'''
+               | nanNode
+               | arrayLiteral'''
     t[0] = t[1]
 
 
@@ -432,6 +433,14 @@ def p_bareInterval(t):
 def p_infSupInterval(t):
     '''infSupInterval : "[" numberLiteral "," numberLiteral "]"'''
     t[0] = InfSupIntervalNode(t[2], t[4])
+    
+def p_arrayLiteral2(t):
+    '''arrayLiteral : "{" numberLiterals "}"'''
+    t[0] = ArrayLiteralNode(t[2])
+
+def p_arrayLiteral1(t):
+    '''arrayLiteral : "{" "}"'''
+    t[0] = ArrayLiteralNode()
 
 def p_emptyInterval(t):
     '''emptyInterval : "[" EMPTY "]"'''
@@ -481,7 +490,14 @@ def p_numberLiteral(t):
     '''numberLiteral : floatingPointNumberLiteral
                      | infinityLiteral'''
     t[0] = t[1]
-
+    
+def p_numberLiterals1(t):
+    '''numberLiterals : numberLiteral'''
+    t[0] = [t[1]]
+    
+def p_numberLiterals2(t):
+    '''numberLiterals : numberLiterals "," numberLiteral'''
+    t[0] = t[1] + [t[3]]
 
 def p_infinityLiteral(t):
     '''infinityLiteral : INF'''
