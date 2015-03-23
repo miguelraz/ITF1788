@@ -104,7 +104,7 @@ op_convexHull*: hull($ARG1, $ARG2)
 
 # Constructors
 op_numsToInterval*:
-op_textToInterval*:
+op_textToInterval*: text_to_interval($ARG1)
 
 # Basic operations
 op_pos*: |
