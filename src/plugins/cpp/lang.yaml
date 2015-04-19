@@ -70,10 +70,5 @@ array_empty: "{}"
 array_arg_separator: ", "
 array_def : $TYPE $NAME[] = $VAL;
 
-# blocks, as in http://en.wikipedia.org/wiki/Block_%28programming%29,
-# start and end tokens
-block_start: "{"
-block_end: "}"
-
 # for a float, f != f ist true if and only if f is NaN
 op_isNaN: ($ARG1) != ($ARG1)

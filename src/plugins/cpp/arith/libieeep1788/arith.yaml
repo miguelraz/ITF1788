@@ -227,4 +227,22 @@ op_overlap*: overlap($ARG1, $ARG2)
 op_decorationPart*: decoration(${ARG1})
 op_setDec*: set_dec($ARG1, $ARG2)
 
-op_dot*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, $ARG2 + $ARG2_LEN, 1)
+op_dot_down*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_dot_up*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_dot_zero*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_dot_nearest*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_down*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_up*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_zero*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_nearest*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_abs_down*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_abs_up*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_abs_zero*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_abs_nearest*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_sqr_down*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_sqr_up*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_sqr_zero*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_sqr_nearest*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
