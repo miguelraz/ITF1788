@@ -25,9 +25,7 @@
 #   limitations under the License.
 
 imports: |
-    #include "test/util/boost_test_wrapper.hpp"
-    #include <limits>
-    #include "p1788/p1788.hpp"
+    #include <boost/test/unit_test.hpp>
 testfile_seq: |
     $COMMENTS
     $LANGUAGE_IMPORTS    

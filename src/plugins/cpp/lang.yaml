@@ -49,8 +49,6 @@ block_comment_end: " */"
 line_end_token: ";"
 logical_and: $ARG1 && $ARG2
 imports: |
-    #include<cmath>
-    #include<string>
 
 # indentation
 spaces_indent: 8
@@ -71,4 +69,4 @@ array_arg_separator: ", "
 array_def : $TYPE $NAME[] = $VAL;
 
 # for a float, f != f ist true if and only if f is NaN
-op_isNaN: ($ARG1) != ($ARG1)
+op_isNaN: std::isnan($ARG1)
