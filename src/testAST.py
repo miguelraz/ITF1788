@@ -1004,14 +1004,14 @@ class ASTVisitor(object):
                     for line in range(0, len(opVals[sec])):
                         tst = self.replTok(assertTrue, 'ARG1', isNaNFnc)
                         tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                        tstLst += [tst]
-
+                        tstLst += [tst + delim]
+                    
                 else:
                     # translation with assertEquals
                     for line in range(0, len(opVals[sec])):
                         tst = self.replTok(assertEq, 'ARG2', outp)
                         tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                        tstLst += [tst]
+                        tstLst += [tst + delim]
 
                         if hasattr(tghtLst[sec], 'decoration') and tghtLst[sec].decoration is not None:
                             dec = tghtLst[sec].decoration.accept(self)
@@ -1019,7 +1019,7 @@ class ASTVisitor(object):
                             inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
                             tst = self.replTok(assertEq, 'ARG2', outpDec)
                             tst = self.replTok(tst, 'ARG1', inpDec)
-                            tstLst += [tst]
+                            tstLst += [tst + delim]
 
         # Translation of "op A B <= D" where "op" is an arbitrary
         # operation and A, B, D are intervals
@@ -1040,7 +1040,7 @@ class ASTVisitor(object):
                     tst = self.replTok(subset, 'ARG1', opVals[sec][line])
                     tst = self.replTok(tst, 'ARG2', outp)
                     tst = self.replTok(assertTrue, 'ARG1', tst)
-                    tstLst += [tst]
+                    tstLst += [tst + delim]
 
                     if hasattr(accLst[sec], 'decoration') and accLst[sec].decoration is not None:
                         dec = accLst[sec].decoration.accept(self)
@@ -1048,7 +1048,7 @@ class ASTVisitor(object):
                         inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
                         tst = self.replTok(assertEq, 'ARG2', outpDec)
                         tst = self.replTok(tst, 'ARG1', inpDec)
-                        tstLst += [tst]
+                        tstLst += [tst + delim]
 
         # Translation of "op A B = C <= D", where "op" is an arbitrary
         # operation and A, B, C, D are intervals
@@ -1070,7 +1070,7 @@ class ASTVisitor(object):
                 for line in range(0, len(opVals[sec])):
                     tst = self.replTok(assertWarn, 'ARG2', outp)
                     tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                    tstLst += [tst]
+                    tstLst += [tst + delim]
 
             # first subset check
             for sec in range(0, len(tghtLst)):
@@ -1079,7 +1079,7 @@ class ASTVisitor(object):
                     tst = self.replTok(subset, 'ARG2', opVals[sec][line])
                     tst = self.replTok(tst, 'ARG1', outp)
                     tst = self.replTok(assertTrue, 'ARG1', tst)
-                    tstLst += [tst]
+                    tstLst += [tst + delim]
 
             # second subset check
             for sec in range(0, len(accLst)):
@@ -1091,7 +1091,7 @@ class ASTVisitor(object):
                     tst = self.replTok(subset, 'ARG1', opVals[sec][line])
                     tst = self.replTok(tst, 'ARG2', outp)
                     tst = self.replTok(assertTrue, 'ARG1', tst)
-                    tstLst += [tst]
+                    tstLst += [tst + delim]
 
             # check decorations
             for sec in range(0, len(tghtLst)):
@@ -1123,16 +1123,16 @@ class ASTVisitor(object):
                         tstBoth = self.replTok(andConj, 'ARG1', tstLB)
                         tstBoth = self.replTok(tstBoth, 'ARG2', tstUB)
                         tstBoth = self.replTok(assertTrue, 'ARG1', tstBoth)
-                        tstLst += [tstBoth]
+                        tstLst += [tstBoth + delim]
 
 
         # Format text
 
-        tstTxts = delim.join(tstLst)
-        commentTxt = delim.join([c.accept(self) for c in node.comments])
+        tstTxts = '\n'.join(tstLst)
+        commentTxt = '\n'.join([c.accept(self) for c in node.comments])
         txt = self.replTok(self.out.test_test_seq.strip(), 'COMMENTS',
                                  commentTxt).strip()
-        txt = self.replTok(txt, 'ASSERTS', tstTxts) + delim
+        txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
 
         return txt
 
