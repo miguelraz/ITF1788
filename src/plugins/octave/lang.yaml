@@ -49,6 +49,7 @@ block_comment_end: "##"
 line_end_token: ""
 logical_and: $ARG1 & $ARG2
 imports: |
+
 # indentation
 spaces_indent: 4
 indent_testcases: false
@@ -59,5 +60,12 @@ infinity_plus_double: inf
 infinity_plus_float: inf ('float')
 infinity_minus_double: -inf
 infinity_minus_float: -inf ('float')
+
+# array translation
+array_double: "[$ARGS]"
+array_float: "single ([$ARGS])"
+array_empty: "[]"
+array_arg_separator: ", "
+array_def : $NAME = $VAL;
 
 op_isNaN: isnan ($ARG1)
