@@ -38,6 +38,12 @@ imports: |
     %!        s = x;
     %!    endif
     %!endfunction
+    %!
+    %!function assert_warn (expected, actual)
+    %!    if (not (all (eq (expected, actual))))
+    %!        warning (["expected: ", to_string(expected), " actual value: ", to_string(actual)]);
+    %!    endif
+    %!endfunction
 testfile_seq: |
     $COMMENTS
     $TESTLIB_IMPORTS
@@ -57,12 +63,6 @@ test_seq: |
 # assert (X == Y) may fail when comparing decorated intervals with bare intervals, see bug #42735
 # assert (eq (X, Y)) fails if X and Y are strings of different length
 # assert (isequal (X, Y)) fails for interval matrices, see bug #44334
-assert_equals: |
-    %! assert (all (eq (...
-    %!    $ARG1, ...
-    %!    $ARG2)))
-assert_equals_warning: |
-    %! if (not (all (eq ($ARG1, $ARG2))))
-    %!     warning (["expected: ", to_string($ARG1), " actual value: ", to_string($ARG2)]);
-    %! endif
+assert_equals: "%! assert (all (eq ($ARG1, $ARG2)))"
+assert_equals_warning: "%! assert_warn ($ARG1, $ARG2)"
 assert_true: "%! assert ($ARG1)"
