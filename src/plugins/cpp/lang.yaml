@@ -49,8 +49,6 @@ block_comment_end: " */"
 line_end_token: ";"
 logical_and: $ARG1 && $ARG2
 imports: |
-    #include<cmath>
-    #include<string>
 
 # indentation
 spaces_indent: 8
@@ -63,5 +61,12 @@ infinity_plus_float: ((float) std::numeric_limits<double>::infinity())
 infinity_minus_double: (-std::numeric_limits<double>::infinity())
 infinity_minus_float: (-(float) std::numeric_limits<double>::infinity())
 
+# array translation; curly braces need to be escaped
+array_double: "{$ARGS}"
+array_float: "{$ARGS}"
+array_empty: "{}"
+array_arg_separator: ", "
+array_def : $TYPE $NAME[] = $VAL;
+
 # for a float, f != f ist true if and only if f is NaN
-op_isNaN: ($ARG1) != ($ARG1)
+op_isNaN: std::isnan($ARG1)

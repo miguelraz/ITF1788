@@ -25,13 +25,17 @@
 #   limitations under the License.
 
 # misc
-imports: |  
+imports: |
+    #include "p1788/p1788.hpp"
+    #include <limits> 
 preamble: |
     template<typename T>
     using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>>;
 
     template<typename T>
     using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+    
+    typedef p1788::decoration::decoration DEC;
     
 
 # intervals
@@ -65,11 +69,11 @@ decorated_inf_sup_interval_long_double: DI<long double>($ARG1, $ARG2, $DEC)
 
 
 # interval decorators
-decorator_com: p1788::decoration::decoration::com
-decorator_def: p1788::decoration::decoration::def
-decorator_dac: p1788::decoration::decoration::dac
-decorator_ill: p1788::decoration::decoration::ill
-decorator_trv: p1788::decoration::decoration::trv
+decorator_com: DEC::com
+decorator_def: DEC::def
+decorator_dac: DEC::dac
+decorator_ill: DEC::ill
+decorator_trv: DEC::trv
 
 # comparison of decorations
 decorator_less_equals: ($ARG1 <= $ARG2)
@@ -104,7 +108,7 @@ op_convexHull*: hull($ARG1, $ARG2)
 
 # Constructors
 op_numsToInterval*:
-op_textToInterval*:
+op_textToInterval*: text_to_interval($ARG1)
 op_setDec*: set_dec($ARG1, $ARG2)
 op_newDec*:
 
@@ -227,4 +231,24 @@ op_mulRevToPair*: |
 
 op_overlap*: overlap($ARG1, $ARG2)
 op_decorationPart*: decoration(${ARG1})
+
+op_dot_down*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_dot_up*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_dot_zero*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_dot_nearest*: dot($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_down*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_up*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_zero*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_nearest*: sum($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_abs_down*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_abs_up*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_abs_zero*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_abs_nearest*: sum_abs($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
+
+op_sum_sqr_down*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::downward)
+op_sum_sqr_up*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::upward)
+op_sum_sqr_zero*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
+op_sum_sqr_nearest*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
 

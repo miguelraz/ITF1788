@@ -49,6 +49,28 @@ def cb_string(val):
 #
 # Input: the string of a qualified identifier as defined in the ITL file
 # Output: the required representation for the target test file as a string
-#   
+#
 def cb_qualident(val):
+    return val
+
+#
+# Input: the name of a input variable as a string. In its unmodified
+#        form, it looks like "inp_x_y" where "x" indicates the test
+#        number and "y" the ordinal of the variable within that test.
+#        Thus "inp_4_3" is the third input variable
+#        in the fourth test (which contains array literals).
+# Output: the required representation of the variable name
+#
+def cb_inp_var_name(val):
+    return val
+
+#
+# Input: the name of a output variable as a string. In its unmodified
+#        form, it looks like "outp_x_y" where "x" indicates the test
+#        number and "y" the ordinal of the variable within that test.
+#        Thus "outp_4_3" is the third output variable
+#        in the fourth test (which contains array literals).
+# Output: the required representation of the variable name
+#
+def cb_outp_var_name(val):
     return val

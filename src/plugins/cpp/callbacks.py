@@ -30,7 +30,7 @@ def cb_int(val):
 
 def cb_fpNum(val):
     return val
-    
+
 def cb_qualident(val):
     tmp = val.replace('.', '_').upper()
     return tmp
