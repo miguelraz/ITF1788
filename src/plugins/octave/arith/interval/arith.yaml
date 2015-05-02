@@ -240,3 +240,11 @@ op_sum_sqr_up*: mpfr_vector_dot_d (inf, $ARG1, $ARG1)
 op_sum_sqr_zero*: mpfr_vector_dot_d (0, $ARG1, $ARG1)
 op_sum_sqr_nearest*: mpfr_vector_dot_d (0.5, $ARG1, $ARG1)
 
+# Additional operations
+op_cbrt*: cbrt ($ARG1)
+op_cot*: cot ($ARG1)
+op_coth*: coth ($ARG1)
+op_csc*: csc ($ARG1)
+op_csch*: csch ($ARG1)
+op_sec*: sec ($ARG1)
+op_sech*: sech ($ARG1)
