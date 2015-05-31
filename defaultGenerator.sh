@@ -10,4 +10,5 @@ else
     python3 "$ITF1788_HOME/src/main.py" "@*"
 fi
 
-cd $WORKING_DIR
+cd "$WORKING_DIR"
+
