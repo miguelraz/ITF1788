@@ -25,7 +25,11 @@
 #   limitations under the License.
 
 imports: |
-    #include <boost/test/unit_test.hpp>
+    // Compile with `g++ -lboost_unit_test_framework`
+    #define BOOST_TEST_DYN_LINK
+    #define BOOST_TEST_MODULE $NAME
+    #define BOOST_AUTO_TEST_MAIN
+    #include <boost/test/auto_unit_test.hpp>
 testfile_seq: |
     $COMMENTS
     $LANGUAGE_IMPORTS    
@@ -35,7 +39,7 @@ testfile_seq: |
     $TESTCASES
 testcase_seq: |
     $COMMENTS
-    BOOST_AUTO_TESTCASE($TC_NAME)
+    BOOST_AUTO_TEST_CASE($TC_NAME)
     {
     $TESTS
     }
