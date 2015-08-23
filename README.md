@@ -24,7 +24,6 @@ testcase example {
 
 ### [C++ libieep1788](https://github.com/nehmeier/libieeep1788)
 ```
-#include <boost/test/unit_test.hpp>
 #include "p1788/p1788.hpp"
 #include <limits>
 template<typename T>
@@ -33,6 +32,17 @@ using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788
 BOOST_AUTO_TESTCASE(EXAMPLE)
 {
 	BOOST_CHECK_EQUAL(are_disjoint(I<double>(3.0, 4.0), I<double>(1.0, 2.0)), true);
+}
+```
+
+### [C++ Gaol](https://sourceforge.net/projects/gaol/)
+```
+#include <gaol/gaol>
+using namespace gaol;
+
+BOOST_AUTO_TESTCASE(EXAMPLE)
+{
+	BOOST_CHECK_EQUAL(interval(3.0, 4.0).set_disjoint(interval(1.0, 2.0)), true);
 }
 ```
 
