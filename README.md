@@ -51,7 +51,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ## example
 
 %!test
-%! assert (all (eq (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)), true)));
+%! assert (isequal (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)), true));
 ```
 
 ### [INTLAB](http://www.ti3.tu-harburg.de/rump/intlab/)
@@ -59,7 +59,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ## example
 
 %!test
-%! assert (all (eq (emptyintersect (infsup (3.0, 4.0), infsup (1.0, 2.0)), true)));
+%! assert (isequal (emptyintersect (infsup (3.0, 4.0), infsup (1.0, 2.0)), true));
 ```
 
 
