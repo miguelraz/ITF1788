@@ -26,22 +26,9 @@
 #   limitations under the License.
 
 imports: |
-    %!function s = to_string (x)
-    %!    if (isnumeric (x))
-    %!        s = num2str (x);
-    %!    elseif (isa (x, 'infsup'))
-    %!        s = intervaltotext (x);
-    %!    elseif (isa (x, 'intval'))
-    %!        s = disp_ (x);
-    %!    else
-    %!        # x probably is a char.
-    %!        s = x;
-    %!    endif
-    %!endfunction
-    %!
     %!function assert_warn (expected, actual)
     %!    if (not (all (eq (expected, actual))))
-    %!        warning (["expected: ", to_string(expected), " actual value: ", to_string(actual)]);
+    %!        warning (["expected: ", disp(expected), " actual value: ", disp(actual)]);
     %!    endif
     %!endfunction
 testfile_seq: |
