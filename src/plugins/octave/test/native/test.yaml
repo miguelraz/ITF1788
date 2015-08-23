@@ -27,7 +27,7 @@
 
 imports: |
     %!function assert_warn (expected, actual)
-    %!    if (not (all (eq (expected, actual))))
+    %!    if (not (isequal (expected, actual)))
     %!        warning (["expected: ", disp(expected), " actual value: ", disp(actual)]);
     %!    endif
     %!endfunction
@@ -49,7 +49,8 @@ test_seq: |
 # assert (X, Y) does not work with custom types
 # assert (X == Y) may fail when comparing decorated intervals with bare intervals, see bug #42735
 # assert (eq (X, Y)) fails if X and Y are strings of different length
-# assert (isequal (X, Y)) fails for interval matrices, see bug #44334
-assert_equals: "%! assert (all (eq ($ARG1, $ARG2)))"
+# assert (all (eq (X, Y))) would throw a warning and does not abort when comparing decorated interval with bare intervals (implicit promotion of bare intervals)
+# assert (isequal (X, Y)) fails for interval matrices, see bug #44334, but that's not a problem because ITF1788 does not support interval matrices
+assert_equals: "%! assert (isequal ($ARG1, $ARG2))"
 assert_equals_warning: "%! assert_warn ($ARG1, $ARG2)"
 assert_true: "%! assert ($ARG1)"
