@@ -22,7 +22,8 @@ testcase example {
 }
 ```
 
-### [C++ libieep1788](https://github.com/nehmeier/libieeep1788)
+### C++: libieep1788
+https://github.com/nehmeier/libieeep1788
 ```
 #include "p1788/p1788.hpp"
 #include <limits>
@@ -35,7 +36,10 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
-### [C++ Gaol](https://sourceforge.net/projects/gaol/)
+### C++: Gaol
+https://sourceforge.net/projects/gaol/
+
+*Note: Gaol is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
 ```
 #include <gaol/gaol>
 using namespace gaol;
@@ -46,7 +50,8 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
-### [GNU Octave interval package](http://octave.sourceforge.net/interval/)
+### GNU Octave: interval package
+http://octave.sourceforge.net/interval/
 ```
 ## example
 
@@ -54,7 +59,10 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 %! assert (isequal (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)), true));
 ```
 
-### [INTLAB](http://www.ti3.tu-harburg.de/rump/intlab/)
+### GNU Octave: INTLAB toolbox
+http://www.ti3.tu-harburg.de/rump/intlab/
+
+*Note: INTLAB is not conforming to IEEE Std 1788-2015. It does not support decorated or empty intervals. Several standard functions are not supported.*
 ```
 ## example
 
