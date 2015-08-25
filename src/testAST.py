@@ -1007,9 +1007,14 @@ class ASTVisitor(object):
                         tstLst += [tst + delim]
                     
                 else:
-                    # translation with assertEquals
                     for line in range(0, len(opVals[sec])):
-                        tst = self.replTok(assertEq, 'ARG2', outp)
+                        if type(tghtLst[sec]) is BooleanLiteralNode and tghtLst[sec].val == 'true':
+                            # translation with assertTrue (simpler test code for boolean functions)
+                            tst = assertTrue
+                        else:
+                            # translation with assertEquals
+                            tst = self.replTok(assertEq, 'ARG2', outp)
+                        
                         tst = self.replTok(tst, 'ARG1', opVals[sec][line])
                         tstLst += [tst + delim]
 

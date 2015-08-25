@@ -18,21 +18,19 @@ This framework can compile unit tests for a wide range of interval arithmetic li
 To give an example, the following simple unit test is compiled for several interval arithmetic libraries.
 ```
 testcase example {
-	disjoint [3.0,4.0] [1.0,2.0] = true;
+	disjoint [3.0, 4.0] [1.0, 2.0] = true;
 }
 ```
 
 ### C++: libieep1788
 https://github.com/nehmeier/libieeep1788
 ```
-#include "p1788/p1788.hpp"
-#include <limits>
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>>;
 
 BOOST_AUTO_TESTCASE(EXAMPLE)
 {
-	BOOST_CHECK_EQUAL(are_disjoint(I<double>(3.0, 4.0), I<double>(1.0, 2.0)), true);
+	BOOST_CHECK(are_disjoint(I<double>(3.0, 4.0), I<double>(1.0, 2.0)));
 }
 ```
 
@@ -41,12 +39,11 @@ https://sourceforge.net/projects/gaol/
 
 *Note: Gaol is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
 ```
-#include <gaol/gaol>
 using namespace gaol;
 
 BOOST_AUTO_TESTCASE(EXAMPLE)
 {
-	BOOST_CHECK_EQUAL(interval(3.0, 4.0).set_disjoint(interval(1.0, 2.0)), true);
+	BOOST_CHECK(interval(3.0, 4.0).set_disjoint(interval(1.0, 2.0)));
 }
 ```
 
@@ -56,7 +53,7 @@ http://octave.sourceforge.net/interval/
 ## example
 
 %!test
-%! assert (isequal (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)), true));
+%! assert (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)));
 ```
 
 ### GNU Octave: INTLAB toolbox
@@ -67,7 +64,7 @@ http://www.ti3.tu-harburg.de/rump/intlab/
 ## example
 
 %!test
-%! assert (isequal (emptyintersect (infsup (3.0, 4.0), infsup (1.0, 2.0)), true));
+%! assert (emptyintersect (infsup (3.0, 4.0), infsup (1.0, 2.0)));
 ```
 
 
