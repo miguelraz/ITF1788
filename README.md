@@ -34,9 +34,17 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
-### C++: Gaol
-https://sourceforge.net/projects/gaol/
+### GNU Octave: interval package
+http://octave.sourceforge.net/interval/
+```
+## example
 
+%!test
+%! assert (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)));
+```
+
+### C++: Gaol
+https://sourceforge.net/projects/gaol/  
 *Note: Gaol is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
 ```
 using namespace gaol;
@@ -47,18 +55,20 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
-### GNU Octave: interval package
-http://octave.sourceforge.net/interval/
+### C++: C-XSC
+http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/  
+*Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception. Several standard functions are not supported.*
 ```
-## example
+using namespace cxsc;
 
-%!test
-%! assert (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)));
+BOOST_AUTO_TESTCASE(EXAMPLE)
+{
+	BOOST_CHECK(Disjoint(interval(3.0, 4.0), interval(1.0, 2.0)));
+}
 ```
 
 ### GNU Octave: INTLAB toolbox
-http://www.ti3.tu-harburg.de/rump/intlab/
-
+http://www.ti3.tu-harburg.de/rump/intlab/  
 *Note: INTLAB is not conforming to IEEE Std 1788-2015. It does not support decorated or empty intervals. Several standard functions are not supported.*
 ```
 ## example
