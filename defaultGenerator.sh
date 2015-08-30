@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 
-WORKING_DIR=$(pwd)
-ITF1788_HOME="$( cd "$( dirname "$0" )" && pwd )"
-cd "${ITF1788_HOME}/src"
+python3 setup.py build
+
+export PYTHONPATH=build/lib
 
 if [ ! "$@" ]; then
-    python3 "$ITF1788_HOME/src/main.py" -s "${ITF1788_HOME}/itl/" -o "${ITF1788_HOME}/output/"
+    python3 -m itf1788 -s itl -o output
 else
-    python3 "$ITF1788_HOME/src/main.py" "@*"
+    python3 -m itf1788 "@*"
 fi
-
-cd "$WORKING_DIR"
-

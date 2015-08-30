@@ -598,7 +598,7 @@ class ASTVisitor(object):
 
         # import callback methods if callbacks.py exists
         if cbPath is not None:
-            self.cbs = importlib.import_module(cbPath)
+            self.cbs = importlib.import_module(cbPath, __name__)
 
     def visitLineCommentNode(self, node):
         """

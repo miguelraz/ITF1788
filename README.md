@@ -5,12 +5,6 @@
 * Extend with plugins for additional interval arithmetic libraries
 
 
-## Dependencies
-
-* [PLY (Pyhton Lex-Yacc)](http://www.dabeaz.com/ply/ply.html) ≥ 3.4
-* [PyYAML](http://pyyaml.org/) ≥ 3.11
-
-
 ## Overview
 
 This framework can compile unit tests for a wide range of interval arithmetic libraries. Test cases can be written in a simple domain-specific language using polish prefix notation and interval literals. This way unit tests must not be written separately over and over again, but can be shared between libraries (where semantics and data types would allow it).
@@ -99,4 +93,4 @@ Plugins are independent of each other and are subdivided into (1) programming la
 
 ## Usage
 
-The `defaultGenerator.sh` will compile all itl examples for all supported output formats. Custom itl files can be compiled for particular output formats via command line parameters (to be described, use `python3 main.py --help`).
+Install the package with `python3 setup.py install` (probably with root privileges). Then you can use `python3 -m itf1788 --help` to show the list of available options and usage examples.

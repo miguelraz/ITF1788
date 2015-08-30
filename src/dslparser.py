@@ -29,7 +29,7 @@
 import ply.lex as lex
 from ply.lex import TOKEN
 import ply.yacc as yacc
-from testAST import *
+from .testAST import *
 
 #
 # Lexer

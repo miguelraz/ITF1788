@@ -50,19 +50,20 @@ def getCbPath(lang):
     """
     Return the path to the callbacks.py module in python notation.
 
-    For the language 'cpp' the function return 'plugins.cpp.callbacks.py'.
+    For the language 'cpp' the function return '..plugins.cpp.callbacks.py'.
     Return None if no such module exists.
 
     Arguments:
     lang -- the name of the language
     """
-    path = '/'.join([PLUGIN_PATH, lang, 'callbacks.py'])
+    path = '/'.join([os.path.dirname(__file__), PLUGIN_PATH, lang, 'callbacks.py'])
     if not exists(path):
         # no error, callbacks are simply not used
         return None
-    modulePath = path.replace('/', '.')
-    modulePathStrippedExt = '.'.join(modulePath.split('.')[:-1])
-    return modulePathStrippedExt
+    # The callback will be imported by the testAST module,
+    # so the path must be prefixed with “..”.
+    modulePath = '.'.join([".", PLUGIN_PATH, lang, 'callbacks'])
+    return modulePath
 
 
 def getLanguageSpecification(lang):
@@ -77,7 +78,7 @@ def getLanguageSpecification(lang):
     Arguments:
     lang -- the name of the language
     """
-    dirPath = '/'.join([PLUGIN_PATH, lang])
+    dirPath = '/'.join([os.path.dirname(__file__), PLUGIN_PATH, lang])
     if not exists(dirPath):
         print('ERROR:', dirPath, 'dir not found.')
         raise IOError()
@@ -101,7 +102,7 @@ def getTestLibSpecification(lang, testLib):
     lang -- the name of the language
     testLib -- the name of the test library
     """
-    dirPath = '/'.join([PLUGIN_PATH, lang, 'test', testLib])
+    dirPath = '/'.join([os.path.dirname(__file__), PLUGIN_PATH, lang, 'test', testLib])
     if not exists(dirPath):
         print('ERROR:', dirPath, 'dir not found.')
         raise IOError()
@@ -126,7 +127,7 @@ def getArithLibSpecification(lang, arithLib):
     lang -- the name of the language
     arithLib -- the name of the interval library
     """
-    dirPath = '/'.join([PLUGIN_PATH, lang, 'arith', arithLib])
+    dirPath = '/'.join([os.path.dirname(__file__), PLUGIN_PATH, lang, 'arith', arithLib])
     if not exists(dirPath):
         print('ERROR:', dirPath, 'dir not found.')
         raise IOError()
@@ -149,16 +150,16 @@ def getSpecList():
     specs = []
 
     # assemble all languages
-    langs = getSubLibs(PLUGIN_PATH)
+    langs = getSubLibs(os.path.dirname(__file__) + "/" + PLUGIN_PATH)
 
     for lang in langs:
-        arithPath = PLUGIN_PATH + "/" + lang + "/arith/"
+        arithPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/arith/"
         if not exists(arithPath):
             print('ERROR: Can not get speclist: Path', arithPath, 'does not exist')
             raise IOError()
         ariths = getSubLibs(arithPath)
 
-        testPath = PLUGIN_PATH + "/" + lang + "/test/"
+        testPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/test/"
         if not exists(testPath):
             print('ERROR: Can not get speclist: Path', testPath, 'does not exist')
             raise IOError()
@@ -184,7 +185,7 @@ def getSpecListByLanguageAndTestLibrary(lang, testLib):
     """
     specs = []
 
-    arithPath = PLUGIN_PATH + "/" + lang + "/arith/"
+    arithPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/arith/"
     if not exists(arithPath):
         raise IOError('Can not get speclist: Path', arithPath, 'does not exist')
     
@@ -210,7 +211,7 @@ def getSpecListByLanguageAndArithmeticLibrary(lang, arithLib):
     """
     specs = []
 
-    testPath = PLUGIN_PATH + "/" + lang + "/test/"
+    testPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/test/"
     if not exists(testPath):
         raise IOError('Can not get speclist: Path', testPath, 'does not exist')
         
@@ -235,13 +236,13 @@ def getSpecListByLanguage(lang):
     """
     specs = []
 
-    arithPath = PLUGIN_PATH + "/" + lang + "/arith/"
+    arithPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/arith/"
     if not exists(arithPath):
         raise IOError('Can not get speclist: Path', arithPath, 'does not exist')
         
     ariths = getSubLibs(arithPath)
 
-    testPath = PLUGIN_PATH + "/" + lang + "/test/"
+    testPath = os.path.dirname(__file__) + "/" + PLUGIN_PATH + "/" + lang + "/test/"
     if not exists(testPath):
         raise IOError('Can not get speclist: Path', testPath, 'does not exist')
     tests = getSubLibs(testPath)

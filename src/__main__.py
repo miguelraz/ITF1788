@@ -24,10 +24,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import dslparser
-import testAST
-import discovery
-import lang
+from . import dslparser
+from . import testAST
+from . import discovery
+from . import lang
 import os
 import optparse
 import re
@@ -50,7 +50,7 @@ class ConsoleParser(optparse.OptionParser):
             super(ConsoleParser, self).__init__()
             self.add_option("-s", "--sourceDirectory", dest="sourceDir",
                      # TODO: check for operating systems other than linux
-                     default='../itl',
+                     default='itl',
                      help="Directory with DSL tests")
 
             self.add_option("-f", "--fileRegex", dest="fileRegex",
@@ -61,7 +61,7 @@ class ConsoleParser(optparse.OptionParser):
                             help="""Specify the plugin configurations.""")
 
             self.add_option("-o", "--outputDirectory", dest="outDir",
-                            default="../output",
+                            default="output",
                             help="Output directory for generated files")
                             
             self.add_option("-v", "--verbose", action="store_true",
@@ -131,7 +131,7 @@ class ConsoleParser(optparse.OptionParser):
                 if not valid:
                     raise IOError('Invalid specification list:' +\
                                     options.configurations +\
-                                    '\nRun "python3 main.py --help" to see the\
+                                    '\nRun "python3 -m itf1788 --help" to see the\
                                     correct syntax.')
 
                 specList = []
@@ -196,42 +196,42 @@ class ConsoleParser(optparse.OptionParser):
             return textwrap.dedent("""
                     Examples:
                     -- print help
-                    python3 main.py -h
+                    python3 -m itf1788 -h
                     
                     -- run ITF1788 with default source and output folder
-                    python3 main.py
+                    python3 -m itf1788
                     
                     -- use verbose output
-                    python3 main.py -v
+                    python3 -m itf1788 -v
 
-                    -- generate tests for all source files in "../itl" and
+                    -- generate tests for all source files in "itl" and
                        all configurations
-                    python3 main.py -s "../itl"
+                    python3 -m itf1788 -s "itl"
 
                     -- like above, but use only test files whose name starts
                        with 'test'
-                    python3 main.py -s "../itl" -f "test.*"
+                    python3 -m itf1788 -s "itl" -f "test.*"
 
-                    -- use output directory "../outputs"
-                    python3 main.py -s "../itl" -o "../outputs"
+                    -- use output directory "output"
+                    python3 -m itf1788 -s "itl" -o "output"
 
                     In the following examples, a wildcard denotes that every
                     available option for that position shall be used.
 
                     -- generate tests for C++ only
-                    python3 main.py -s "../itl" -c "(cpp, *, *)"
+                    python3 -m itf1788 -s "itl" -c "(cpp, *, *)"
 
                     -- generate tests for C++ and BOOST Test Library only
-                    python3 main.py -s "../itl" -c "(cpp, BOOST, *)"
+                    python3 -m itf1788 -s "itl" -c "(cpp, BOOST, *)"
 
                     --generate tests for C++ and libieeep1788 only
-                    python3 main.py -s "../itl" -c "(cpp, *, libieeep1788)"
+                    python3 -m itf1788 -s "itl" -c "(cpp, *, libieeep1788)"
 
                     --generate tests for C++, BOOST Test library and libieee1788
-                    python3 main.py -s "../itl" -c "(cpp, BOOST, libieee1788)"
+                    python3 -m itf1788 -s "itl" -c "(cpp, BOOST, libieee1788)"
 
                     --generate tests for C++ and Octave only
-                    python3 main.py -s "../itl" -c "(cpp, *, *); (octave, *, *)"
+                    python3 -m itf1788 -s "itl" -c "(cpp, *, *); (octave, *, *)"
                     """)
 
 def main():            
