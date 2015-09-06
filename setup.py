@@ -13,24 +13,28 @@ arithmetic libraries be added via plugins.
 setup (
     name                = "ITF1788",
     version             = "0.0.1",
-    author              = "Oliver Heimlich",
-    author_email        = "oheim@posteo.de",
+    author              = "Maximilian Kiesner, Marco Nehmeier, Oliver Heimlich",
+    author_email        = "nehmeier@informatik.uni-wuerzburg.de",
     description         = "Interval Test Framework for IEEE Std 1788-2015",
-    license             = "Apache 2.0",
     keywords            = "interval arithmetic, source code generation, unit test, test-driven development, domain-specific language, IEEE Std 1788-2015",
-    url                 = "https://github.com/oheim/ITF1788",
+    url                 = "https://github.com/nehmeier/ITF1788",
     packages            = ['itf1788'],
     package_data        = {'itf1788':
                             [
-                                'plugins/*/*.py',
-                                'plugins/*/*.yaml',
-                                'plugins/*/arith/*/*.yaml',
-                                'plugins/*/test/*/*.yaml',                                
+                                # language callbacks
+                                'plugins/*/callbacks.py',
+                                # language specifications
+                                'plugins/*/lang.yaml',
+                                # library specifications (per language)
+                                'plugins/*/arith/*/arith.yaml',
+                                # test framework specifications (per language)
+                                'plugins/*/test/*/test.yaml',
                             ]},
+    # The package is not zip-safe because plugins are located using the file system
     zip_safe            = False,
     long_description    = description_long,
     classifiers         = [
-                            "Development Status :: 2 - Pre-Alpha",
+                            "Development Status :: 4 - Beta",
                             "Intended Audience :: Developers",
                             "Intended Audience :: Science/Research",
                             "License :: OSI Approved :: Apache Software License",
