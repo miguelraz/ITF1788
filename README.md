@@ -51,7 +51,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 
 ### C++: C-XSC
 http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/  
-*Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception. Several standard functions are not supported.*
+*Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception, which renders such tests useless. Several standard functions are not supported.*
 ```
 using namespace cxsc;
 
@@ -93,4 +93,6 @@ Plugins are independent of each other and are subdivided into (1) programming la
 
 ## Usage
 
-Install the package with `python3 setup.py install` (probably with root privileges). Then you can use `python3 -m itf1788 --help` to show the list of available options and usage examples.
+For global installation: Use `python3 setup.py install` (probably requires root privileges). Alternatively, add the project workspace to the environment variable `PYTHONPATH`.
+
+Then you can use `python3 -m itf1788 --help` to show the list of available options and usage examples.
