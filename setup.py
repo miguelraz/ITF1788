@@ -20,7 +20,6 @@ setup (
     keywords            = "interval arithmetic, source code generation, unit test, test-driven development, domain-specific language, IEEE Std 1788-2015",
     url                 = "https://github.com/oheim/ITF1788",
     packages            = ['itf1788'],
-    package_dir         = {'itf1788': 'src'},
     package_data        = {'itf1788':
                             [
                                 'plugins/*/*.py',
