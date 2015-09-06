@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+ITF1788_HOME=`dirname "$0"`
+
 if [ ! "$@" ]; then
-    python3 -m itf1788 -s itl -o output
+    PYTHONPATH="$ITF1788_HOME" python3 -m itf1788 -s "$ITF1788_HOME/itl" -o "$ITF1788_HOME/output"
 else
-    python3 -m itf1788 "@*"
+    PYTHONPATH="$ITF1788_HOME" python3 -m itf1788 "@*"
 fi
