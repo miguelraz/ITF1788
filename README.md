@@ -49,6 +49,19 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
+### Julia: ValidatedNumerics
+https://github.com/dpsanders/ValidatedNumerics.jl/  
+*Note: ValidatedNumerics.jl is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals. Several standard functions are not supported (yet).*
+```
+using ValidatedNumerics
+set_interval_precision(Float64)
+set_interval_rounding(:narrow)
+
+facts("example") do
+    @fact Interval(3.0, 4.0) ∩ Interval(1.0, 2.0) == ∅ --> true
+end
+```
+
 ### C++: C-XSC
 http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/  
 *Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception, which renders such tests useless. Several standard functions are not supported.*

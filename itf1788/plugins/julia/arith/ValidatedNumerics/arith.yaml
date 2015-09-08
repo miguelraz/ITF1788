@@ -1,0 +1,111 @@
+#
+#                              ITF1788
+#
+#   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
+#
+#
+#   Copyright 2015 Oliver Heimlich (oheim@posteo.de)
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# misc
+imports: |
+    using ValidatedNumerics
+preamble: |
+    set_interval_precision(Float64)
+    set_interval_rounding(:narrow)
+    set_bigfloat_precision(53)
+
+# intervals
+empty_interval_double: ∅
+entire_interval_double: Interval(-Inf, Inf)
+inf_sup_interval_double: Interval($ARG1, $ARG2)
+
+# Set operations
+op_intersection*: intersect($ARG1, $ARG2)
+op_convexHull*: hull($ARG1, $ARG2)
+
+# Constructors
+op_numsToInterval*: "@interval($ARG1, $ARG2)"
+op_textToInterval*: "@interval($ARG1)"
+
+# Basic operations
+op_pos*: +$ARG1
+op_neg*: -($ARG1)
+op_add*: $ARG1 + $ARG2
+op_sub*: $ARG1 - $ARG2
+op_mul*: $ARG1 * $ARG2
+op_div*: $ARG1 / $ARG2
+op_inv*: inv($ARG1)
+op_sqrt*: sqrt($ARG1)
+
+# Power functions
+op_pown*: $ARG1 ^ $ARG2
+op_pow*: $ARG1 ^ $ARG2
+op_exp*: exp($ARG1)
+op_log*: log($ARG1)
+
+# Trigonometric/hyperbolic functions
+op_sin*: sin($ARG1)
+op_cos*: cos($ARG1)
+op_tan*: tan($ARG1)
+op_asin*: asin($ARG1)
+op_acos*: acos($ARG1)
+op_atan*: atan($ARG1)
+#op_sinh*: sinh($ARG1)
+#op_cosh*: cosh($ARG1)
+#op_tanh*: tanh($ARG1)
+#op_asinh*: asinh($ARG1)
+#op_acosh*: acosh($ARG1)
+#op_atanh*: atanh($ARG1)
+
+# Absmax functions
+op_abs*: abs($ARG1)
+
+# Numeric functions of intervals
+op_inf*: $ARG1.lo
+op_sup*: $ARG1.hi
+op_mid*: mid($ARG1)
+op_wid*: diam($ARG1)
+op_mag*: mag($ARG1)
+op_mig*: mig($ARG1)
+
+# Boolean functions of intervals
+op_equal*: $ARG1 == $ARG2
+op_subset*: $ARG1 ⊆ $ARG2
+op_interior*: $ARG1 ⊊ $ARG2
+op_disjoint*: $ARG1 ∩ $ARG2 == ∅
+op_isEmpty*: isempty($ARG1) 
+op_strictPrecedes*: $ARG1 < $ARG2
+op_isMember*: in($ARG1, $ARG2)
+op_isSingleton*: isthin($ARG1)
+
+# Integer functions
+op_ceil*: ceil($ARG1)
+op_floor*: floor($ARG1)
+
+# Decorated intervals are not supported
+#op_decorationPart*: '"$ARG1"'
+decorator_less_equals: |
+    # $ARG1 $ARG2
+decorator_greater_equals: |
+    # $ARG1 $ARG2
+decorated_empty_interval_double: '"[Empty]_$DEC"'
+decorated_entire_interval_double: '"[Entire]_$DEC"'
+decorated_inf_sup_interval_double: '"[$ARG1, $ARG2]_$DEC"'
+decorator_com: com
+decorator_def: def
+decorator_dac: dac
+decorator_ill: ill
+decorator_trv: trv
+
