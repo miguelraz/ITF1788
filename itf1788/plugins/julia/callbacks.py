@@ -4,13 +4,7 @@
 #   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
 #
 #
-#   Copyright 2014
-#
-#   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Maximilian Kiesner (maximilian.kiesner@stud-mail.uni-wuerzburg.de)
-#
-#   Department of Computer Science
-#   University of Wuerzburg, Germany
+#   Copyright 2015 Oliver Heimlich (oheim@posteo.de)
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -25,10 +19,6 @@
 #   limitations under the License.
    
 def cb_fpNum(val):
-    import re
-    if re.match("[+-]?(0x|0X)([0-9a-fA-F])+(UL?|U(LL)|(LL)U?|LU?)?", val):
-        # Hexadecimal floating-point form is not supported by Julia
-        # 18 decimal digits are enough to define the binary64 number
-        fp_number = float.fromhex(val);
-        return "%.18e" % fp_number
-    return val
+    # Hexadecimal floating-point form is supported by Julia, but
+    # must start with a lowercase “0x”.
+    return val.lower()
