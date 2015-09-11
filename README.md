@@ -42,6 +42,7 @@ https://github.com/dpsanders/ValidatedNumerics.jl/
 *Note: ValidatedNumerics.jl is not conforming to IEEE Std 1788-2015 yet, but development is on its way.*
 ```
 using ValidatedNumerics
+using FactCheck
 
 facts("example") do
     @fact isdisjoint(Interval(3.0, 4.0), Interval(1.0, 2.0)) --> true
