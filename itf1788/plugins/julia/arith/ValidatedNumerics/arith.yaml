@@ -28,12 +28,16 @@ preamble: |
 
 # intervals
 empty_interval_double: ∅
-entire_interval_double: Interval(-Inf, Inf)
+entire_interval_double: entireinterval(Float64)
 inf_sup_interval_double: Interval($ARG1, $ARG2)
 
 # Set operations
-op_intersection*: intersect($ARG1, $ARG2)
-op_convexHull*: hull($ARG1, $ARG2)
+op_intersection*: |
+    $ARG1 ∩ $ARG2
+    intersect($ARG1, $ARG2)
+op_convexHull*: |
+    $ARG1 ∪ $ARG2
+    hull($ARG1, $ARG2)
 
 # Constructors
 op_numsToInterval*: "@interval($ARG1, $ARG2)"
@@ -73,8 +77,8 @@ op_atan*: atan($ARG1)
 op_abs*: abs($ARG1)
 
 # Numeric functions of intervals
-op_inf*: $ARG1.lo
-op_sup*: $ARG1.hi
+op_inf*: infimum($ARG1)
+op_sup*: supremum($ARG1)
 op_mid*: mid($ARG1)
 op_wid*: diam($ARG1)
 op_mag*: mag($ARG1)
@@ -83,11 +87,15 @@ op_mig*: mig($ARG1)
 # Boolean functions of intervals
 op_equal*: $ARG1 == $ARG2
 op_subset*: $ARG1 ⊆ $ARG2
-op_interior*: $ARG1 ⊊ $ARG2
-op_disjoint*: $ARG1 ∩ $ARG2 == ∅
+op_interior*: |
+    $ARG1 ⪽ $ARG2
+    interior($ARG1, $ARG2)
+op_disjoint*: isdisjoint($ARG1, $ARG2)
 op_isEmpty*: isempty($ARG1) 
 op_strictPrecedes*: $ARG1 < $ARG2
-op_isMember*: in($ARG1, $ARG2)
+op_isMember*: |
+    $ARG1 ∈ $ARG2
+    in($ARG1, $ARG2)
 op_isSingleton*: isthin($ARG1)
 
 # Integer functions

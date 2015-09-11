@@ -37,6 +37,17 @@ http://octave.sourceforge.net/interval/
 %! assert (disjoint (infsup (3.0, 4.0), infsup (1.0, 2.0)));
 ```
 
+### Julia: ValidatedNumerics
+https://github.com/dpsanders/ValidatedNumerics.jl/  
+*Note: ValidatedNumerics.jl is not conforming to IEEE Std 1788-2015 yet, but development is on its way.*
+```
+using ValidatedNumerics
+
+facts("example") do
+    @fact isdisjoint(Interval(3.0, 4.0), Interval(1.0, 2.0)) --> true
+end
+```
+
 ### C++: Gaol
 https://sourceforge.net/projects/gaol/  
 *Note: Gaol is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
@@ -47,19 +58,6 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 {
 	BOOST_CHECK(interval(3.0, 4.0).set_disjoint(interval(1.0, 2.0)));
 }
-```
-
-### Julia: ValidatedNumerics
-https://github.com/dpsanders/ValidatedNumerics.jl/  
-*Note: ValidatedNumerics.jl is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals. Several standard functions are not supported (yet).*
-```
-using ValidatedNumerics
-set_interval_precision(Float64)
-set_interval_rounding(:narrow)
-
-facts("example") do
-    @fact Interval(3.0, 4.0) ∩ Interval(1.0, 2.0) == ∅ --> true
-end
 ```
 
 ### C++: C-XSC
