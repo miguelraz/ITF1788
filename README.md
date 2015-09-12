@@ -10,7 +10,7 @@
 This framework can compile unit tests for a wide range of interval arithmetic libraries. Test cases can be written in a simple domain-specific language using polish prefix notation and interval literals. This way unit tests must not be written separately over and over again, but can be shared between libraries (where semantics and data types would allow it).
 
 To give an example, the following simple unit test is compiled for several interval arithmetic libraries.
-```
+```javascript
 testcase example {
 	disjoint [3.0, 4.0] [1.0, 2.0] = true;
 }
@@ -18,7 +18,7 @@ testcase example {
 
 ### C++: libieep1788
 https://github.com/nehmeier/libieeep1788
-```
+```c++
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>>;
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 
 ### GNU Octave: interval package
 http://octave.sourceforge.net/interval/
-```
+```python
 ## example
 
 %!test
@@ -40,7 +40,7 @@ http://octave.sourceforge.net/interval/
 ### Julia: ValidatedNumerics
 https://github.com/dpsanders/ValidatedNumerics.jl/  
 *Note: ValidatedNumerics.jl is not conforming to IEEE Std 1788-2015 yet, but development is on its way.*
-```
+```julia
 using ValidatedNumerics
 using FactCheck
 
@@ -52,7 +52,7 @@ end
 ### C++: Gaol
 https://sourceforge.net/projects/gaol/  
 *Note: Gaol is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
-```
+```c++
 using namespace gaol;
 
 BOOST_AUTO_TESTCASE(EXAMPLE)
@@ -64,7 +64,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ### C++: C-XSC
 http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/  
 *Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception, which renders such tests useless. Several standard functions are not supported.*
-```
+```c++
 using namespace cxsc;
 
 BOOST_AUTO_TESTCASE(EXAMPLE)
@@ -76,7 +76,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ### GNU Octave: INTLAB toolbox
 http://www.ti3.tu-harburg.de/rump/intlab/  
 *Note: INTLAB is not conforming to IEEE Std 1788-2015. It does not support decorated or empty intervals. Several standard functions are not supported.*
-```
+```python
 ## example
 
 %!test
