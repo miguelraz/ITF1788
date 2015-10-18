@@ -57,8 +57,8 @@ inf_sup_interval_double: Interval($ARG1, $ARG2)
 # overlap_after: '"after"'
 #
 # # Cancellative addition and subtraction
-# op_cancelMinus*: cancelminus ($ARG1, $ARG2)
-# op_cancelPlus*: cancelplus ($ARG1, $ARG2)
+op_cancelMinus*: cancelminus($ARG1, $ARG2)
+op_cancelPlus*: cancelplus($ARG1, $ARG2)
 
 # Set operations
 op_intersection*: |
@@ -69,7 +69,7 @@ op_convexHull*: |
     hull($ARG1, $ARG2)
 
 # Constructors
-op_numsToInterval*: "@interval($ARG1, $ARG2)"
+op_numsToInterval*: "Interval($ARG1, $ARG2)"
 op_textToInterval*: "@interval($ARG1)"
 # op_setDec*: infsupdec ($ARG1, $ARG2)
 # op_newDec*: newdec ($ARG1)
@@ -90,11 +90,11 @@ op_fma*: fma($ARG1, $ARG2, $ARG3)
 op_pown*: $ARG1 ^ $ARG2
 op_pow*: $ARG1 ^ $ARG2
 op_exp*: exp($ARG1)
-# op_exp2*: exp2($ARG1)
-# op_exp10*: exp10($ARG1)
+op_exp2*: exp2($ARG1)
+op_exp10*: exp10($ARG1)
 op_log*: log($ARG1)
-# op_log2*: log2($ARG1)
-# op_log10*: log10($ARG1)
+op_log2*: log2($ARG1)
+op_log10*: log10($ARG1)
 
 # Trigonometric/hyperbolic functions
 op_sin*: sin($ARG1)
@@ -103,7 +103,7 @@ op_tan*: tan($ARG1)
 op_asin*: asin($ARG1)
 op_acos*: acos($ARG1)
 op_atan*: atan($ARG1)
-# op_atan2*: atan2($ARG1, $ARG2)
+op_atan2*: atan2($ARG1, $ARG2)
 op_sinh*: sinh($ARG1)
 op_cosh*: cosh($ARG1)
 op_tanh*: tanh($ARG1)
@@ -113,11 +113,22 @@ op_atanh*: atanh($ARG1)
 
 # Integer functions
 op_sign*: sign($ARG1)
-op_ceil*: ceil($ARG1)
-op_floor*: floor($ARG1)
-op_trunc*: trunc($ARG1)
-# op_roundTiesToEven*: roundb ($ARG1)
-# op_roundTiesToAway*: round ($ARG1)
+op_ceil*: |
+    ceil($ARG1)
+    round($ARG1, RoundUp)
+op_floor*: |
+    floor($ARG1)
+    round($ARG1, RoundDown)
+op_trunc*: |
+    trunc($ARG1)
+    round($ARG1, RoundToZero)
+op_roundTiesToEven*: |
+    round($ARG1)
+    round($ARG1, RoundNearest)
+    round($ARG1, RoundTiesToEven)
+op_roundTiesToAway*: 
+    round($ARG1, RoundNearestTiesAway)
+    round($ARG1, RoundTiesToAway)
 
 # Absmax functions
 op_abs*: abs($ARG1)
