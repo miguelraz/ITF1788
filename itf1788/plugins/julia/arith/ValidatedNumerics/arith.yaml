@@ -126,7 +126,7 @@ op_roundTiesToEven*: |
     round($ARG1)
     round($ARG1, RoundNearest)
     round($ARG1, RoundTiesToEven)
-op_roundTiesToAway*: 
+op_roundTiesToAway*: |
     round($ARG1, RoundNearestTiesAway)
     round($ARG1, RoundTiesToAway)
 
