@@ -30,7 +30,7 @@ imports: |
     #include <limits> 
 preamble: |
     template<typename T>
-    using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>>;
+    using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
     template<typename T>
     using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;

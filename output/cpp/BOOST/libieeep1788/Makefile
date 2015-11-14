@@ -7,7 +7,7 @@ CXX ?= g++
 all : $(OBJ) $(TESTRESULT)
 
 % : %.cpp
-	$(CXX) -o "$@" "$<" -lgaol -lgdtoa -lcrlibm  -lboost_unit_test_framework
+	$(CXX) -std=c++11 -o "$@" "$<" -lmpfr -lboost_unit_test_framework
 
 %.run : %
 	@echo

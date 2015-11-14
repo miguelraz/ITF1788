@@ -1,15 +1,16 @@
 SHELL = /bin/sh
 OBJ = $(patsubst %.cpp,%,$(wildcard *.cpp))
-TESTRESULT = $(patsubst %.cpp,%.log,$(wildcard *.cpp))
-CXSC_HOME=${HOME}/cxsc
+TESTRESULT = $(patsubst %.cpp,%.run,$(wildcard *.cpp))
+CXX ?= g++
 
 .PHONY : all
 all : $(OBJ) $(TESTRESULT)
 
 % : %.cpp
-	g++ -I${CXSC_HOME}/include -L${CXSC_HOME}/lib -lcxsc -lboost_unit_test_framework -o "$@" "$<"
+	$(CXX) -o "$@" "$<" -lcxsc -lboost_unit_test_framework
 
-%.log : %
+%.run : %
 	@echo
 	@echo "[$<]"
-	@LD_LIBRARY_PATH=${CXSC_HOME}/lib "./$<" > "$@" || true
+	@"./$<" || true
+	@touch "$@"

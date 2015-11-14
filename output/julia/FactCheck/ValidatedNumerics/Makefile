@@ -1,8 +1,11 @@
 SHELL = /bin/sh
-TESTRESULT = $(patsubst %.jl,%.log,$(wildcard *.jl))
+TESTRESULT = $(patsubst %.jl,%.run,$(wildcard *.jl))
 
 .PHONY : all
 all : $(TESTRESULT)
 
-%.log : %.jl
-	julia "$<" > "$@"
+%.run : %.jl
+	@echo
+	@echo "[$<]"
+	@julia "$<"
+	@touch "$@"
