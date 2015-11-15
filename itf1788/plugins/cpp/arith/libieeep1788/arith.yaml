@@ -30,9 +30,6 @@ imports: |
     #include <limits>
 preamble: |
     template<typename T>
-    using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
-
-    template<typename T>
     using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
     template<typename T>
