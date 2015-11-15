@@ -26,17 +26,20 @@
 
 # misc
 imports: |
-    #include "p1788/p1788.hpp"
-    #include <limits> 
+    #include <p1788/p1788.hpp>
+    #include <limits>
 preamble: |
+    template<typename T>
+    using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
+
     template<typename T>
     using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
     template<typename T>
     using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
-    
+
     typedef p1788::decoration::decoration DEC;
-    
+    typedef p1788::overlapping::overlapping_state OVERLAP;
 
 # intervals
 nai_interval_double: DI<double>::nai()
@@ -51,13 +54,13 @@ entire_interval_double: I<double>::entire()
 entire_interval_float: I<float>::entire()
 entire_interval_long_double: I<long double>::entire()
 
-decorated_empty_interval_double: DI<double>::empty($DEC)
-decorated_empty_interval_float: DI<float>::empty($DEC)
-decorated_empty_interval_long_double: DI<long double>::empty($DEC)
+decorated_empty_interval_double: DI<double>::empty()
+decorated_empty_interval_float: DI<float>::empty()
+decorated_empty_interval_long_double: DI<long double>::empty()
 
-decorated_entire_interval_double: DI<double>::entire($DEC)
-decorated_entire_interval_float: DI<float>::entire($DEC)
-decorated_entire_interval_long_double: DI<long double>::entire($DEC)
+decorated_entire_interval_double: DI<double>(-INFINITY, INFINITY, $DEC)
+decorated_entire_interval_float: DI<float>(-INFINITY, INFINITY, $DEC)
+decorated_entire_interval_long_double: DI<long double>(-INFINITY, INFINITY, $DEC)
 
 inf_sup_interval_double: I<double>(${ARG1}, ${ARG2})
 inf_sup_interval_float: I<float>($ARG1, $ARG2)
@@ -81,36 +84,36 @@ decorator_greater_equals: ($ARG1 >= $ARG2)
 
 
 # overlap literal translations
-overlap_bothEmpty: Overlap.BothEmpty
-overlap_firstEmpty: Overlap.FirstEmpty
-overlap_secondEmpty: Overlap.SecondEmpty
-overlap_before: Overlap.Before
-overlap_meets: Overlap.Meets
-overlap_overlaps: Overlap.Overlaps
-overlap_starts: Overlap.Starts
-overlap_containedBy: Overlap.ContainedBy
-overlap_finishes: Overlap.Finishes
-overlap_equals: Overlap.Equal
-overlap_finishedBy: Overlap.FinishedBy
-overlap_contains: Overlap.Contains
-overlap_startedBy: Overlap.StartedBy
-overlap_overlappedBy: Overlap.OverlappedBy
-overlap_metBy: Overlap.MetBy
-overlap_after: Overlap.After
+overlap_bothEmpty: OVERLAP::both_empty
+overlap_firstEmpty: OVERLAP::first_empty
+overlap_secondEmpty: OVERLAP::second_empty
+overlap_before: OVERLAP::before
+overlap_meets: OVERLAP::meets
+overlap_overlaps: OVERLAP::overlaps
+overlap_starts: OVERLAP::starts
+overlap_containedBy: OVERLAP::contained_by
+overlap_finishes: OVERLAP::finishes
+overlap_equals: OVERLAP::equal
+overlap_finishedBy: OVERLAP::finished_by
+overlap_contains: OVERLAP::contains
+overlap_startedBy: OVERLAP::started_by
+overlap_overlappedBy: OVERLAP::overlapped_by
+overlap_metBy: OVERLAP::met_by
+overlap_after: OVERLAP::after
 
 # Cancellative addition and subtraction
 op_cancelMinus*: cancel_minus($ARG1, $ARG2)
 op_cancelPlus*: cancel_plus($ARG1, $ARG2)
 
 # Set operations
-op_intersection*: intersect($ARG1, $ARG2)
-op_convexHull*: hull($ARG1, $ARG2)
+op_intersection*: intersection($ARG1, $ARG2)
+op_convexHull*: convex_hull($ARG1, $ARG2)
 
 # Constructors
-op_numsToInterval*:
+op_numsToInterval*: nums_to_interval($ARG1, $ARG2)
 op_textToInterval*: text_to_interval($ARG1)
 op_setDec*: set_dec($ARG1, $ARG2)
-op_newDec*:
+op_newDec*: new_dec($ARG1)
 
 # Basic operations
 op_pos*: |
@@ -184,10 +187,10 @@ op_mag*: mag($ARG1)
 op_mig*: mig($ARG1)
 
 # Boolean functions of intervals
-op_equal*: is_equal($ARG1, $ARG2)
+op_equal*: equal($ARG1, $ARG2)
 op_subset*: subset($ARG1, $ARG2)
-op_interior*: is_interior($ARG1, $ARG2)
-op_disjoint*: are_disjoint($ARG1, $ARG2)
+op_interior*: interior($ARG1, $ARG2)
+op_disjoint*: disjoint($ARG1, $ARG2)
 op_isEmpty*: is_empty($ARG1)
 op_isEntire*: is_entire($ARG1)
 op_isNaI*: is_nai($ARG1)
@@ -195,7 +198,7 @@ op_less*: less($ARG1, $ARG2)
 op_strictLess*: strictly_less($ARG1, $ARG2)
 op_precedes*: precedes($ARG1, $ARG2)
 op_strictPrecedes*: strictly_precedes($ARG1, $ARG2)
-op_isCommonInterval*: is_common($ARG1)
+op_isCommonInterval*: is_common_interval($ARG1)
 op_isSingleton*: is_singleton($ARG1)
 op_isMember*: is_member($ARG1, $ARG2)
 

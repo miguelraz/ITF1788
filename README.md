@@ -24,7 +24,7 @@ using I = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor<T, p1788
 
 BOOST_AUTO_TESTCASE(EXAMPLE)
 {
-	BOOST_CHECK(are_disjoint(I<double>(3.0, 4.0), I<double>(1.0, 2.0)));
+	BOOST_CHECK(disjoint(I<double>(3.0, 4.0), I<double>(1.0, 2.0)));
 }
 ```
 

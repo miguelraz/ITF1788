@@ -21,10 +21,6 @@ env:
  - PLUGIN=libieeep1788
  - PLUGIN=Ibex
 
-matrix:
-  allow_failures:
-    - env: PLUGIN=libieeep1788
-
 before_install:
  - if [ $PLUGIN == of-interval ]; then          sudo add-apt-repository --yes ppa:octave/stable; fi
  - if [ $PLUGIN == of-interval ]; then          sudo apt-get update -qq; fi
@@ -33,20 +29,24 @@ before_install:
  - if [ $PLUGIN == ValidatedNumerics.jl ]; then sudo add-apt-repository --yes ppa:staticfloat/julia-deps; fi
  - if [ $PLUGIN == ValidatedNumerics.jl ]; then sudo apt-get update -qq; fi
  - if [ $PLUGIN == ValidatedNumerics.jl ]; then sudo apt-get install -qq julia; fi
- - if [ $PLUGIN == libieeep1788 ]; then         sudo apt-get install -qq g++-4.8 libboost-dev libboost-test-dev; fi
+ - if [ $PLUGIN == libieeep1788 ]; then         sudo apt-get install -qq g++-4.8 libboost-test-dev; fi
  - if [ $PLUGIN == libieeep1788 ]; then         wget -q --output-document=libieeep1788-master.zip "https://github.com/nehmeier/libieeep1788/archive/master.zip"; fi
  - if [ $PLUGIN == libieeep1788 ]; then         unzip -qq libieeep1788-master.zip; fi
+                                                # It is faster to not compile the examples and tests
  - if [ $PLUGIN == libieeep1788 ]; then         sed -i -e "s#add_subdirectory(examples)##" libieeep1788-master/CMakeLists.txt; fi
+ - if [ $PLUGIN == libieeep1788 ]; then         sed -i -e "s#add_subdirectory(test)##" libieeep1788-master/CMakeLists.txt; fi
+                                                # Dependencies have different version numbers than Travis provides
  - if [ $PLUGIN == libieeep1788 ]; then         sed -i -e "s#MPFR 3.1.2#MPFR 3.1.0#" libieeep1788-master/CMakeLists.txt; fi
  - if [ $PLUGIN == libieeep1788 ]; then         sed -i -e "s#GMP 6.0.0#GMP ..#" libieeep1788-master/CMakeLists.txt; fi
- - if [ $PLUGIN == C-XSC ]; then                sudo apt-get install -qq g++-4.8 libboost-test-dev; fi
+ - if [ $PLUGIN == C-XSC ]; then                sudo apt-get install -qq libboost-test-dev; fi
  - if [ $PLUGIN == C-XSC ]; then                wget -q "http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/cxsc-2-5-4.tar.gz"; fi
  - if [ $PLUGIN == C-XSC ]; then                tar xzf cxsc-*.tar.gz && mv cxsc-*/ cxsc; fi
+                                                # It is faster to not compile the examples and tests
  - if [ $PLUGIN == C-XSC ]; then                sed -i -e "s#add_subdirectory(examples)##" cxsc/CMakeLists.txt; fi
  - if [ $PLUGIN == C-XSC ]; then                sed -i -e "s#add_subdirectory(CToolbox/Programs)##" cxsc/CMakeLists.txt; fi
  - if [ $PLUGIN == C-XSC ]; then                sed -i -e "s#add_subdirectory(CToolbox/test)##" cxsc/CMakeLists.txt; fi
  - if [ $PLUGIN == C-XSC ]; then                sed -i -e "s#add_subdirectory(CToolbox/test/test_programms)##" cxsc/CMakeLists.txt; fi
- - if [ $PLUGIN == Gaol ]; then                 sudo apt-get install -qq g++-4.8 libboost-test-dev; fi
+ - if [ $PLUGIN == Gaol ]; then                 sudo apt-get install -qq libboost-test-dev; fi
  - if [ $PLUGIN == Gaol ]; then                 wget -q "http://lipforge.ens-lyon.fr/frs/download.php/162/crlibm-1.0beta4.tar.gz"; fi
  - if [ $PLUGIN == Gaol ]; then                 tar xzf crlibm-*.tar.gz && mv crlibm-*/ crlibm; fi
  - if [ $PLUGIN == Gaol ]; then                 wget -q --output-document=gaol.tar.gz "https://sourceforge.net/projects/gaol/files/latest/download"; fi
@@ -63,16 +63,15 @@ install:
  - if [ $PLUGIN == libieeep1788 ]; then         export CC="gcc-4.8"; export CXX="g++-4.8"; fi
  - if [ $PLUGIN == libieeep1788 ]; then         mkdir -p libieeep1788-master/build && (cd libieeep1788-master/build; cmake ..) && make -C libieeep1788-master/build; fi
  - if [ $PLUGIN == libieeep1788 ]; then         sudo make -C libieeep1788-master/build install; fi
- - if [ $PLUGIN == C-XSC ]; then                export CC="gcc-4.8"; export CXX="g++-4.8"; fi
  - if [ $PLUGIN == C-XSC ]; then                mkdir -p cxsc/build && (cd cxsc/build; cmake ..) && make -C cxsc/build; fi
  - if [ $PLUGIN == C-XSC ]; then                sudo make -C cxsc/build install; fi
- - if [ $PLUGIN == Gaol ]; then                 export CC="gcc-4.8 -msse3"; export CXX="g++-4.8 -msse3"; fi
+ - if [ $PLUGIN == Gaol ]; then                 export CC="gcc -msse3"; export CXX="g++ -msse3"; fi
  - if [ $PLUGIN == Gaol ]; then                 (cd crlibm && ./configure && make); fi
  - if [ $PLUGIN == Gaol ]; then                 sudo make -C crlibm install; fi
  - if [ $PLUGIN == Gaol ]; then                 (cd gaol && ./configure --with-mathlib=crlibm --enable-relations=set && make); fi
  - if [ $PLUGIN == Gaol ]; then                 sudo make -C gaol install; fi
  - if [ $PLUGIN == Ibex ]; then                 (cd ibex_bin && sudo cp -rf ibex/* soplex/lib /usr/local/); fi
- - if [ $PLUGIN == Ibex ]; then                 (cd ibex_bin && sudo cp -rf soplex/src/* /usr/local/include/); fi
+ - if [ $PLUGIN == Ibex ]; then                 (cd ibex_bin && sudo cp -rf soplex/src/*.h /usr/local/include/); fi
 
 script:
  - if [ $PLUGIN == of-interval ]; then          python3 -m itf1788 -s itl -o output -c "(octave, *, interval)"; fi
