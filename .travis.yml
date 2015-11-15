@@ -4,7 +4,7 @@ python:
   - "3.4"
 #  - "3.5"
 #  - "3.5-dev" # 3.5 development branch
-  - "nightly" # currently points to 3.6-dev
+#  - "nightly" # currently points to 3.6-dev
 
 addons:
   apt:
@@ -19,6 +19,7 @@ env:
  - PLUGIN=C-XSC
  - PLUGIN=Gaol
  - PLUGIN=libieeep1788
+ - PLUGIN=Ibex
 
 matrix:
   allow_failures:
@@ -50,16 +51,19 @@ before_install:
  - if [ $PLUGIN == Gaol ]; then                 tar xzf crlibm-*.tar.gz && mv crlibm-*/ crlibm; fi
  - if [ $PLUGIN == Gaol ]; then                 wget -q --output-document=gaol.tar.gz "https://sourceforge.net/projects/gaol/files/latest/download"; fi
  - if [ $PLUGIN == Gaol ]; then                 tar xzf gaol.tar.gz && mv gaol-*/ gaol; fi
+ - if [ $PLUGIN == Ibex ]; then                 sudo apt-get install -qq libboost-test-dev; fi
+ - if [ $PLUGIN == Ibex ]; then                 wget -q -U ITF1788 "http://www.ensta-bretagne.fr/lebars/Share/ibex-2.1.10_qtsdk2010.05_saltp6-l_64_bin.zip"; fi
+ - if [ $PLUGIN == Ibex ]; then                 unzip -q ibex-*.zip && mv ibex-*/ ibex_bin; fi
 
 install:
  - pip install .
  - export LD_LIBRARY_PATH="/usr/local/lib"
  - if [ $PLUGIN == of-interval ]; then          octave -q --no-gui --eval "pkg install -forge interval"; fi
  - if [ $PLUGIN == ValidatedNumerics.jl ]; then julia -q --eval "Pkg.clone(\"https://github.com/dpsanders/ValidatedNumerics.jl\")"; fi
- - if [ $PLUGIN == libieeep1788 ]; then         export CC="gcc-4.8 -msse3"; export CXX="g++-4.8 -msse3"; fi
+ - if [ $PLUGIN == libieeep1788 ]; then         export CC="gcc-4.8"; export CXX="g++-4.8"; fi
  - if [ $PLUGIN == libieeep1788 ]; then         mkdir -p libieeep1788-master/build && (cd libieeep1788-master/build; cmake ..) && make -C libieeep1788-master/build; fi
  - if [ $PLUGIN == libieeep1788 ]; then         sudo make -C libieeep1788-master/build install; fi
- - if [ $PLUGIN == C-XSC ]; then                export CC="gcc-4.8 -msse3"; export CXX="g++-4.8 -msse3"; fi
+ - if [ $PLUGIN == C-XSC ]; then                export CC="gcc-4.8"; export CXX="g++-4.8"; fi
  - if [ $PLUGIN == C-XSC ]; then                mkdir -p cxsc/build && (cd cxsc/build; cmake ..) && make -C cxsc/build; fi
  - if [ $PLUGIN == C-XSC ]; then                sudo make -C cxsc/build install; fi
  - if [ $PLUGIN == Gaol ]; then                 export CC="gcc-4.8 -msse3"; export CXX="g++-4.8 -msse3"; fi
@@ -67,6 +71,8 @@ install:
  - if [ $PLUGIN == Gaol ]; then                 sudo make -C crlibm install; fi
  - if [ $PLUGIN == Gaol ]; then                 (cd gaol && ./configure --with-mathlib=crlibm --enable-relations=set && make); fi
  - if [ $PLUGIN == Gaol ]; then                 sudo make -C gaol install; fi
+ - if [ $PLUGIN == Ibex ]; then                 (cd ibex_bin && sudo cp -rf ibex/* soplex/lib /usr/local/); fi
+ - if [ $PLUGIN == Ibex ]; then                 (cd ibex_bin && sudo cp -rf soplex/src/* /usr/local/include/); fi
 
 script:
  - if [ $PLUGIN == of-interval ]; then          python3 -m itf1788 -s itl -o output -c "(octave, *, interval)"; fi
@@ -79,3 +85,5 @@ script:
  - if [ $PLUGIN == C-XSC ]; then                make -C output/*/*/cxsc; fi
  - if [ $PLUGIN == Gaol ]; then                 python3 -m itf1788 -s itl -o output -c "(cpp, *, gaol)"; fi
  - if [ $PLUGIN == Gaol ]; then                 make -C output/*/*/gaol; fi
+ - if [ $PLUGIN == Ibex ]; then                 python3 -m itf1788 -s itl -o output -c "(cpp, *, ibex)"; fi
+ - if [ $PLUGIN == Ibex ]; then                 make -C output/*/*/ibex; fi

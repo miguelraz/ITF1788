@@ -73,6 +73,18 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
+### C++: Ibex
+http://www.ibex-lib.org/  
+*Note: Ibex is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
+```c++
+using namespace ibex;
+
+BOOST_AUTO_TESTCASE(EXAMPLE)
+{
+	BOOST_CHECK(Interval(3.0, 4.0).is_disjoint(Interval(1.0, 2.0)));
+}
+```
+
 ### GNU Octave: INTLAB toolbox
 http://www.ti3.tu-harburg.de/rump/intlab/  
 *Note: INTLAB is not conforming to IEEE Std 1788-2015. It does not support decorated or empty intervals. Several standard functions are not supported.*
