@@ -1,0 +1,143 @@
+#
+#                              ITF1788
+#
+#   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
+#
+#
+#   Copyright 2015 Oliver Heimlich (oheim@posteo.de)
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# misc
+imports: |
+    import pyIbex
+preamble: |
+    from pyIbex import Interval
+
+# intervals
+empty_interval_double: Interval.EMPTY_SET
+entire_interval_double: Interval.ALL_REALS
+inf_sup_interval_double: Interval($ARG1, $ARG2)
+
+# Set operations
+op_intersection*: $ARG1 & $ARG2
+op_convexHull*: $ARG1 | $ARG2
+
+# Constructors
+op_numsToInterval*: Interval($ARG1, $ARG2)
+op_textToInterval*: Interval($ARG1)
+
+# Basic operations
+#op_pos*: +$ARG1
+op_neg*: -($ARG1)
+op_add*: $ARG1 + $ARG2
+op_sub*: $ARG1 - $ARG2
+op_mul*: $ARG1 * $ARG2
+op_div*: $ARG1 / $ARG2
+#op_inv*: $ARG1.inverse()
+op_sqr*: pyIbex.sqr($ARG1)
+op_sqrt*: pyIbex.sqrt($ARG1)
+
+# Power functions
+#op_pow*: pyIbex.pow($ARG1, $ARG2)
+op_exp*: pyIbex.exp($ARG1)
+op_log*: pyIbex.log($ARG1)
+op_pown*: pow($ARG1, $ARG2)
+#op_exp2*: exp2($ARG1)
+#op_exp10*: exp10($ARG1)
+#op_log2*: log2($ARG1)
+#op_log10*: log10($ARG1)
+
+# Trigonometric/hyperbolic functions
+op_sin*: pyIbex.sin($ARG1)
+op_cos*: pyIbex.cos($ARG1)
+op_tan*: pyIbex.tan($ARG1)
+op_asin*: pyIbex.asin($ARG1)
+op_acos*: pyIbex.acos($ARG1)
+op_atan*: pyIbex.atan($ARG1)
+#op_sinh*: pyIbex.sinh($ARG1)
+op_cosh*: pyIbex.cosh($ARG1)
+op_tanh*: pyIbex.tanh($ARG1)
+op_asinh*: pyIbex.asinh($ARG1)
+op_acosh*: pyIbex.acosh($ARG1)
+op_atanh*: pyIbex.atanh($ARG1)
+op_atan2*: pyIbex.atan2($ARG1, $ARG2)
+
+# Recommended forward-mode elementary functions
+op_rootn*: pyIbex.root ($ARG1, $ARG2)
+
+# Absmax functions
+op_abs*: abs($ARG1)
+
+# Numeric functions of intervals
+op_inf*: $ARG1.lb()
+op_sup*: $ARG1.ub()
+op_mid*: $ARG1.mid()
+op_wid*: $ARG1.diam()
+op_rad*: $ARG1.rad()
+op_mag*: $ARG1.mag()
+op_mig*: $ARG1.mig()
+
+# Boolean functions of intervals
+op_equal*: $ARG1 == $ARG2
+op_subset*: $ARG1.is_subset($ARG2)
+op_interior*: $ARG1.is_interior_subset($ARG2)
+op_disjoint*: $ARG1.is_disjoint($ARG2)
+op_isEmpty*: $ARG1.is_empty()
+#op_isEntire*: $ARG1.is_entire()
+#op_isNaI*:
+#op_less*:
+#op_strictLess*:
+#op_precedes*:
+#op_strictPrecedes*:
+#op_isCommonInterval*:
+#op_isSingleton*: $arg1.is_flat()
+op_isMember*: $ARG2.contains($ARG1)
+
+# Reverse-mode elementary functions
+#op_absRev*: bwd_abs($ARG1, Interval::ALL_REALS)
+#op_absRevBin*: bwd_abs($ARG1, $ARG2)
+#op_sqrRev*: bwd_sqr($ARG1, Interval::ALL_REALS)
+#op_sqrRevBin*: bwd_sqr($ARG1, $ARG2)
+#op_pownRev*: bwd_pow($ARG1, $ARG2, Interval::ALL_REALS)
+#op_pownRevBin*: bwd_pow($ARG1, $ARG2, $ARG3)
+#op_sinRev*: bwd_sin($ARG1, Interval::ALL_REALS)
+#op_sinRevBin*: bwd_sin($ARG1, $ARG2)
+#op_cosRev*: bwd_cos($ARG1, Interval::ALL_REALS)
+#op_cosRevBin*: bwd_cos($ARG1, $ARG2)
+#op_tanRev*: bwd_tan($ARG1, Interval::ALL_REALS)
+#op_tanRevBin*: bwd_tan($ARG1, $ARG2)
+#op_coshRev*: bwd_cosh($ARG1, Interval::ALL_REALS)
+#op_coshRevBin*: bwd_cosh($ARG1, $ARG2)
+#op_mulRev*: bwd_mul($ARG1, $ARG2, Interval::ALL_REALS)
+#op_mulRevTen*: bwd_mul($ARG1, $ARG2, $ARG3)
+#op_powRev1*: bwd_pow($ARG1, $ARG2, $ARG3)
+#op_powRev2*: bwd_pow($ARG1, $ARG2, $ARG3)
+#op_atan2Rev1*: bwd_atan2($ARG1, $ARG2, $ARG3)
+#op_atan2Rev2*: bwd_atan2($ARG1, $ARG2, $ARG3)
+
+# Decorated intervals are not supported
+#op_decorationPart*: '"$ARG1"'
+decorator_less_equals: |
+    # $ARG1 $ARG2
+decorator_greater_equals: |
+    # $ARG1 $ARG2
+decorated_empty_interval_double: '"[Empty]_$DEC"'
+decorated_entire_interval_double: '"[Entire]_$DEC"'
+decorated_inf_sup_interval_double: '"[$ARG1, $ARG2]_$DEC"'
+decorator_com: com
+decorator_def: def
+decorator_dac: dac
+decorator_ill: ill
+decorator_trv: trv
+

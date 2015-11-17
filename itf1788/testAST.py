@@ -595,6 +595,7 @@ class ASTVisitor(object):
         self.cbPath = cbPath
         self.cbs = None
         self.warnings = set()
+        self.testCounter = 0
 
         # import callback methods if callbacks.py exists
         if cbPath is not None:
@@ -1132,11 +1133,12 @@ class ASTVisitor(object):
 
 
         # Format text
-
+        self.testCounter += 1
         tstTxts = '\n'.join(tstLst)
         commentTxt = '\n'.join([c.accept(self) for c in node.comments])
         txt = self.replTok(self.out.test_test_seq.strip(), 'COMMENTS',
                                  commentTxt).strip()
+        txt = self.replTok(txt, 'COUNT', self.testCounter)
         txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
 
         return txt

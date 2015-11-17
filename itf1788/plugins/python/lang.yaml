@@ -1,0 +1,65 @@
+#
+#                              ITF1788
+#
+#   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
+#
+#
+#   Copyright 2015
+#
+#   Oliver Heimlich (oheim@posteo.de)
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# meta information
+name: Python
+extension: .py
+
+# constant translations
+boolean_true: "True"
+boolean_false: "False"
+
+# type translation:
+double_type: "float"
+
+not_a_number_double: "nan"
+
+# comments
+line_comment_token: "#"
+block_comment_start: "#"
+block_comment_intermediate: "# "
+block_comment_end: "#"
+
+# misc
+line_end_token: ""
+logical_and: $ARG1 and $ARG2
+imports: |
+    import math
+    inf = float('Inf')
+    nan = float('NaN')
+
+# indentation
+spaces_indent: 4
+indent_testcases: false
+indent_tests: true
+
+# infinity
+infinity_plus_double: inf
+infinity_minus_double: -inf
+
+# array translation
+array_double: "[$ARGS]"
+array_empty: "[]"
+array_arg_separator: ", "
+array_def : "    $NAME = $VAL"
+
+op_isNaN: math.isnan($ARG1)
