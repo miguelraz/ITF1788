@@ -61,6 +61,19 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 }
 ```
 
+### Python: pyIbex
+https://github.com/benEnsta/pyIbex  
+*Note: pyIbex is not fully conforming to IEEE Std 1788-2015. It does not support decorated intervals.*
+```python
+import unittest
+import pyIbex
+from pyIbex import Interval
+
+class TestCase_example(unittest.TestCase):
+    def test_1(self):
+       self.assertTrue(Interval(3.0, 4.0).is_disjoint(Interval(1.0, 2.0)))
+```
+
 ### C++: C-XSC
 http://www2.math.uni-wuppertal.de/~xsc/xsc/cxsc/  
 *Note: C-XSC is not conforming to IEEE Std 1788-2015. It does not support decorated intervals. Empty intervals trigger an exception, which renders such tests useless. Several standard functions are not supported.*
