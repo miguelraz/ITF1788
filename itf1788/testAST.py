@@ -1144,9 +1144,9 @@ class ASTVisitor(object):
             commentTxt = self.indent(commentTxt, self.out.lang_spaces_indent)
 
         txt = self.replTok(self.out.test_test_seq.strip(),
-                                'COUNT', self.testCounter).strip()
-        txt = self.replTok(txt, 'COMMENTS', commentTxt)
-        txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
+                                'COMMENTS', commentTxt).strip() + '\n'
+        txt = self.replTok(txt, 'ASSERTS', tstTxts)
+        txt = self.replTok(txt, 'COUNT', self.testCounter)
 
         return txt
 
