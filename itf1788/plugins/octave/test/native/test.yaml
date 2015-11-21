@@ -26,9 +26,14 @@
 #   limitations under the License.
 
 imports: |
-    %!function assert_warn (expected, actual)
-    %!    if (not (isequal (expected, actual)))
-    %!        warning (["expected: ", disp(expected), " actual value: ", disp(actual)]);
+    %!function assert_warn (observed_value, expected_value)
+    %!    if (not (isequal (observed_value, expected_value)))
+    %!        observed_expression = regexprep (argn(1, :), '\s+$', '');
+    %!        expected_expression = regexprep (argn(2, :), '\s+$', '');
+    %!        observed_as_char = disp (observed_value)(1 : end - 1);
+    %!        expected_as_char = disp(expected_value)(1 : end - 1);
+    %!        warning ([observed_expression, " != ", expected_expression, ...
+    %!                 "\n         ", observed_as_char, " != ", expected_as_char]);
     %!    endif
     %!endfunction
 testfile_seq: |
