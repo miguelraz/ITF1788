@@ -897,6 +897,10 @@ class ASTVisitor(object):
 
         """
 
+        # Count all tests, also skipped test. This will make a consistent
+        # test numbering while plugins are extended to support more operators.
+        self.testCounter += 1
+
         # Get the value of the operation from the arith.yaml file
         if node.accurateOutputs:
             accurateTypes = ','.join(n.getType()
@@ -1133,7 +1137,6 @@ class ASTVisitor(object):
 
 
         # Format text
-        self.testCounter += 1
         tstTxts = '\n'.join(tstLst)
         commentTxt = '\n'.join([c.accept(self) for c in node.comments])
         if self.out.lang_indent_asserts:
