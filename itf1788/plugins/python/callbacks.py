@@ -28,3 +28,7 @@ def cb_fpNum(val):
     if re.match("[+-]?(0x|0X)([0-9a-fA-F])+(UL?|U(LL)|(LL)U?|LU?)?", val):
         return "float.fromhex('" + val + "')"
     return val
+
+def cb_qualident(val):
+    tmp = val.replace('.', '_')
+    return tmp
