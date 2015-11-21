@@ -25,14 +25,20 @@
 
 imports: |
     import unittest
+    import warnings
 testfile_seq: |
     $COMMENTS
     $LANGUAGE_IMPORTS
     $TESTLIB_IMPORTS
     $ARITHLIB_IMPORTS
     $PREAMBLE
+    warnings.simplefilter("always")
+    class NotTightest(UserWarning):
+        """Happens when a test does not produce the most accurate result"""
+
     suite = unittest.TestSuite()
     $TESTCASES
+
     if __name__ == '__main__':
         unittest.main()
 # In case of empty test cases, because none of the functions is implemented,
@@ -50,6 +56,11 @@ test_seq: |
     $ASSERTS
 
 assert_equals: "self.assertEqual($ARG1, $ARG2)"
-# FIXME How to check for equality and produce a warning without test failure?
-assert_equals_warning: "self.assertEqual($ARG1, $ARG2)"
+# The last line of the warn statement is printed together with the
+# warning message. We only need to output the part that contains
+# the argument expressions and put this on the last line.
+assert_equals_warning: |
+    if not ($ARG1 == $ARG2):
+        warnings.warn("%s != %s"%
+            ($ARG1, $ARG2), NotTightest)
 assert_true: "self.assertTrue($ARG1)"
