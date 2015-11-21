@@ -1141,7 +1141,6 @@ class ASTVisitor(object):
         commentTxt = '\n'.join([c.accept(self) for c in node.comments])
         if self.out.lang_indent_asserts:
             tstTxts = self.indent(tstTxts, self.out.lang_spaces_indent)
-            commentTxt = self.indent(commentTxt, self.out.lang_spaces_indent)
 
         txt = self.replTok(self.out.test_test_seq.strip(),
                                 'COMMENTS', commentTxt).strip() + '\n'
@@ -1350,11 +1349,12 @@ class ASTVisitor(object):
 
         tmp = text
         for i in range(0, len(repl_list) - 1):
-            if not isinstance(repl_list[i], Node):
-                sub = repl_list[i] + delim + '$' + token
-            else:
-                sub = repl_list[i].accept(self) + delim + '$' + token
-            tmp = self.replTok(tmp, token, sub)
+            if repl_list[i]:
+                if not isinstance(repl_list[i], Node):
+                    sub = repl_list[i] + delim + '$' + token
+                else:
+                    sub = repl_list[i].accept(self) + delim + '$' + token
+                tmp = self.replTok(tmp, token, sub)
         tmp = self.replTok(tmp, token, repl_list[-1])
         return str(tmp)
 

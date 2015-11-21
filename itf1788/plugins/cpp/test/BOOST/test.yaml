@@ -39,13 +39,16 @@ testfile_seq: |
     $TESTCASES
 testcase_seq: |
     $COMMENTS
-    BOOST_AUTO_TEST_CASE($TC_NAME)
-    {
+    BOOST_AUTO_TEST_SUITE($TC_NAME)
     $TESTS
-    }
+    BOOST_AUTO_TEST_SUITE_END()
 test_seq: |
     $COMMENTS
-    $ASSERTS    
+    BOOST_AUTO_TEST_CASE(TEST_$COUNT)
+    {
+    $ASSERTS
+    }
+
 assert_equals: BOOST_CHECK_EQUAL($ARG1, $ARG2)
 assert_equals_warning: BOOST_WARN_EQUAL($ARG1, $ARG2)
 assert_true: BOOST_CHECK($ARG1)

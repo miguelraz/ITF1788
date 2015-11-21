@@ -53,8 +53,8 @@ imports: |
 # indentation
 spaces_indent: 8
 indent_testcases: false
-indent_tests: true
-indent_asserts: false
+indent_tests: false
+indent_asserts: true
 
 # infinity
 infinity_plus_double: std::numeric_limits<double>::infinity()
