@@ -1136,9 +1136,13 @@ class ASTVisitor(object):
         self.testCounter += 1
         tstTxts = '\n'.join(tstLst)
         commentTxt = '\n'.join([c.accept(self) for c in node.comments])
-        txt = self.replTok(self.out.test_test_seq.strip(), 'COMMENTS',
-                                 commentTxt).strip()
-        txt = self.replTok(txt, 'COUNT', self.testCounter)
+        if self.out.lang_indent_asserts:
+            tstTxts = self.indent(tstTxts, self.out.lang_spaces_indent)
+            commentTxt = self.indent(commentTxt, self.out.lang_spaces_indent)
+
+        txt = self.replTok(self.out.test_test_seq.strip(),
+                                'COUNT', self.testCounter).strip()
+        txt = self.replTok(txt, 'COMMENTS', commentTxt)
         txt = self.replTok(txt, 'ASSERTS', tstTxts) + '\n'
 
         return txt

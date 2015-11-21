@@ -108,13 +108,14 @@ imports:
 #
 # The token "spaces_indent" specifies the number of whitespace
 # charakters a block shall be indented as a natural number.
-# The tokens "indent_testcases" and "indent_tests" may be either
-# "true" or "false", depending on whether or not these blocks
-# shall be indented or not.
+# The tokens "indent_testcases", "indent_tests", and "indent_asserts"
+# may be either "true" or "false", depending on whether or not these
+# blocks shall be indented or not.
 #
 spaces_indent:
 indent_testcases:
 indent_tests:
+indent_asserts:
 
 
 #

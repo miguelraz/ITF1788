@@ -50,6 +50,7 @@ imports: |
 spaces_indent: 4
 indent_testcases: false
 indent_tests: true
+indent_asserts: false
 
 # infinity
 infinity_plus_double: Inf

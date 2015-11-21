@@ -35,10 +35,13 @@ testfile_seq: |
     $TESTCASES
     if __name__ == '__main__':
         unittest.main()
+# In case of empty test cases, because none of the functions is implemented,
+# the class block may not be empty. Therefore we insert a documenting
+# string inside the class block.
 testcase_seq: |
     $COMMENTS
     class TestCase_$TC_NAME(unittest.TestCase):
-        """"""
+        """$TC_NAME"""
     $TESTS
     suite.addTest(TestCase_$TC_NAME())
 test_seq: |
@@ -46,7 +49,7 @@ test_seq: |
     def test_$COUNT(self):
     $ASSERTS
 
-assert_equals: "    self.assertEqual($ARG1, $ARG2)"
+assert_equals: "self.assertEqual($ARG1, $ARG2)"
 # FIXME How to check for equality and produce a warning without test failure?
-assert_equals_warning: "    self.assertEqual($ARG1, $ARG2)"
-assert_true: "    self.assertTrue($ARG1)"
+assert_equals_warning: "self.assertEqual($ARG1, $ARG2)"
+assert_true: "self.assertTrue($ARG1)"

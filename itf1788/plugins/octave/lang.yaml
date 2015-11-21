@@ -53,7 +53,8 @@ imports: |
 # indentation
 spaces_indent: 4
 indent_testcases: false
-indent_tests: false 
+indent_tests: false
+indent_asserts: false
 
 # infinity
 infinity_plus_double: inf
