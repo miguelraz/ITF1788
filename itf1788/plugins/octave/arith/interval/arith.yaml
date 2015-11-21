@@ -29,9 +29,7 @@
 # http://octave.sourceforge.net/interval/
 
 imports: |
-    %!function n = decval (dec)
-    %!    n = find (strcmp (dec, {"ill", "trv", "def", "dac", "com"}));
-    %!endfunction
+    pkg load interval
 preamble: |
 
 # intervals
@@ -51,10 +49,10 @@ decorator_ill: '"ill"'
 decorator_trv: '"trv"'
 
 # comparison operators for decorations
-decorator_less_equals: decval ($ARG1) <= decval ($ARG2)
-decorator_greater_equals: decval ($ARG1) >= decval ($ARG2)
+decorator_less_equals: 'decorationpart ($ARG1, "uint8") <= decorationpart ($ARG2, "uint8")'
+decorator_greater_equals: 'decorationpart ($ARG1, "uint8") >= decorationpart ($ARG2, "uint8")'
 
-op_decorationPart*: decorationpart ($ARG1) {1}
+op_decorationPart*: decorationpart ($ARG1){1}
 
 # overlap literal translations
 overlap_bothEmpty: '"bothEmpty"'
@@ -107,7 +105,7 @@ op_mul*: |
 op_div*: |
     $ARG1 ./ $ARG2
     rdivide ($ARG1, $ARG2)
-op_recip*: inv ($ARG1)
+op_recip*: recip ($ARG1)
 op_sqr*: sqr ($ARG1)
 op_sqrt*: realsqrt ($ARG1)
 op_fma*: fma ($ARG1, $ARG2, $ARG3)

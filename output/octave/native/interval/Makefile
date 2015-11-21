@@ -8,5 +8,5 @@ all : $(TESTRESULT)
 %.run : %.tst
 	@echo
 	@echo "[$<]"
-	@$(OCTAVE) -q --no-gui --eval "pkg load interval; test $<" || true
+	@$(OCTAVE) -q --no-gui "$<" || true
 	@touch "$@"

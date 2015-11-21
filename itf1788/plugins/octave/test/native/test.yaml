@@ -26,6 +26,15 @@
 #   limitations under the License.
 
 imports: |
+testfile_seq: |
+    $COMMENTS
+    $TESTLIB_IMPORTS
+    $ARITHLIB_IMPORTS
+    $PREAMBLE
+    try; error ("__FILE__"); catch
+        test (lasterror.stack.file, "quiet", stdout);
+    end_try_catch;
+    
     %!function assert_warn (observed_value, expected_value)
     %!    if (not (isequal (observed_value, expected_value)))
     %!        observed_expression = regexprep (argn(1, :), '\s+$', '');
@@ -36,11 +45,7 @@ imports: |
     %!                 "\n         ", observed_as_char, " != ", expected_as_char]);
     %!    endif
     %!endfunction
-testfile_seq: |
-    $COMMENTS
-    $TESTLIB_IMPORTS
-    $ARITHLIB_IMPORTS
-    $PREAMBLE
+    
     $TESTCASES
 testcase_seq: |
     ## $TC_NAME
