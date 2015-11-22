@@ -21,8 +21,45 @@
 # misc
 imports: |
     import pyIbex
+    import copy
 preamble: |
     from pyIbex import Interval
+
+    # Backward arithmetic in pyIbex uses side-effects.
+    # We need functional behaviour for the unit tests.
+    # To protect Interval.ALL_REALS and Interval.EMPTY_SET,
+    # we must use copy constructors on intervals.
+    def rev(bwd_f, y):
+        x = Interval(Interval.ALL_REALS)
+        if isinstance(y, Interval):
+            y = Interval(y)
+        bwd_f(y, x)
+        return x
+    def revBin(bwd_f, y, x):
+        if isinstance(x, Interval):
+            x = Interval(x)
+        if isinstance(y, Interval):
+            y = Interval(y)
+        bwd_f(y, x)
+        return x
+    def rev1(bwd_f, y, x1, x2):
+        if isinstance(x1, Interval):
+            x1 = Interval(x1)
+        if isinstance(x2, Interval):
+            x2 = Interval(x2)
+        if isinstance(y, Interval):
+            y = Interval(y)
+        bwd_f(y, x1, x2)
+        return x1
+    def rev2(bwd_f, y, x1, x2):
+        if isinstance(x1, Interval):
+            x1 = Interval(x1)
+        if isinstance(x2, Interval):
+            x2 = Interval(x2)
+        if isinstance(y, Interval):
+            y = Interval(y)
+        bwd_f(y, x1, x2)
+        return x2
 
 # intervals
 empty_interval_double: Interval.EMPTY_SET
@@ -105,26 +142,26 @@ op_isEmpty*: $ARG1.is_empty()
 op_isMember*: $ARG2.contains($ARG1)
 
 # Reverse-mode elementary functions
-#op_absRev*: bwd_abs($ARG1, Interval::ALL_REALS)
-#op_absRevBin*: bwd_abs($ARG1, $ARG2)
-#op_sqrRev*: bwd_sqr($ARG1, Interval::ALL_REALS)
-#op_sqrRevBin*: bwd_sqr($ARG1, $ARG2)
-#op_pownRev*: bwd_pow($ARG1, $ARG2, Interval::ALL_REALS)
-#op_pownRevBin*: bwd_pow($ARG1, $ARG2, $ARG3)
-#op_sinRev*: bwd_sin($ARG1, Interval::ALL_REALS)
-#op_sinRevBin*: bwd_sin($ARG1, $ARG2)
-#op_cosRev*: bwd_cos($ARG1, Interval::ALL_REALS)
-#op_cosRevBin*: bwd_cos($ARG1, $ARG2)
-#op_tanRev*: bwd_tan($ARG1, Interval::ALL_REALS)
-#op_tanRevBin*: bwd_tan($ARG1, $ARG2)
-#op_coshRev*: bwd_cosh($ARG1, Interval::ALL_REALS)
-#op_coshRevBin*: bwd_cosh($ARG1, $ARG2)
-#op_mulRev*: bwd_mul($ARG1, $ARG2, Interval::ALL_REALS)
-#op_mulRevTen*: bwd_mul($ARG1, $ARG2, $ARG3)
-#op_powRev1*: bwd_pow($ARG1, $ARG2, $ARG3)
-#op_powRev2*: bwd_pow($ARG1, $ARG2, $ARG3)
-#op_atan2Rev1*: bwd_atan2($ARG1, $ARG2, $ARG3)
-#op_atan2Rev2*: bwd_atan2($ARG1, $ARG2, $ARG3)
+op_absRev*: rev(pyIbex.bwd_abs, $ARG1)
+op_absRevBin*: revBin(pyIbex.bwd_abs, $ARG1, $ARG2)
+op_sqrRev*: rev(pyIbex.bwd_sqr, $ARG1)
+op_sqrRevBin*: revBin(pyIbex.bwd_sqr, $ARG1, $ARG2)
+op_pownRev*: rev2(pyIbex.bwd_pow, $ARG1, $ARG2, Interval.ALL_REALS)
+op_pownRevBin*: rev2(pyIbex.bwd_pow, $ARG1, $ARG3, $ARG2)
+op_sinRev*: rev(pyIbex.bwd_sin, $ARG1)
+op_sinRevBin*: revBin(pyIbex.bwd_sin, $ARG1, $ARG2)
+op_cosRev*: rev(pyIbex.bwd_cos, $ARG1)
+op_cosRevBin*: revBin(pyIbex.bwd_cos, $ARG1, $ARG2)
+op_tanRev*: rev(pyIbex.bwd_tan, $ARG1)
+op_tanRevBin*: revBin(pyIbex.bwd_tan, $ARG1, $ARG2)
+op_coshRev*: rev(pyIbex.bwd_cosh, $ARG1)
+op_coshRevBin*: revBin(pyIbex.bwd_cosh, $ARG1, $ARG2)
+op_mulRev*: rev1(pyIbex.bwd_mul, $ARG2, Interval.ALL_REALS, $ARG1)
+op_mulRevTen*: rev1(pyIbex.bwd_mul, $ARG2, $ARG3, $ARG1)
+op_powRev1*: rev1(pyIbex.bwd_pow, $ARG1, $ARG2, $ARG3)
+op_powRev2*: rev2(pyIbex.bwd_pow, $ARG1, $ARG2, $ARG3)
+op_atan2Rev1*: rev1(pyIbex.bwd_atan2, $ARG1, $ARG2, $ARG3)
+op_atan2Rev2*: rev2(pyIbex.bwd_atan2, $ARG1, $ARG2, $ARG3)
 
 # Decorated intervals are not supported
 #op_decorationPart*: '"$ARG1"'
