@@ -105,8 +105,20 @@ op_mul*: |
 op_div*: |
     $ARG1 ./ $ARG2
     rdivide ($ARG1, $ARG2)
-op_recip*: recip ($ARG1)
-op_sqr*: sqr ($ARG1)
+op_recip*: |
+    1 ./ $ARG1
+    rdivide (1, $ARG1)
+    pown ($ARG1, -1)
+    $ARG1 .^ -1
+    power ($ARG1, -1)
+    $ARG1 ^ -1
+    mpower ($ARG1, -1)
+op_sqr*: |
+    pown ($ARG1, 2)
+    $ARG1 .^ 2
+    power ($ARG1, 2)
+    $ARG1 ^ 2
+    mpower ($ARG1, 2)
 op_sqrt*: realsqrt ($ARG1)
 op_fma*: fma ($ARG1, $ARG2, $ARG3)
 
