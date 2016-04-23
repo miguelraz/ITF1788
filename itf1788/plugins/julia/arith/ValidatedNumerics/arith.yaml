@@ -22,22 +22,34 @@
 imports: |
     using ValidatedNumerics
 preamble: |
-    set_bigfloat_precision(53)
-    set_interval_precision(Float64)
-    set_interval_rounding(:narrow)
+    setprecision(53)
+    setprecision(Interval, Float64)
+    setrounding(Interval, :narrow)
 
 # intervals
 nai_interval_double: nai()
 empty_interval_double: ∅
 entire_interval_double: entireinterval(Float64)
-# decorated_empty_interval_double: infsupdec (empty, $DEC)
-# decorated_entire_interval_double: infsupdec (entire, $DEC)
+decorated_empty_interval_double: DecoratedInterval(∅, $DEC)
+decorated_entire_interval_double: DecoratedInterval(entireinterval(Float64), $DEC)
 inf_sup_interval_double: Interval($ARG1, $ARG2)
-# decorated_inf_sup_interval_double: infsupdec ($ARG1, $ARG2, $DEC)
+# decorated_inf_sup_interval_double: DecoratedInterval( $ARG1, $ARG2, $DEC )
+decorated_inf_sup_interval_double: DecoratedInterval(Interval($ARG1, $ARG2), $DEC)
+
+# interval decorators
+decorator_com: com
+decorator_def: def
+decorator_dac: dac
+decorator_ill: ill
+decorator_trv: trv
+
+# comparison operators for decorations
+decorator_less_equals: decoration($ARG1) ≤ decoration($ARG2)
+decorator_greater_equals: decoration($ARG1) ≥ decoration($ARG2)
+
+op_decorationPart*: decoration($ARG1)
 
 
-# op_decorationPart*: decorationpart ($ARG1) {1}
-#
 # # overlap literal translations
 # overlap_bothEmpty: '"bothEmpty"'
 # overlap_firstEmpty: '"firstEmpty"'
@@ -71,8 +83,8 @@ op_convexHull*: |
 # Constructors
 op_numsToInterval*: "Interval($ARG1, $ARG2)"
 op_textToInterval*: "@interval($ARG1)"
-# op_setDec*: infsupdec ($ARG1, $ARG2)
-# op_newDec*: newdec ($ARG1)
+# op_setDec*: "DecoratedInterval($ARG1, $ARG2)"
+# op_newDec*: "@decorated($ARG1)"
 
 # Basic operations
 op_pos*: +$ARG1
@@ -81,9 +93,21 @@ op_add*: $ARG1 + $ARG2
 op_sub*: $ARG1 - $ARG2
 op_mul*: $ARG1 * $ARG2
 op_div*: $ARG1 / $ARG2
-op_recip*: inv($ARG1)
-op_sqr*: $ARG1 ^ 2
-op_sqrt*: sqrt($ARG1)
+op_recip*: |
+    inv($ARG1)
+    ($ARG1)^(-1)
+    ($ARG1)^(-1//1)
+    ($ARG1)^(-1.0)
+    1 /($ARG1)
+op_sqr*: |
+    $ARG1 ^2
+    $ARG1 ^(2//1)
+    $ARG1 ^(2.0)
+op_sqrt*: |
+    sqrt($ARG1)
+    ($ARG1)^(1/2)
+    ($ARG1)^(0.5)
+    ($ARG1)^(1//2)
 op_fma*: fma($ARG1, $ARG2, $ARG3)
 
 # Power functions
@@ -233,33 +257,3 @@ op_isMember*: |
 # op_csch*: csch($ARG1)
 # op_sec*: sec($ARG1)
 # op_sech*: sech($ARG1)
-
-
-# Decorated intervals are not supported
-
-#op_decorationPart*: '"$ARG1"'
-decorator_less_equals: |
-    # $ARG1 $ARG2
-decorator_greater_equals: |
-    # $ARG1 $ARG2
-decorated_empty_interval_double: '"[Empty]_$DEC"'
-decorated_entire_interval_double: '"[Entire]_$DEC"'
-decorated_inf_sup_interval_double: '"[$ARG1, $ARG2]_$DEC"'
-
-# # Decorated intervals are not supported
-# # interval decorators
-# decorator_com: '"com"'
-# decorator_def: '"def"'
-# decorator_dac: '"dac"'
-# decorator_ill: '"ill"'
-# decorator_trv: '"trv"'
-decorator_com: com
-decorator_def: def
-decorator_dac: dac
-decorator_ill: ill
-decorator_trv: trv
-
-# # comparison operators for decorations
-# decorator_less_equals: decval ($ARG1) <= decval ($ARG2)
-# decorator_greater_equals: decval ($ARG1) >= decval ($ARG2)
-#
