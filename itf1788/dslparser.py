@@ -163,7 +163,7 @@ floatingConstant = sign + r"?(" + hexadecimalFloatingConstant + r"|" + \
     decimalFloatingConstant + r")"
 
 # other token regexes
-ident = r"[a-zA-Z][a-zA-Z0-9_]*"
+ident = r"[a-zA-Z][a-zA-Z0-9_-]*"
 string = r'"([^\\\n]|(\\(.|\n)))*?\"'
 # infinity may be float or double
 inf = sign + r"?infinity" + floatingSuffix + r"?"
