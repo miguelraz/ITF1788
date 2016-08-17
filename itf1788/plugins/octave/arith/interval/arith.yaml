@@ -81,8 +81,10 @@ op_intersection*: intersect ($ARG1, $ARG2)
 op_convexHull*: union ($ARG1, $ARG2)
 
 # Constructors
-op_numsToInterval*: infsup ($ARG1, $ARG2)
-op_textToInterval*: infsupdec ($ARG1)
+op_b-numsToInterval*: infsup ($ARG1, $ARG2)
+op_d-numsToInterval*: infsupdec ($ARG1, $ARG2)
+op_b-textToInterval*: infsup ($ARG1)
+op_d-textToInterval*: infsupdec ($ARG1)
 op_setDec*: infsupdec ($ARG1, $ARG2)
 op_newDec*: newdec ($ARG1)
 

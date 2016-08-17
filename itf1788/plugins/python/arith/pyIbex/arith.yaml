@@ -71,8 +71,8 @@ op_intersection*: $ARG1 & $ARG2
 op_convexHull*: $ARG1 | $ARG2
 
 # Constructors
-op_numsToInterval*: Interval($ARG1, $ARG2)
-op_textToInterval*: Interval($ARG1)
+op_b-numsToInterval*: Interval($ARG1, $ARG2)
+op_b-textToInterval*: Interval($ARG1)
 
 # Basic operations
 #op_pos*: +$ARG1

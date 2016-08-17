@@ -81,8 +81,10 @@ op_convexHull*: |
     hull($ARG1, $ARG2)
 
 # Constructors
-op_numsToInterval*: "Interval($ARG1, $ARG2)"
-op_textToInterval*: "@interval($ARG1)"
+op_b-numsToInterval*: "Interval($ARG1, $ARG2)"
+op_d-numsToInterval*: "DecoratedInterval($ARG1, $ARG2)"
+op_b-textToInterval*: "@interval($ARG1)"
+op_d-textToInterval*: "@decorated($ARG1)"
 # op_setDec*: "DecoratedInterval($ARG1, $ARG2)"
 # op_newDec*: "@decorated($ARG1)"
 

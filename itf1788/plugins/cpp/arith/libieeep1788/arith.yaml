@@ -107,8 +107,10 @@ op_intersection*: intersection($ARG1, $ARG2)
 op_convexHull*: convex_hull($ARG1, $ARG2)
 
 # Constructors
-op_numsToInterval*: nums_to_interval($ARG1, $ARG2)
-op_textToInterval*: text_to_interval($ARG1)
+op_b-numsToInterval*: nums_to_interval($ARG1, $ARG2)
+op_d-numsToInterval*: nums_to_decorated_interval($ARG1, $ARG2)
+op_b-textToInterval*: text_to_interval($ARG1)
+op_d-textToInterval*: text_to_decorated_interval($ARG1)
 op_setDec*: set_dec($ARG1, $ARG2)
 op_newDec*: new_dec($ARG1)
 
