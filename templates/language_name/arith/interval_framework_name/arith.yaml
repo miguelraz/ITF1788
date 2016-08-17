@@ -160,8 +160,10 @@ op_intersection*:
 op_convexHull*:
 
 # Constructors
-op_numsToInterval*:
-op_textToInterval*:
+op_b-numsToInterval*:
+op_d-numsToInterval*:
+op_b-textToInterval*:
+op_d-textToInterval*:
 op_setDec*:
 op_newDec*:
 
