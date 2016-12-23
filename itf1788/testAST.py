@@ -270,6 +270,18 @@ class DecorationLiteralNode(Node):
         self.val = val
 
 
+class ExceptionLiteralNode(Node):
+
+    """A Node which represents an exception in the AST."""
+
+    def __init__(self, val):
+        """
+        Initialize an ExceptionLiteralNode with the parsed value of the
+        exception.
+        """
+        self.val = val
+
+
 class NotAnIntervalNode(Node):
 
     """A Node which represents NaI in the AST."""
@@ -442,6 +454,21 @@ class TightestOutputsNode(Node):
         """
         self.literals = literals
 
+
+class SignalExceptionNode(Node):
+
+    """A Node which represents the signaled exception in the AST."""
+
+    def __init__(self, exception):
+        """
+        Initialize an SignalExceptionNode.
+
+        Arguments:
+        exception -- exception literal node which represent kind of signal
+        """
+        self.exception = exception
+
+
 class InputsNode(Node):
 
     """A Node which represents the inputs in the AST."""
@@ -494,7 +521,7 @@ class TestNode(Node):
 
     """A Node which represents a test in the AST."""
 
-    def __init__(self, opName, inputs, tightestOutputs, accurateOutputs):
+    def __init__(self, opName, inputs, tightestOutputs, accurateOutputs, signalException):
         """
         Initialize a TestNode.
 
@@ -503,11 +530,13 @@ class TestNode(Node):
         inputs -- an InputsNode object
         tightestOutputs -- a TightestOutputsNode object
         accurateOutputs -- a AccurateOutputsNode object
+        signalException -- a SignalExceptionNode object
         """
         self.opName = opName
         self.inputs = inputs
         self.tightestOutputs = tightestOutputs
         self.accurateOutputs = accurateOutputs
+        self.signalException = signalException
         self.comments = []
 
     def appendComment(self, comment):
@@ -669,6 +698,19 @@ class ASTVisitor(object):
         node -- an OverlapLiteralNode object
         """
         return getattr(self.out, 'arith_overlap_' + node.val)
+
+    def visitExceptionLiteralNode(self, node):
+        """
+        Return the translation of an ExceptionLiteralNode.
+
+        Example:
+        If o is of type ExceptionLiteralNode and o.val is 'UndefinedOperation', then return
+        the value of arith_exception_UndefinedOperation of the output specification.
+
+        Arguments:
+        node -- an ExceptionLiteralNode object
+        """
+        return getattr(self.out, 'arith_exception_' + node.val)
 
     def visitBooleanLiteralNode(self, node):
         """
@@ -861,6 +903,15 @@ class ASTVisitor(object):
         node -- an TightestOutputsNode object
         """
         return node.literals
+
+    def visitSignalExceptionNode(self, node):
+        """
+        Return the values of the signaled exception.
+
+        Arguments:
+        node -- an SignalExceptionNode object
+        """
+        return node.exception
 
     def visitInputsNode(self, node):
         """
@@ -1142,8 +1193,16 @@ class ASTVisitor(object):
         if self.out.lang_indent_asserts:
             tstTxts = self.indent(tstTxts, self.out.lang_spaces_indent)
 
-        txt = self.replTok(self.out.test_test_seq.strip(),
-                                'COMMENTS', commentTxt).strip() + '\n'
+        # Check signals
+        if node.signalException:
+            txt = self.replTok(self.out.test_test_signal_seq.strip(),
+                                'EXCEPTION', node.signalException.accept(self))
+        else:
+            txt = self.replTok(self.out.test_test_seq.strip(),
+                                'NO_EXCEPTION', self.out.arith_exception_no_exception)
+        txt = self.replTok(txt, 'ARITHLIB_CLEAR_EXCEPTIONS', self.out.arith_clear_exceptions)
+
+        txt = self.replTok(txt, 'COMMENTS', commentTxt).strip() + '\n'
         txt = self.replTok(txt, 'ASSERTS', tstTxts)
         txt = self.replTok(txt, 'COUNT', self.testCounter)
 

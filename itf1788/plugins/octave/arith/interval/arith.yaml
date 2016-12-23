@@ -72,6 +72,15 @@ overlap_overlappedBy: '"overlappedBy"'
 overlap_metBy: '"metBy"'
 overlap_after: '"after"'
 
+exception_UndefinedOperation: 'interval:UndefinedOperation'
+exception_PossiblyUndefinedOperation: 'interval:PossiblyUndefinedOperation'
+exception_InvalidOperand: 'interval:InvalidOperand'
+exception_IntvlPartOfNaI: 'interval:IntvlPartOfNaI'
+exception_IntvlOverflow: 'interval:IntvlOverflow'
+
+clear_exceptions: 'lastwarn ("");'
+exception_no_exception: 'strcmp (lastwarn, "")'
+
 # Cancellative addition and subtraction
 op_cancelMinus*: cancelminus ($ARG1, $ARG2)
 op_cancelPlus*: cancelplus ($ARG1, $ARG2)

@@ -50,6 +50,8 @@ reserved = {
     'true': 'TRUE',
     'false': 'FALSE',
 
+    'signal': 'SIGNAL',
+
     "bothEmpty": "BOTHEMPTY",
     "firstEmpty": "FIRSTEMPTY",
     "secondEmpty": "SECONDEMPTY",
@@ -86,6 +88,7 @@ tokens = [
     "NAN",
     "EMPTY",
     "ENTIRE",
+    "EXCEPTION",
     "ID",
     "BLOCK_COMMENT",
     "LINE_COMMENT"
@@ -175,6 +178,9 @@ entire = r"entire" + floatingSuffix + r"?"
 
 NaN = r"NaN" + floatingSuffix + r"?"
 
+# exceptions
+exception = r"(UndefinedOperation|PossiblyUndefinedOperation|InvalidOperand|IntvlPartOfNaI|IntvlOverflow)"
+
 
 #
 # Map the regexes to the tokens
@@ -218,12 +224,15 @@ def t_EMPTY(t):
 def t_ENTIRE(t):
     return t
 
+@TOKEN(exception)
+def t_EXCEPTION(t):
+    return t
+
 @TOKEN(ident)
 def t_ID(t):
     """Check the type of the identifier and return the value of the type."""
     t.type = reserved.get(t.value, 'ID')
     return t
-
 
 def t_BLOCK_COMMENT(t):
     r'/\*(.|\n)*?\*/'
@@ -329,33 +338,63 @@ def p_test_comment(t):
 
 
 def p_test_1(t):
-    '''test : opName inputs tightestOutputs accurateOutputs ";"'''
-    t[0] = TestNode(t[1], t[2], t[3], t[4])
+    '''test : opName inputs tightestOutputs accurateOutputs signalException ";"'''
+    t[0] = TestNode(t[1], t[2], t[3], t[4], t[5])
 
 
 def p_test_2(t):
-    '''test : opName inputs tightestOutputs ";"'''
-    t[0] = TestNode(t[1], t[2], t[3], None)
+    '''test : opName inputs tightestOutputs signalException ";"'''
+    t[0] = TestNode(t[1], t[2], t[3], None, t[4])
 
 
 def p_test_3(t):
-    '''test : opName inputs accurateOutputs ";"'''
-    t[0] = TestNode(t[1], t[2], None, t[3])
+    '''test : opName inputs accurateOutputs signalException ";"'''
+    t[0] = TestNode(t[1], t[2], None, t[3], t[4])
 
 
 def p_test_4(t):
-    '''test : opName tightestOutputs accurateOutputs ";"'''
-    t[0] = TestNode(t[1], None, t[2], t[3])
+    '''test : opName tightestOutputs accurateOutputs signalException ";"'''
+    t[0] = TestNode(t[1], None, t[2], t[3], t[4])
 
 
 def p_test_5(t):
-    '''test : opName tightestOutputs ";"'''
-    t[0] = TestNode(t[1], None, t[2], None)
+    '''test : opName tightestOutputs signalException ";"'''
+    t[0] = TestNode(t[1], None, t[2], None, t[3])
 
 
 def p_test_6(t):
+    '''test : opName accurateOutputs signalException ";"'''
+    t[0] = TestNode(t[1], None, None, t[2], t[3])
+
+
+def p_test_7(t):
+    '''test : opName inputs tightestOutputs accurateOutputs ";"'''
+    t[0] = TestNode(t[1], t[2], t[3], t[4], None)
+
+
+def p_test_8(t):
+    '''test : opName inputs tightestOutputs ";"'''
+    t[0] = TestNode(t[1], t[2], t[3], None, None)
+
+
+def p_test_9(t):
+    '''test : opName inputs accurateOutputs ";"'''
+    t[0] = TestNode(t[1], t[2], None, t[3], None)
+
+
+def p_test_10(t):
+    '''test : opName tightestOutputs accurateOutputs ";"'''
+    t[0] = TestNode(t[1], None, t[2], t[3], None)
+
+
+def p_test_11(t):
+    '''test : opName tightestOutputs ";"'''
+    t[0] = TestNode(t[1], None, t[2], None, None)
+
+
+def p_test_12(t):
     '''test : opName accurateOutputs ";"'''
-    t[0] = TestNode(t[1], None, None, t[2])
+    t[0] = TestNode(t[1], None, None, t[2], None)
 
 
 def p_opName(t):
@@ -387,6 +426,11 @@ def p_tightestOutputs(t):
 def p_accurateOutputs(t):
     '''accurateOutputs : "<" "=" literalSequence'''
     t[0] = AccurateOutputsNode(t[3])
+
+
+def p_signalException(t):
+    '''signalException : SIGNAL exceptionLiteral'''
+    t[0] = SignalExceptionNode(t[2])
 
 
 def p_literalSequence_1(t):
@@ -573,6 +617,11 @@ def p_booleanLiteral(t):
     '''booleanLiteral : TRUE
                       | FALSE'''
     t[0] = BooleanLiteralNode(t[1])
+
+
+def p_exceptionLiteral(t):
+    '''exceptionLiteral : EXCEPTION'''
+    t[0] = ExceptionLiteralNode(t[1])
 
 
 def p_overlapLiteral(t):

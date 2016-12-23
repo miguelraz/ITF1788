@@ -51,9 +51,16 @@ testcase_seq: |
     ## $TC_NAME
     $COMMENTS
     $TESTS
+# Signals are assumed to be implemented as warnings in Octave.
+# It is not required to check for occurrence of unexpected warnings,
+# since these will be visible as console output of the test.
 test_seq: |
     $COMMENTS
     %!test
+    $ASSERTS
+test_signal_seq: |
+    $COMMENTS
+    %!warning id=$EXCEPTION
     $ASSERTS
 
 # assert (X, Y) does not work with custom types

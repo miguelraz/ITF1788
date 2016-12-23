@@ -68,16 +68,38 @@ testfile_seq:
 testcase_seq:
 
 #
-# Define the structure of a test.
+# Define the structure of a test with no signaled exception.
 # Use the token ${COMMENTS} where the comments of the test (if any) shall be
 # inserted.
+# Use the token ${ARITHLIB_CLEAR_EXCEPTIONS} where previous signals shall be cleared.
 # Use the token ${ASSERTS} where the assert statements shall be inserted.
+# Use the token ${NO_EXCEPTION} where it shall be checked that no exception has occured.
 # Example: "
 #           ${COMMENTS}
+#           ${ARITHLIB_CLEAR_EXCEPTIONS}
 #           ${ASSERTS}
+#           if not ${NO_EXCEPTION} then fail
 #          "
 #
 test_seq:
+
+
+#
+# Define the structure of a test with subsequent checking whether an exception
+# has been signaled.
+# Use the token ${COMMENTS} where the comments of the test (if any) shall be
+# inserted.
+# Use the token ${ARITHLIB_CLEAR_EXCEPTIONS} where previous signals shall be cleared.
+# Use the token ${ASSERTS} where the assert statements shall be inserted.
+# Use the token ${EXCEPTION} where the signal's name shall be inserted.
+# Example: "
+#           ${COMMENTS}
+#           ${ARITHLIB_CLEAR_EXCEPTIONS}
+#           ${ASSERTS}
+#           if not signal ${EXCEPTION} then fail
+#          "
+#
+test_signal_seq:
 
 #
 # Equality check of two values.

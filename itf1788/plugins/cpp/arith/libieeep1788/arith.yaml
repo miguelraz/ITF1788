@@ -254,3 +254,13 @@ op_sum_sqr_up*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_m
 op_sum_sqr_zero*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
 op_sum_sqr_nearest*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
 
+clear_exceptions: p1788::exception::clear();
+
+exception_no_exception: '!p1788::exception::state()'
+
+exception_UndefinedOperation: 'p1788::exception::undefined_operation()'
+exception_PossiblyUndefinedOperation: 'p1788::exception::possibly_undefined_operation()'
+exception_InvalidOperand: 'p1788::exception::invalid_operand()'
+exception_IntvlPartOfNaI: 'p1788::exception::interval_part_of_nai()'
+exception_IntvlOverflow:
+
