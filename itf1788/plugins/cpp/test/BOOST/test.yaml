@@ -48,7 +48,7 @@ test_seq: |
     {
             $ARITHLIB_CLEAR_EXCEPTIONS
     $ASSERTS
-            BOOST_CHECK($NO_EXCEPTION)
+            BOOST_CHECK($NO_EXCEPTION);
     }
 test_signal_seq: |
     $COMMENTS
@@ -56,7 +56,7 @@ test_signal_seq: |
     {
             $ARITHLIB_CLEAR_EXCEPTIONS
     $ASSERTS
-            BOOST_CHECK($EXCEPTION)
+            BOOST_CHECK($EXCEPTION);
     }
 
 assert_equals: BOOST_CHECK_EQUAL($ARG1, $ARG2)
