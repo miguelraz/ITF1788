@@ -178,3 +178,17 @@ decorator_dac: dac
 decorator_ill: ill
 decorator_trv: trv
 
+#
+# Signaled exceptions 
+#
+exception_UndefinedOperation:
+exception_PossiblyUndefinedOperation:
+exception_InvalidOperand:
+exception_IntvlPartOfNaI:
+exception_IntvlOverflow:
+
+# Check for no exception
+exception_no_exception:
+
+# Cleanup any previous signaled exceptions
+clear_exceptions:

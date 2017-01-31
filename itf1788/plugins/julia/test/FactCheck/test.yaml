@@ -43,6 +43,10 @@ testcase_seq: |
 test_seq: |
     $COMMENTS
     $ASSERTS
+# FIXME How to check for exceptions?
+test_signal_seq: |
+    $COMMENTS
+    $ASSERTS
 
 assert_equals: "@fact $ARG1 --> $ARG2"
 # FIXME How to check for equality and produce a warning without test failure?

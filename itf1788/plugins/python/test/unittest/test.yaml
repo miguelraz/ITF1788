@@ -54,6 +54,10 @@ test_seq: |
     $COMMENTS
     def test_$COUNT(self):
     $ASSERTS
+test_signal_seq: |
+    $COMMENTS
+    def test_$COUNT(self):
+    $ASSERTS
 
 assert_equals: "self.assertEqual($ARG1, $ARG2)"
 # The last line of the warn statement is printed together with the

@@ -49,6 +49,20 @@ decorator_greater_equals: decoration($ARG1) ≥ decoration($ARG2)
 
 op_decorationPart*: decoration($ARG1)
 
+#
+# Signaled exceptions 
+#
+exception_UndefinedOperation:
+exception_PossiblyUndefinedOperation:
+exception_InvalidOperand:
+exception_IntvlPartOfNaI:
+exception_IntvlOverflow:
+
+# Check for no exception
+exception_no_exception:
+
+# Cleanup any previous signaled exceptions
+clear_exceptions:
 
 # # overlap literal translations
 # overlap_bothEmpty: '"bothEmpty"'
