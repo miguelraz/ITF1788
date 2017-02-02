@@ -46,15 +46,12 @@ test_seq: |
     $COMMENTS
     BOOST_AUTO_TEST_CASE(TEST_$COUNT)
     {
-            $ARITHLIB_CLEAR_EXCEPTIONS
     $ASSERTS
-            BOOST_CHECK($NO_EXCEPTION);
     }
 test_signal_seq: |
     $COMMENTS
     BOOST_AUTO_TEST_CASE(TEST_$COUNT)
     {
-            $ARITHLIB_CLEAR_EXCEPTIONS
     $ASSERTS
             BOOST_CHECK($EXCEPTION);
     }

@@ -78,8 +78,9 @@ exception_InvalidOperand: 'interval:InvalidOperand'
 exception_IntvlPartOfNaI: 'interval:IntvlPartOfNaI'
 exception_IntvlOverflow: 'interval:IntvlOverflow'
 
-clear_exceptions: 'lastwarn ("");'
-exception_no_exception: 'strcmp (lastwarn, "")'
+# No need to clear exception state, cf. test.yaml
+clear_exceptions: 
+exception_no_exception: 
 
 # Cancellative addition and subtraction
 op_cancelMinus*: cancelminus ($ARG1, $ARG2)

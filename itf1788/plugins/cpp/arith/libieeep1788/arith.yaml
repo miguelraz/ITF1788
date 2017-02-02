@@ -254,7 +254,7 @@ op_sum_sqr_up*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_m
 op_sum_sqr_zero*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_zero)
 op_sum_sqr_nearest*: sum_sqr($ARG1, $ARG1 + $ARG1_LEN, $ARG2, p1788::reduction::rnd_mode::to_nearest)
 
-clear_exceptions: p1788::exception::clear();
+clear_exceptions: 'p1788::exception::clear()'
 
 exception_no_exception: '!p1788::exception::state()'
 

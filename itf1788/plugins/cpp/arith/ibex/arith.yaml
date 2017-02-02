@@ -144,14 +144,14 @@ decorator_trv: trv
 #
 # Signaled exceptions 
 #
-exception_UndefinedOperation: false
-exception_PossiblyUndefinedOperation: false
-exception_InvalidOperand: false
-exception_IntvlPartOfNaI: false
-exception_IntvlOverflow: false
+exception_UndefinedOperation: 
+exception_PossiblyUndefinedOperation: 
+exception_InvalidOperand: 
+exception_IntvlPartOfNaI: 
+exception_IntvlOverflow: 
 
 # Check for no exception
-exception_no_exception: true
+exception_no_exception: 
 
 # Cleanup any previous signaled exceptions
-clear_exceptions: ''
+clear_exceptions: 

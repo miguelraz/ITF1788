@@ -1033,6 +1033,10 @@ class ASTVisitor(object):
         if node.accurateOutputs:
             accLst = node.accurateOutputs.accept(self)
 
+        # Depending on the library, it might be necessary to reset signals before the asserts
+        if self.out.arith_clear_exceptions and (node.signalException or self.out.arith_exception_no_exception):
+            tstLst += [self.out.arith_clear_exceptions + delim]
+
         # Translation of "op A B = C" where "op" is an arbitrary
         # operation and A, B, C are intervals
         # Result will be:
@@ -1186,6 +1190,9 @@ class ASTVisitor(object):
                         tstBoth = self.replTok(assertTrue, 'ARG1', tstBoth)
                         tstLst += [tstBoth + delim]
 
+        # Check for no signal
+        if not node.signalException and self.out.arith_exception_no_exception:
+            tstLst += [self.replTok(assertTrue, 'ARG1', self.out.arith_exception_no_exception) + delim]
 
         # Format text
         tstTxts = '\n'.join(tstLst)
@@ -1193,14 +1200,12 @@ class ASTVisitor(object):
         if self.out.lang_indent_asserts:
             tstTxts = self.indent(tstTxts, self.out.lang_spaces_indent)
 
-        # Check signals
+        # Check for signals
         if node.signalException:
             txt = self.replTok(self.out.test_test_signal_seq.strip(),
                                 'EXCEPTION', node.signalException.accept(self))
         else:
-            txt = self.replTok(self.out.test_test_seq.strip(),
-                                'NO_EXCEPTION', self.out.arith_exception_no_exception)
-        txt = self.replTok(txt, 'ARITHLIB_CLEAR_EXCEPTIONS', self.out.arith_clear_exceptions)
+            txt = self.out.test_test_seq.strip()
 
         txt = self.replTok(txt, 'COMMENTS', commentTxt).strip() + '\n'
         txt = self.replTok(txt, 'ASSERTS', tstTxts)
