@@ -35,6 +35,9 @@ preamble: |
     template<typename T>
     using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
+    template<typename T>
+    using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
+
     typedef p1788::decoration::decoration DEC;
     typedef p1788::overlapping::overlapping_state OVERLAP;
 
@@ -107,10 +110,10 @@ op_intersection*: intersection($ARG1, $ARG2)
 op_convexHull*: convex_hull($ARG1, $ARG2)
 
 # Constructors
-op_b-numsToInterval*: nums_to_interval($ARG1, $ARG2)
-op_d-numsToInterval*: nums_to_decorated_interval($ARG1, $ARG2)
-op_b-textToInterval*: text_to_interval($ARG1)
-op_d-textToInterval*: text_to_decorated_interval($ARG1)
+op_b-numsToInterval*: F<double>::nums_to_interval($ARG1, $ARG2)
+op_d-numsToInterval*: F<double>::nums_to_decorated_interval($ARG1, $ARG2)
+op_b-textToInterval*: F<double>::text_to_interval($ARG1)
+op_d-textToInterval*: F<double>::text_to_decorated_interval($ARG1)
 op_setDec*: set_dec($ARG1, $ARG2)
 op_newDec*: new_dec($ARG1)
 
