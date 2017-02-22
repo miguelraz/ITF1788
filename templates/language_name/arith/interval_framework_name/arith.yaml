@@ -283,6 +283,7 @@ op_atan2Rev2*:
 # Two output division
 op_mulRevToPair*:
 
+op_intervalPart*:
 op_decorationPart*:
 op_setDec*:
 

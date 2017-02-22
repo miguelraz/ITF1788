@@ -52,6 +52,7 @@ decorator_trv: '"trv"'
 decorator_less_equals: 'decorationpart ($ARG1, "uint8") <= decorationpart ($ARG2, "uint8")'
 decorator_greater_equals: 'decorationpart ($ARG1, "uint8") >= decorationpart ($ARG2, "uint8")'
 
+op_intervalPart*: intervalpart ($ARG1)
 op_decorationPart*: decorationpart ($ARG1){1}
 
 # overlap literal translations
