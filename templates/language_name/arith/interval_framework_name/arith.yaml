@@ -238,6 +238,7 @@ op_wid*:
 op_rad*:
 op_mag*:
 op_mig*:
+op_midRad*:
 
 # Boolean functions of intervals
 op_equal*:

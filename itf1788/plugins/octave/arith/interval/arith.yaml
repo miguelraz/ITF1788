@@ -181,6 +181,10 @@ op_wid*: wid ($ARG1)
 op_rad*: rad ($ARG1)
 op_mag*: mag ($ARG1)
 op_mig*: mig ($ARG1)
+op_midRad*: |
+    nthargout(1, 2, @rad, $ARG1)
+    *** next output
+    nthargout(2, 2, @rad, $ARG1)
 
 # Boolean functions of intervals
 op_equal*: |
