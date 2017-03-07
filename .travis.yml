@@ -85,8 +85,8 @@ install:
 script:
  - if [ $PLUGIN == of-interval ]; then          python3 -m itf1788 -s itl -o output -c "(octave, *, interval)"; fi
  - if [ $PLUGIN == of-interval ]; then          make -C output/octave/*/interval; fi
- - if [ $PLUGIN == ValidatedNumerics.jl ]; then python3 -m itf1788 -s itl -o output -c "(julia, *, *)"; fi
- - if [ $PLUGIN == ValidatedNumerics.jl ]; then make -C output/julia/*/*; fi
+ - if [ $PLUGIN == ValidatedNumerics.jl ]; then python3 -m itf1788 -s itl -o output -c "(julia, Base.Test, *)"; fi
+ - if [ $PLUGIN == ValidatedNumerics.jl ]; then make -C output/julia/Base.Test/*; fi
  - if [ $PLUGIN == libieeep1788 ]; then         python3 -m itf1788 -s itl -o output -c "(cpp, *, libieeep1788)"; fi
  - if [ $PLUGIN == libieeep1788 ]; then         make -C output/*/*/libieeep1788; fi
  - if [ $PLUGIN == C-XSC ]; then                python3 -m itf1788 -s itl -o output -c "(cpp, *, cxsc)"; fi
