@@ -37,9 +37,9 @@ not_a_number_float: "NaN32"
 
 # comments
 line_comment_token: "#"
-block_comment_start: "#"
-block_comment_intermediate: "# "
-block_comment_end: "#"
+block_comment_start: "#="
+block_comment_intermediate: " "
+block_comment_end: "=#"
 
 # misc
 line_end_token: ""
@@ -60,7 +60,7 @@ infinity_minus_float: -Inf32
 
 # array translation
 array_double: "[$ARGS]"
-array_float: "float32([$ARGS])"
+array_float: "Float32([$ARGS])"
 array_empty: "[]"
 array_arg_separator: ", "
 array_def : "$NAME = $VAL"
