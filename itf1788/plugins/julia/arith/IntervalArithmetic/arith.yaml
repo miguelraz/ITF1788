@@ -20,11 +20,13 @@
 
 # misc
 imports: |
-    using ValidatedNumerics
+    using IntervalArithmetic
 preamble: |
     setprecision(53)
     setprecision(Interval, Float64)
-    setrounding(Interval, :narrow)
+    setrounding(Interval, :tight)
+    # Set full format, and show decorations
+    @format full
 
 # intervals
 nai_interval_double: nai()
@@ -178,8 +180,8 @@ op_min*: min($ARG1, $ARG2)
 op_max*: max($ARG1, $ARG2)
 
 # Numeric functions of intervals
-op_inf*: infimum($ARG1)
-op_sup*: supremum($ARG1)
+op_inf*: inf($ARG1)
+op_sup*: sup($ARG1)
 op_mid*: mid($ARG1)
 op_wid*: diam($ARG1)
 op_rad*: radius($ARG1)
@@ -243,9 +245,9 @@ op_isMember*: |
 #
 # # Recommended forward-mode elementary functions
 # op_rootn*: nthroot ($ARG1, $ARG2)
-# op_expm1*: expm1 ($ARG1)
-# op_logp1*: log1p ($ARG1)
-# op_hypot*: hypot ($ARG1, $ARG2)
+op_expm1*: expm1 ($ARG1)
+op_logp1*: log1p ($ARG1)
+op_hypot*: hypot ($ARG1, $ARG2)
 # op_rSqrt*: rsqrt ($ARG1)
 #
 # # Reduction operations
@@ -271,9 +273,9 @@ op_isMember*: |
 #
 # # Additional operations
 # op_cbrt*: cbrt($ARG1)
-# op_cot*: cot($ARG1)
-# op_coth*: coth($ARG1)
-# op_csc*: csc($ARG1)
-# op_csch*: csch($ARG1)
-# op_sec*: sec($ARG1)
-# op_sech*: sech($ARG1)
+op_cot*: cot($ARG1)
+op_coth*: coth($ARG1)
+op_csc*: csc($ARG1)
+op_csch*: csch($ARG1)
+op_sec*: sec($ARG1)
+op_sech*: sech($ARG1)
