@@ -36,7 +36,7 @@ testfile_seq: |
     end_try_catch;
     
     %!function assert_warn (observed_value, expected_value)
-    %!    if (not (isequal (observed_value, expected_value)))
+    %!    if (not (isequaln (observed_value, expected_value)))
     %!        observed_expression = regexprep (argn(1, :), '\s+$', '');
     %!        expected_expression = regexprep (argn(2, :), '\s+$', '');
     %!        observed_as_char = disp (observed_value)(1 : end - 1);
@@ -68,6 +68,6 @@ test_signal_seq: |
 # assert (eq (X, Y)) fails if X and Y are strings of different length
 # assert (all (eq (X, Y))) would throw a warning and does not abort when comparing decorated interval with bare intervals (implicit promotion of bare intervals)
 # assert (isequal (X, Y)) fails for interval matrices, see bug #44334, but that's not a problem because ITF1788 does not support interval matrices
-assert_equals: "%! assert (isequal ($ARG1, $ARG2))"
+assert_equals: "%! assert (isequaln ($ARG1, $ARG2))"
 assert_equals_warning: "%! assert_warn ($ARG1, $ARG2)"
 assert_true: "%! assert ($ARG1)"

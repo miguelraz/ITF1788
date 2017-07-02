@@ -63,4 +63,3 @@ array_empty: "[]"
 array_arg_separator: ", "
 array_def : "$NAME = $VAL"
 
-op_isNaN: math.isnan($ARG1)

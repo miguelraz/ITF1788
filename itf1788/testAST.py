@@ -1026,7 +1026,6 @@ class ASTVisitor(object):
         lessEq = self.out.arith_decorator_less_equals
         greaterEq = self.out.arith_decorator_greater_equals
         andConj = self.out.lang_logical_and
-        isNaNFnc = self.out.lang_op_isNaN
 
         if node.tightestOutputs:
             tghtLst = node.tightestOutputs.accept(self)
@@ -1057,24 +1056,16 @@ class ASTVisitor(object):
                 else:
                     outp = tghtLst[sec].accept(self)
 
-                # translation with isNaN function
-                if type(tghtLst[sec]) is NaNNode:
-                    for line in range(0, len(opVals[sec])):
-                        tst = self.replTok(assertTrue, 'ARG1', isNaNFnc)
-                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                        tstLst += [tst + delim]
+                for line in range(0, len(opVals[sec])):
+                    if type(tghtLst[sec]) is BooleanLiteralNode and tghtLst[sec].val == 'true':
+                        # translation with assertTrue (simpler test code for boolean functions)
+                        tst = assertTrue
+                    else:
+                        # translation with assertEquals
+                        tst = self.replTok(assertEq, 'ARG2', outp)
                     
-                else:
-                    for line in range(0, len(opVals[sec])):
-                        if type(tghtLst[sec]) is BooleanLiteralNode and tghtLst[sec].val == 'true':
-                            # translation with assertTrue (simpler test code for boolean functions)
-                            tst = assertTrue
-                        else:
-                            # translation with assertEquals
-                            tst = self.replTok(assertEq, 'ARG2', outp)
-                        
-                        tst = self.replTok(tst, 'ARG1', opVals[sec][line])
-                        tstLst += [tst + delim]
+                    tst = self.replTok(tst, 'ARG1', opVals[sec][line])
+                    tstLst += [tst + delim]
 
         # Translation of "op A B <= D" where "op" is an arbitrary
         # operation and A, B, D are intervals
