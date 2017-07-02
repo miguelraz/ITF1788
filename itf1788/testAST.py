@@ -1042,8 +1042,6 @@ class ASTVisitor(object):
         # Result will be:
         #
         # assert_eq (op(A, B), C)
-        # if decorated:
-        #  assert_eq (dec(op(A,B)), dec(C))
         if node.accurateOutputs is None:
             for sec in range(0, len(tghtLst)):
                 # true if any input or output literal is an array
@@ -1078,21 +1076,11 @@ class ASTVisitor(object):
                         tst = self.replTok(tst, 'ARG1', opVals[sec][line])
                         tstLst += [tst + delim]
 
-                        if hasattr(tghtLst[sec], 'decoration') and tghtLst[sec].decoration is not None:
-                            dec = tghtLst[sec].decoration.accept(self)
-                            outpDec = self.replTok(decPrt, 'ARG1', outp)
-                            inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
-                            tst = self.replTok(assertEq, 'ARG2', outpDec)
-                            tst = self.replTok(tst, 'ARG1', inpDec)
-                            tstLst += [tst + delim]
-
         # Translation of "op A B <= D" where "op" is an arbitrary
         # operation and A, B, D are intervals
         # Result will be:
         #
         # assert_true op(A, B) is subset of D
-        # if decorated:
-        #  assert_eq (dec(op(A,B)), dec(D))
         elif node.tightestOutputs is None:
 
             for sec in range(0, len(accLst)):
@@ -1106,14 +1094,6 @@ class ASTVisitor(object):
                     tst = self.replTok(tst, 'ARG2', outp)
                     tst = self.replTok(assertTrue, 'ARG1', tst)
                     tstLst += [tst + delim]
-
-                    if hasattr(accLst[sec], 'decoration') and accLst[sec].decoration is not None:
-                        dec = accLst[sec].decoration.accept(self)
-                        outpDec = self.replTok(decPrt, 'ARG1', outp)
-                        inpDec = self.replTok(decPrt, 'ARG1', opVals[sec][line])
-                        tst = self.replTok(assertEq, 'ARG2', outpDec)
-                        tst = self.replTok(tst, 'ARG1', inpDec)
-                        tstLst += [tst + delim]
 
         # Translation of "op A B = C <= D", where "op" is an arbitrary
         # operation and A, B, C, D are intervals
