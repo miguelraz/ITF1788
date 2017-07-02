@@ -1,0 +1,245 @@
+#
+#                              ITF1788
+#
+#   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
+#
+#
+#   Copyright 2014-2017
+#
+#   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
+#   Maximilian Kiesner (maximilian.kiesner@stud-mail.uni-wuerzburg.de)
+#   Oliver Heimlich (oheim@posteo.de)
+#
+#   Department of Computer Science
+#   University of Wuerzburg, Germany
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# This is the arithmetic definition for the GNU Octave interval package.
+# Operations are not evaluated, this arithmetic definition only collects meta
+# information about operations to store all test cases into a dictionary.
+# http://octave.sourceforge.net/interval/
+
+imports: |
+    pkg load interval
+preamble: |
+
+# intervals
+nai_interval_double: nai
+empty_interval_double: infsup
+entire_interval_double: infsup (-inf, inf)
+decorated_empty_interval_double: infsupdec (empty, $DEC)
+decorated_entire_interval_double: infsupdec (entire, $DEC)
+inf_sup_interval_double: infsup ($ARG1, $ARG2)
+decorated_inf_sup_interval_double: infsupdec ($ARG1, $ARG2, $DEC)
+
+# interval decorators
+decorator_com: '"com"'
+decorator_def: '"def"'
+decorator_dac: '"dac"'
+decorator_ill: '"ill"'
+decorator_trv: '"trv"'
+
+# overlap literal translations
+overlap_bothEmpty: '"bothEmpty"'
+overlap_firstEmpty: '"firstEmpty"'
+overlap_secondEmpty: '"secondEmpty"'
+overlap_before: '"before"'
+overlap_meets: '"meets"'
+overlap_overlaps: '"overlaps"'
+overlap_starts: '"starts"'
+overlap_containedBy: '"containedBy"'
+overlap_finishes: '"finishes"'
+overlap_equals: '"equals"'
+overlap_finishedBy: '"finishedBy"'
+overlap_contains: '"contains"'
+overlap_startedBy: '"startedBy"'
+overlap_overlappedBy: '"overlappedBy"'
+overlap_metBy: '"metBy"'
+overlap_after: '"after"'
+
+exception_UndefinedOperation: 'UndefinedOperation'
+exception_PossiblyUndefinedOperation: 'PossiblyUndefinedOperation'
+exception_InvalidOperand: 'InvalidOperand'
+exception_IntvlPartOfNaI: 'IntvlPartOfNaI'
+exception_IntvlOverflow: 'IntvlOverflow'
+
+# No need to clear exception state, cf. test.yaml
+clear_exceptions: 
+exception_no_exception: 
+
+# comparison operators for decorations
+decorator_less_equals: '"decorator_less_equals", {($ARG1), ($ARG2)}'
+decorator_greater_equals: '"decorator_greater_equals", {($ARG1), ($ARG2)}'
+
+op_decorationPart*: '"decorationPart", {($ARG1)}'
+
+
+# Cancellative addition and subtraction
+op_cancelMinus*: '"cancelMinus", {($ARG1), ($ARG2)}'
+op_cancelPlus*: '"cancelPlus", {($ARG1), ($ARG2)}'
+
+# Set operations
+op_intersection*: '"intersection", {($ARG1), ($ARG2)}'
+op_convexHull*: '"convexHull", {($ARG1), ($ARG2)}'
+
+# Constructors
+op_b-numsToInterval*: '"b-numsToInterval", {($ARG1), ($ARG2)}'
+op_d-numsToInterval*: '"d-numsToInterval", {($ARG1), ($ARG2)}'
+op_b-textToInterval*: '"b-textToInterval", {($ARG1)}'
+op_d-textToInterval*: '"d-textToInterval", {($ARG1)}'
+op_setDec*: '"setDec", {($ARG1), ($ARG2)}'
+op_newDec*: '"newDec", {($ARG1)}'
+
+# Basic operations
+op_pos*: '"pos", {($ARG1)}'
+op_neg*: '"neg", {($ARG1)}'
+op_add*: '"add", {($ARG1), ($ARG2)}'
+op_sub*: '"sub", {($ARG1), ($ARG2)}'
+op_mul*: '"mul", {($ARG1), ($ARG2)}'
+op_div*: '"div", {($ARG1), ($ARG2)}'
+op_recip*: '"recip", {($ARG1)}'
+op_sqr*: '"sqr", {($ARG1)}'
+op_sqrt*: '"sqrt", {($ARG1)}'
+op_fma*: '"fma", {($ARG1), ($ARG2), ($ARG3)}'
+
+# Power functions
+op_pown*: '"pown", {($ARG1), ($ARG2)}'
+op_pow*: '"pow", {($ARG1), ($ARG2)}'
+op_exp*: '"exp", {($ARG1)}'
+op_exp2*: '"exp2", {($ARG1)}'
+op_exp10*: '"exp10", {($ARG1)}'
+op_log*: '"log", {($ARG1)}'
+op_log2*: '"log2", {($ARG1)}'
+op_log10*: '"log10", {($ARG1)}'
+
+# Trigonometric/hyperbolic functions
+op_sin*: '"sin", {($ARG1)}'
+op_cos*: '"cos", {($ARG1)}'
+op_tan*: '"tan", {($ARG1)}'
+op_asin*: '"asin", {($ARG1)}'
+op_acos*: '"acos", {($ARG1)}'
+op_atan*: '"atan", {($ARG1)}'
+op_atan2*: '"atan2", {($ARG1), ($ARG2)}'
+op_sinh*: '"sinh", {($ARG1)}'
+op_cosh*: '"cosh", {($ARG1)}'
+op_tanh*: '"tanh", {($ARG1)}'
+op_asinh*: '"asinh", {($ARG1)}'
+op_acosh*: '"acosh", {($ARG1)}'
+op_atanh*: '"atanh", {($ARG1)}'
+
+# Integer functions
+op_sign*: '"sign", {($ARG1)}'
+op_ceil*: '"ceil", {($ARG1)}'
+op_floor*: '"floor", {($ARG1)}'
+op_trunc*: '"trunc", {($ARG1)}'
+op_roundTiesToEven*: '"roundTiesToEven", {($ARG1)}'
+op_roundTiesToAway*: '"roundTiesToAway", {($ARG1)}'
+
+# Absmax functions
+op_abs*: '"abs", {($ARG1)}'
+op_min*: '"min", {($ARG1), ($ARG2)}'
+op_max*: '"max", {($ARG1), ($ARG2)}'
+
+# Numeric functions of intervals
+op_inf*: '"inf", {($ARG1)}'
+op_sup*: '"sup", {($ARG1)}'
+op_mid*: '"mid", {($ARG1)}'
+op_wid*: '"wid", {($ARG1)}'
+op_rad*: '"rad", {($ARG1)}'
+op_mag*: '"mag", {($ARG1)}'
+op_mig*: '"mig", {($ARG1)}'
+
+# Boolean functions of intervals
+op_equal*: '"equal", {($ARG1), ($ARG2)}'
+op_subset*: '"subset", {($ARG1), ($ARG2)}'
+op_interior*: '"interior", {($ARG1), ($ARG2)}'
+op_disjoint*: '"disjoint", {($ARG1), ($ARG2)}'
+op_isEmpty*: '"isEmpty", {($ARG1)}'
+op_isEntire*: '"isEntire", {($ARG1)}'
+op_isNaI*: '"isNaI", {($ARG1)}'
+op_less*: '"less", {($ARG1), ($ARG2)}'
+op_strictLess*: '"strictLess", {($ARG1), ($ARG2)}'
+op_precedes*: '"precedes", {($ARG1), ($ARG2)}'
+op_strictPrecedes*: '"strictPrecedes", {($ARG1), ($ARG2)}'
+op_isCommonInterval*: '"isCommonInterval", {($ARG1)}'
+op_isSingleton*: '"isSingleton", {($ARG1)}'
+op_isMember*: '"isMember", {($ARG1), ($ARG2)}'
+
+# Extended interval comparison
+op_overlap*: '"overlap", {($ARG1), ($ARG2)}'
+
+# Reverse-mode elementary functions
+op_absRev*: '"absRev", {($ARG1)}'
+op_absRevBin*: '"absRevBin", {($ARG1), ($ARG2)}'
+op_sqrRev*: '"sqrRev", {($ARG1)}'
+op_sqrRevBin*: '"sqrRevBin", {($ARG1), ($ARG2)}'
+op_pownRev*: '"pownRev", {($ARG1), ($ARG2)}'
+op_pownRevBin*: '"pownRevBin", {($ARG1), ($ARG2), ($ARG3)}'
+op_sinRev*: '"sinRev", {($ARG1)}'
+op_sinRevBin*: '"sinRevBin", {($ARG1), ($ARG2)}'
+op_cosRev*: '"cosRev", {($ARG1)}'
+op_cosRevBin*: '"cosRevBin", {($ARG1), ($ARG2)}'
+op_tanRev*: '"tanRev", {($ARG1)}'
+op_tanRevBin*: '"tanRevBin", {($ARG1), ($ARG2)}'
+op_coshRev*: '"coshRev", {($ARG1)}'
+op_coshRevBin*: '"coshRevBin", {($ARG1), ($ARG2)}'
+op_mulRev*: '"mulRev", {($ARG1), ($ARG2)}'
+op_mulRevTen*: '"mulRevTen", {($ARG1), ($ARG2), ($ARG3)}'
+op_powRev1*: '"powRev1", {($ARG1), ($ARG2), ($ARG3)}'
+op_powRev2*: '"powRev2", {($ARG1), ($ARG2), ($ARG3)}'
+op_atan2Rev1*: '"atan2Rev1", {($ARG1), ($ARG2), ($ARG3)}'
+op_atan2Rev2*: '"atan2Rev2", {($ARG1), ($ARG2), ($ARG3)}'
+
+# Two output division
+op_mulRevToPair*: |
+    "mulRevToPair1", {($ARG1), ($ARG2)}
+    *** next output
+    "mulRevToPair2", {($ARG1), ($ARG2)}
+
+# Recommended forward-mode elementary functions
+op_rootn*: '"rootn", {($ARG1), ($ARG2)}'
+op_expm1*: '"expm1", {($ARG1)}'
+op_logp1*: '"logp1", {($ARG1)}'
+op_hypot*: '"hypot", {($ARG1), ($ARG2)}'
+op_rSqrt*: '"rSqrt", {($ARG1)}'
+
+# Reduction operations
+op_dot_down*: '"dot_down", {($ARG1), ($ARG2)}'
+op_dot_up*: '"dot_up", {($ARG1), ($ARG2)}'
+op_dot_zero*: '"dot_zero", {($ARG1), ($ARG2)}'
+op_dot_nearest*: '"dot_nearest", {($ARG1), ($ARG2)}'
+
+op_sum_down*: '"sum_down", {($ARG1)}'
+op_sum_up*: '"sum_up", {($ARG1)}'
+op_sum_zero*: '"sum_zero", {($ARG1)}'
+op_sum_nearest*: '"sum_nearest", {($ARG1)}'
+
+op_sum_abs_down*: '"sum_abs_down", {($ARG1)}'
+op_sum_abs_up*: '"sum_abs_up", {($ARG1)}'
+op_sum_abs_zero*: '"sum_abs_zero", {($ARG1)}'
+op_sum_abs_nearest*: '"sum_abs_nearest", {($ARG1)}'
+
+op_sum_sqr_down*: '"sum_sqr_down", {($ARG1)}'
+op_sum_sqr_up*: '"sum_sqr_up", {($ARG1)}'
+op_sum_sqr_zero*: '"sum_sqr_zero", {($ARG1)}'
+op_sum_sqr_nearest*: '"sum_sqr_nearest", {($ARG1)}'
+
+# Additional operations
+op_cbrt*: '"cbrt", {($ARG1)}'
+op_cot*: '"cot", {($ARG1)}'
+op_coth*: '"coth", {($ARG1)}'
+op_csc*: '"csc", {($ARG1)}'
+op_csch*: '"csch", {($ARG1)}'
+op_sec*: '"sec", {($ARG1)}'
+op_sech*: '"sech", {($ARG1)}'

@@ -93,7 +93,7 @@ class ConsoleParser(optparse.OptionParser):
             
             # regexes that are used to interpret the 'configurations'
             # console parameter
-            identRegex = r"'[a-zA-Z](\s?[a-zA-Z0-9_])*'"
+            identRegex = r"'[a-zA-Z](\s?[a-zA-Z0-9_-])*'"
             wildcardRegex = r"'\*'"
             specListRegex = r"\s*\(\s*.+\s*,\s*.+\s*,\s*.+\s*\)\s*" + \
                             r"(\s*;\s*\(\s*.+\s*,\s*.+\s*,\s*.+\s*\)\s*)*"

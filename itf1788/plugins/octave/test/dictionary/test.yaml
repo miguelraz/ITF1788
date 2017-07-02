@@ -1,0 +1,86 @@
+#
+#                              ITF1788
+#
+#   Interval Test Framework for IEEE 1788 Standard for Interval Arithmetic
+#
+#
+#   Copyright 2017 Oliver Heimlich (oheim@posteo.de)
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+imports: |
+testfile_seq: |
+    $COMMENTS
+    $TESTLIB_IMPORTS
+    $ARITHLIB_IMPORTS
+    $PREAMBLE
+    
+    if !exist ("tests", "var")
+      tests = struct ("NoSignal", struct (), ...
+                      "UndefinedOperation", struct (), ...
+                      "PossiblyUndefinedOperation", struct (), ...
+                      "InvalidOperand", struct (), ...
+                      "IntvlPartOfNaI", struct (), ...
+                      "IntvlOverflow", struct ());
+    endif
+    
+    $TESTCASES
+    
+    clear in itype op out signal
+testcase_seq: |
+    ## $TC_NAME
+    $COMMENTS
+    $TESTS
+
+test_seq: |
+    $COMMENTS
+    signal = "NoSignal";
+    $ASSERTS
+test_signal_seq: |
+    $COMMENTS
+    signal = "$EXCEPTION";
+    $ASSERTS
+
+assert_equals: |
+    [op, in, out] = deal ($ARG1, $ARG2);
+    if isa (in{1}, "infsup")
+      itype = class (in{1});
+    elseif numel (in) >= 2 && isa (in{2}, "infsup")
+      itype = class (in{2});
+    else
+      itype = class (out);
+    endif
+    if !isfield (tests.(signal), itype) || !isfield (tests.(signal).(itype), op)
+      tests.(signal).(itype).(op) = struct ("in", {in}, "out", out);
+    else
+      tests.(signal).(itype).(op) = vertcat (...
+        tests.(signal).(itype).(op), ...
+        struct ("in", {in}, "out", out));
+    endif
+assert_true: |
+    [op, in] = deal ($ARG1);
+    if isa (in{1}, "infsup")
+      itype = class (in{1});
+    else
+      itype = class (in{2});
+    endif
+    if !isfield (tests.(signal), itype) || !isfield (tests.(signal).(itype), op)
+      tests.(signal).(itype).(op) = struct ("in", {in}, "out", true);
+    else
+      tests.(signal).(itype).(op) = vertcat (...
+        tests.(signal).(itype).(op), ...
+        struct ("in", {in}, "out", true));
+    endif
+
+assert_equals_warning: "# assert_equals_warning not supported"
+
