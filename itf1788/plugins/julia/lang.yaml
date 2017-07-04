@@ -63,5 +63,4 @@ array_double: "[$ARGS]"
 array_float: "Float32([$ARGS])"
 array_empty: "[]"
 array_arg_separator: ", "
-array_def : "$NAME = $VAL"
 

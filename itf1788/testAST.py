@@ -979,22 +979,13 @@ class ASTVisitor(object):
         if not opKey:
             return ""
 
-        # Special handling if array literals are present
-        varInfo, arrayDefSeq = self.handleArrayValues(node)
-
         opVal = getattr(self.out, opKey)
 
         # Replace the ARG placeholders
         inputList = node.inputs.accept(self)
         for i in range(0, len(inputList)):
-            if node.inputs.literals[i] not in varInfo:
-                opVal = self.replTok(opVal, 'ARG' + str(i + 1),
-                                     inputList[i])
-            else:
-                opVal = self.replTok(opVal, 'ARG' + str(i + 1),
-                                     varInfo[node.inputs.literals[i]][0])
-                opVal = self.replTok(opVal, 'ARG' + str(i + 1) + '_LEN',
-                                     varInfo[node.inputs.literals[i]][1])
+            opVal = self.replTok(opVal, 'ARG' + str(i + 1),
+                                 inputList[i])
 
         # Build a list of lists for the value -- the first level
         # identifies the sections separated by '*** next output' and the
@@ -1044,17 +1035,7 @@ class ASTVisitor(object):
         if node.accurateOutputs is None:
             for sec in range(0, len(tghtLst)):
                 # true if any input or output literal is an array
-                containsArr = bool(arrayDefSeq.strip())
-                if containsArr:
-                    # add array definitions
-                    tstLst += [arrayDefSeq]
-
-                if tghtLst[sec] in varInfo:
-                    # use the previously assigned variable name instead
-                    # of the literal value
-                    outp = varInfo[tghtLst[sec]][0]
-                else:
-                    outp = tghtLst[sec].accept(self)
+                outp = tghtLst[sec].accept(self)
 
                 for line in range(0, len(opVals[sec])):
                     if type(tghtLst[sec]) is BooleanLiteralNode and tghtLst[sec].val == 'true':
@@ -1184,81 +1165,6 @@ class ASTVisitor(object):
 
         return txt
 
-    def handleArrayValues(self, node):
-        """
-        Check if there are any arrays involved in the current test,
-        and if so prepares the array definitions and a mapping of the
-        definitions to variable names.
-
-        Returns a dictionary which maps a input or output literal to a
-        tuple t, where t[0] is the name of the variable the literal is
-        stored in and t[1] is the length of the array.
-        """
-
-        # check if anything to do
-        containsArr = False
-        for i in node.inputs.literals:
-            if type(i) is ArrayLiteralNode:
-                containsArr = True
-                break
-
-        if not containsArr and node.tightestOutputs:
-            for i in node.tightestOutputs.literals:
-                if type(i) is ArrayLiteralNode:
-                    containsArr = True
-                    break
-
-        if node.accurateOutputs:
-            for i in node.accurateOutputs.literals:
-                if type(i) is ArrayLiteralNode:
-                    raise IOError("""Arrays not permitted for accurate
-                                     outputs""")
-
-        if not containsArr:
-            return dict(), ''
-
-        # Now  at least one array is present
-        varInfo = dict()
-        defLst = []
-        inpNameGen = InpVarNameGenerator(self)
-        outpNameGen = OutpVarNameGenerator(self)
-        for i in node.inputs.literals:
-            if type(i) is ArrayLiteralNode:
-                litType = i.getLiteralType()
-                name = inpNameGen.next()
-                val = i.accept(self)
-                length = len(i.vals) if i.vals else 0
-
-                tmp = getattr(self.out, 'lang_array_def')
-                tmp = self.replTok(tmp, 'TYPE', litType)
-                tmp = self.replTok(tmp, 'NAME', name)
-                tmp = self.replTok(tmp, 'VAL', val)
-
-                defLst += [tmp]
-                varInfo[i] = (name, length)
-
-        for i in node.tightestOutputs.literals:
-            if type(i) is ArrayLiteralNode:
-                litType = i.getLiteralType()
-                name = outpNameGen.next()
-                val = i.accept(self)
-                length = len(i.vals) if i.vals else 0
-
-                tmp = getattr(self.out, 'lang_array_def')
-                tmp = self.replTok(tmp, 'TYPE', litType)
-                tmp = self.replTok(tmp, 'NAME', name)
-                tmp = self.replTok(tmp, 'VAL', val)
-
-                defLst += [tmp]
-                varInfo[i] = (name, length)
-
-        inpNameGen.next_section()
-        outpNameGen.next_section()
-
-        arrayDefSeq = '\n'.join(defLst)
-
-        return varInfo, arrayDefSeq
-
     def visitTestcaseNode(self, node):
         """
         Return the translation of a TestcaseNode.
@@ -1335,10 +1241,6 @@ class ASTVisitor(object):
                        for n in node.testcases]
         else:
             rplList = [n.accept(self).strip() for n in node.testcases]
-
-        # reset variable generator numbers
-        InpVarNameGenerator(self).reset()
-        OutpVarNameGenerator(self).reset()
 
         # testcasesComment = self.out.lang_line_comment_token + \
         #                        "Testcases"
@@ -1473,58 +1375,5 @@ class ASTVisitor(object):
         self.warnings.add('WARNING: no matching operation found for operation '+
                           opName + ', language ' + self.out.lang_name)
         return None
-
-
-class InpVarNameGenerator(object):
-    _instance = None
-    inner_count = 0
-    section_count = 1
-    ast_visitor = None
-    def __new__(cls, ast_visitor):
-        if not cls._instance:
-            cls._instance = super(InpVarNameGenerator, cls).__new__(
-                                cls)
-            cls.ast_visitor = ast_visitor
-        return cls._instance
-
-    def next(cls):
-        cls._instance.inner_count += 1
-        var_name = 'in_' + str(cls._instance.section_count) + '_' + \
-               str(cls._instance.inner_count)
-        return cls.ast_visitor.cb_func('cb_inp_var_name')(var_name)
-
-    def next_section(cls):
-        cls._instance.section_count += 1
-        cls._instance.inner_count = 0
-
-    def reset(cls):
-        cls.section_count = 1
-        cls.inner_count = 0
-
-class OutpVarNameGenerator(object):
-    _instance = None
-    inner_count = 0
-    section_count = 1
-    ast_visitor = None
-    def __new__(cls, ast_visitor):
-        if not cls._instance:
-            cls._instance = super(OutpVarNameGenerator, cls).__new__(
-                                cls)
-            cls.ast_visitor = ast_visitor
-        return cls._instance
-
-    def next(cls):
-        cls._instance.inner_count += 1
-        var_name = 'out_' + str(cls._instance.section_count) + '_' + \
-               str(cls._instance.inner_count)
-        return cls.ast_visitor.cb_func('cb_outp_var_name')(var_name)
-
-    def next_section(cls):
-        cls._instance.section_count += 1
-        cls._instance.inner_count = 0
-
-    def reset(cls):
-        cls.section_count = 1
-        cls.inner_count = 0
 
 

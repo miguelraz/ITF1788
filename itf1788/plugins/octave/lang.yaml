@@ -67,5 +67,4 @@ array_double: "[$ARGS]"
 array_float: "single ([$ARGS])"
 array_empty: "[]"
 array_arg_separator: ", "
-array_def : "%! $NAME = $VAL;"
 
