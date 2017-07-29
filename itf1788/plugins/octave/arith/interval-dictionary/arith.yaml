@@ -82,6 +82,7 @@ exception_no_exception:
 decorator_less_equals: '"decorator_less_equals", {($ARG1), ($ARG2)}'
 decorator_greater_equals: '"decorator_greater_equals", {($ARG1), ($ARG2)}'
 
+op_intervalPart*: '"intervalPart", {($ARG1)}'
 op_decorationPart*: '"decorationPart", {($ARG1)}'
 
 
