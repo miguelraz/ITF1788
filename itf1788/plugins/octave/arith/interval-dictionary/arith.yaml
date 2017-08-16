@@ -31,7 +31,9 @@
 # http://octave.sourceforge.net/interval/
 
 imports: |
-    pkg load interval
+    if (isempty (file_in_loadpath ("@infsup/")))
+      pkg load interval
+    endif
 preamble: |
 
 # intervals
