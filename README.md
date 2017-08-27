@@ -30,7 +30,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 
 ### GNU Octave: interval package
 http://octave.sourceforge.net/interval/
-```python
+```octave
 ## example
 
 %!test
@@ -101,7 +101,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ### GNU Octave: INTLAB toolbox
 http://www.ti3.tu-harburg.de/rump/intlab/  
 *Note: INTLAB is not conforming to IEEE Std 1788-2015. It does not support decorated or empty intervals. Several standard functions are not supported.*
-```python
+```octave
 ## example
 
 %!test
