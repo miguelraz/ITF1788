@@ -29,7 +29,7 @@ BOOST_AUTO_TESTCASE(EXAMPLE)
 ```
 
 ### GNU Octave: interval package
-http://octave.sourceforge.net/interval/
+https://octave.sourceforge.io/interval/
 ```octave
 ## example
 
@@ -111,11 +111,11 @@ http://www.ti3.tu-harburg.de/rump/intlab/
 
 ## ITL – Interval Test Libraries
 
-The itl subfolder contains examples of interval arithmetic unit tests, they serve as a demonstration of this framework's capabilities. If you are interested in sharing (large) test libraries, please contact interval arithmetic library maintainers on that topic. For example, the [GNU Octave interval package](http://octave.sourceforge.net/interval/) contains a collection of tests from various libraries, which are based on intervals with boundaries of type binary64.
+The itl subfolder contains several interval arithmetic unit tests from various libraries, which are based on intervals with boundaries of type binary64.  If you are interested in sharing test libraries, please provide them as a pull request.
 
 Function names are based on IEEE Std 1788-2015, IEEE standard for interval arithmetic, and support for more functions can easily be added in plugins (see below). Operands and results are either intervals, numbers, boolean values or arrays. Intervals may be given in hexadecimal notation. Both, bare and decorated intervals are supported.
 
-Simple test cases use a syntax of the type `function and operands = expected result`. Advanced test cases can be written as `function and operands = tight result <= accurate result`, where a tight result would be desired, but it suffices if the actual result is included in a wider, still accurate result.
+Simple test cases use a syntax of the type `function and operands = expected result`. Advanced test cases can be written as `function and operands = tight result <= accurate result`, where a tight result would be desired, but it suffices if the actual result is included in a wider, still accurate result.  Tests for IEEE Std 1788-2015 exceptions can be written as `function and operands = expected result signal expected exception`.
 
 For details read
 > M. Kiesner, M. Nehmeier, J. Wolff von Gudenberg (2015). “ITF1788: An Interval Testframework for IEEE 1788.” https://se2.informatik.uni-wuerzburg.de/publications/tr495.pdf
