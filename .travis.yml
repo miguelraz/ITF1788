@@ -7,6 +7,7 @@ python:
 #  - "3.5-dev" # 3.5 development branch
 #  - "nightly" # currently points to 3.6-dev
 
+dist: trusty
 sudo: false
 
 # Also run the generated tests for particular libraries
@@ -14,9 +15,9 @@ matrix:
   include:
     - env: ARITH=octave-interval
       sudo: required
-    - env: ARITH=ValidatedNumerics.jl TEST=Base.Test
+    - env: ARITH=IntervalArithmetic.jl TEST=Base.Test
       sudo: required
-    - env: ARITH=ValidatedNumerics.jl TEST=FactCheck
+    - env: ARITH=IntervalArithmetic.jl TEST=FactCheck
       sudo: required
 
 before_install:
@@ -28,8 +29,8 @@ before_install:
     fi
 
   -
-    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
-      sudo add-apt-repository --yes ppa:staticfloat/juliareleases;
+    if [ "$ARITH" == "IntervalArithmetic.jl" ]; then
+      sudo add-apt-repository --yes ppa:staticfloat/julianightlies;
       sudo add-apt-repository --yes ppa:staticfloat/julia-deps;
       sudo apt-get update -qq;
       sudo apt-get install -qq julia;
@@ -44,8 +45,8 @@ install:
     fi
 
   -
-    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
-      julia -q --eval 'Pkg.add("ValidatedNumerics")';
+    if [ "$ARITH" == "IntervalArithmetic.jl" ]; then
+      julia -q --eval 'Pkg.add("IntervalArithmetic")';
       if [ "$TEST" == "FactCheck" ]; then
         julia -q --eval 'Pkg.add("FactCheck")';
       fi
@@ -60,11 +61,11 @@ script:
   -
     if [ "$ARITH" == "octave-interval" ]; then
       python -m itf1788 -s itl -o output -c "(octave, native, interval)";
-      make -C output/octave/native/interval;
+      find output -name "*.tst" -exec octave "{}" ";";
     fi
 
   -
-    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
-      python -m itf1788 -s itl -o output -c "(julia, $TEST, ValidatedNumerics)";
-      make -C output/julia/$TEST/ValidatedNumerics;
+    if [ "$ARITH" == "IntervalArithmetic.jl" ]; then
+      python -m itf1788 -s itl -o output -c "(julia, $TEST, IntervalArithmetic)";
+      find output -name "*.jl" -exec julia "{}" ";";
     fi
