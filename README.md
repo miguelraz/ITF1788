@@ -38,14 +38,14 @@ http://octave.sourceforge.net/interval/
 ```
 
 ### Julia: ValidatedNumerics
-https://github.com/dpsanders/ValidatedNumerics.jl/  
-*Note: ValidatedNumerics.jl is not conforming to IEEE Std 1788-2015 yet, but development is on its way.*
+https://github.com/JuliaIntervals/IntervalArithmetic.jl/  
+*Note: IntervalArithmetic.jl is not conforming to IEEE Std 1788-2015 yet, but development is on its way.*
 ```julia
-using ValidatedNumerics
-using FactCheck
+using IntervalArithmetic
+using Base.Test
 
-facts("example") do
-    @fact isdisjoint(Interval(3.0, 4.0), Interval(1.0, 2.0)) --> true
+@testset "example" begin
+    @test isdisjoint(Interval(3.0, 4.0), Interval(1.0, 2.0))
 end
 ```
 
