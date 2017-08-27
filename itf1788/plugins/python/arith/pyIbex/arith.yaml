@@ -64,6 +64,15 @@ preamble: |
 # intervals
 empty_interval_double: Interval.EMPTY_SET
 entire_interval_double: Interval.ALL_REALS
+
+#
+# NaI constant for different data types.
+# Example: "I<double>::nai()" and "I<float>::nai()"
+#
+nai_interval_double: 
+nai_interval_float:
+nai_interval_long_double:
+
 inf_sup_interval_double: Interval($ARG1, $ARG2)
 
 # Set operations
