@@ -27,6 +27,16 @@ preamble: |
 # intervals
 empty_interval_double: infsup (nan, nan)
 entire_interval_double: infsup (-inf, inf)
+
+#
+# NaI constant for different data types.
+# Example: "I<double>::nai()" and "I<float>::nai()"
+#
+nai_interval_double: 
+nai_interval_float:
+nai_interval_long_double:
+
+
 inf_sup_interval_double: infsup ($ARG1, $ARG2)
 
 # Set operations

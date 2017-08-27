@@ -2,11 +2,10 @@ SHELL = /bin/sh
 TESTRESULT = $(patsubst %.tst,%.run,$(wildcard *.tst))
 OCTAVE ?= octave
 
-.PHONY : all
+.PHONY : all $(TESTRESULT)
 all : $(TESTRESULT)
 
-%.run : %.tst
+$(TESTRESULT) :  %.run : %.tst
 	@echo
 	@echo "[$<]"
-	@$(OCTAVE) -q --no-gui "$<" || true
-	@touch "$@"
+	@$(OCTAVE) -q --no-gui "$<"

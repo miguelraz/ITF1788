@@ -28,6 +28,15 @@ preamble: |
 # intervals
 empty_interval_double: EMPTY
 entire_interval_double: interval(-INFINITY, INFINITY)
+
+#
+# NaI constant for different data types.
+# Example: "I<double>::nai()" and "I<float>::nai()"
+#
+nai_interval_double: 
+nai_interval_float:
+nai_interval_long_double:
+
 inf_sup_interval_double: interval($ARG1, $ARG2)
 
 # Set operations
