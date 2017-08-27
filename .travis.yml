@@ -7,13 +7,15 @@ python:
 #  - "3.5-dev" # 3.5 development branch
 #  - "nightly" # currently points to 3.6-dev
 
-sudo: required
+sudo: false
 
 # Also run the generated tests for particular libraries
 matrix:
   include:
     - env: PLUGIN=octave-interval
+      sudo: required
     - env: PLUGIN=ValidatedNumerics.jl
+      sudo: required
 
 before_install:
   -
