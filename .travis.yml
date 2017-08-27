@@ -9,10 +9,11 @@ python:
 
 sudo: required
 
-env:
-  - PLUGIN=
-  - PLUGIN=octave-interval
-  - PLUGIN=ValidatedNumerics.jl
+# Also run the generated tests for particular libraries
+matrix:
+  include:
+    - env: PLUGIN=octave-interval
+    - env: PLUGIN=ValidatedNumerics.jl
 
 before_install:
   -
