@@ -12,21 +12,23 @@ sudo: false
 # Also run the generated tests for particular libraries
 matrix:
   include:
-    - env: PLUGIN=octave-interval
+    - env: ARITH=octave-interval
       sudo: required
-    - env: PLUGIN=ValidatedNumerics.jl
+    - env: ARITH=ValidatedNumerics.jl TEST=Base.Test
+      sudo: required
+    - env: ARITH=ValidatedNumerics.jl TEST=FactCheck
       sudo: required
 
 before_install:
   -
-    if [ "$PLUGIN" == "octave-interval" ]; then
+    if [ "$ARITH" == "octave-interval" ]; then
       sudo add-apt-repository --yes ppa:octave/stable;
       sudo apt-get update -qq;
       sudo apt-get install -qq -y octave liboctave-dev libmpfr-dev;
     fi
 
   -
-    if [ "$PLUGIN" == "ValidatedNumerics.jl" ]; then
+    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
       sudo add-apt-repository --yes ppa:staticfloat/juliareleases;
       sudo add-apt-repository --yes ppa:staticfloat/julia-deps;
       sudo apt-get update -qq;
@@ -37,31 +39,32 @@ install:
   - pip install .
 
   -
-    if [ "$PLUGIN" == "octave-interval" ]; then
+    if [ "$ARITH" == "octave-interval" ]; then
       octave -q --no-gui --eval "pkg install -forge interval";
     fi
 
   -
-    if [ "$PLUGIN" == "ValidatedNumerics.jl" ]; then
+    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
       julia -q --eval 'Pkg.add("ValidatedNumerics")';
-      julia -q --eval 'Pkg.add("FactCheck")';
+      if [ "$TEST" == "FactCheck" ]; then
+        julia -q --eval 'Pkg.add("FactCheck")';
+      fi
     fi
 
 script:
   -
-    if [ "$PLUGIN" == "" ]; then
+    if [ "$ARITH" == "" ]; then
       python -m itf1788 -s itl -o output;
     fi
 
   -
-    if [ "$PLUGIN" == "octave-interval" ]; then
+    if [ "$ARITH" == "octave-interval" ]; then
       python -m itf1788 -s itl -o output -c "(octave, native, interval)";
       make -C output/octave/native/interval;
     fi
 
   -
-    if [ "$PLUGIN" == "ValidatedNumerics.jl" ]; then
-      python -m itf1788 -s itl -o output -c "(julia, *, ValidatedNumerics)";
-      make -C output/julia/Base.Test/ValidatedNumerics;
-      make -C output/julia/FactCheck/ValidatedNumerics;
+    if [ "$ARITH" == "ValidatedNumerics.jl" ]; then
+      python -m itf1788 -s itl -o output -c "(julia, $TEST, ValidatedNumerics)";
+      make -C output/julia/$TEST/ValidatedNumerics;
     fi
