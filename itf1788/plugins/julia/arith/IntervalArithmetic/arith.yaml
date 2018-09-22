@@ -245,9 +245,9 @@ op_isMember*: |
 #
 # # Recommended forward-mode elementary functions
 # op_rootn*: nthroot ($ARG1, $ARG2)
-op_expm1*: expm1 ($ARG1)
-op_logp1*: log1p ($ARG1)
-op_hypot*: hypot ($ARG1, $ARG2)
+op_expm1*: expm1($ARG1)
+op_logp1*: log1p($ARG1)
+op_hypot*: hypot($ARG1, $ARG2)
 # op_rSqrt*: rsqrt ($ARG1)
 #
 # # Reduction operations
